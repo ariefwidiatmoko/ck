@@ -1,0 +1,380 @@
+html,
+body {
+  height: 100%;
+  background-color: hsl(0, 0%, 96%);
+}
+.box-shadow-y {
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+}
+div.vertical-align {
+  display: flex;
+  align-items: center;
+  min-width: 35em;
+  min-height: 38em;
+  justify-content: center;
+}
+.px-1,
+.p-1 {
+  padding-right: 0.2rem;
+  padding-left: 0.2rem;
+}
+.py-1,
+.p-1 {
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+.margin-10-25 {
+  margin-top: -10px;
+  margin-bottom: -25px;
+}
+.margin-9 {
+  margin-top: -9px;
+}
+.menu-container {
+  position: fixed;
+  top: 52px;
+  margin: auto;
+  min-width: 300px;
+  z-index: 10;
+  background-color: transparent;
+  height: 100%;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: all ease 0.5s;
+}
+
+.toggler {
+  margin-left: 0;
+  cursor: pointer;
+}
+
+.menu-container.active {
+  transform: translate(0%);
+}
+
+a.navbar-burger span {
+  width: 20px;
+  height: 2px;
+  background: #1f2225;
+}
+
+div.menu-list > div.profile {
+  padding: 5px;
+}
+/* Start Custom-Profile-Sidebar */
+.menu > div.profile-sidebar {
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+div > div.profile-icon {
+  display: flex;
+  justify-content: center;
+}
+
+div > div.profile-icon span {
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+div > div.profile-icon p.control > button {
+  border-color: white;
+}
+
+div > div.profile-icon span.shortcut-grey:hover {
+  color: grey;
+}
+
+ul.menu-list li {
+  margin-top: 12px;
+}
+
+ul > div.profile-icon span.shortcut-red:hover {
+  color: rgb(224, 83, 58);
+}
+/* End Custom-Profile-Sidebar */
+
+li > div {
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+}
+
+li > div:hover {
+  background-color: hsl(0, 0%, 96%);
+}
+
+.navbar-item {
+  font-size: 0.8rem;
+}
+
+.navbar-item > i {
+  font-size: 1rem;
+}
+/* custom-badge-notification-&-tag-post */
+a.navbar-item > span.badge-notification,
+span.badge-tag,
+span.custom-badge {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background-color: #3273dc;
+  padding: 0px 4px 0px 4px;
+  color: white;
+  border-radius: 4px;
+  text-align: right;
+}
+/* Content Wrap */
+.content-wrap {
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+  display: flex;
+  flex-wrap: wrap;
+}
+/* group-button-disabled */
+.control .is-disabled {
+  cursor: context-menu;
+}
+/* Table th Custom Font */
+table th,
+table td {
+  font-size: 0.9em;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+/* Custom Handler Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+/* End Custom Handler Scrollbar */
+/* Custom Checkbox - On mouse-over, add grey background */
+.custom-checkbox:hover input ~ .checkmark {
+  background-color: #bcbcbc;
+}
+
+/* Custom Checkbox - When checkbox is checked, add blue background */
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #00d1b2;
+}
+
+/* Custom Checkbox - checkmark hidden when not checked */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Custom Checkbox - Show checkmark when checked */
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Custom Checkbox - Style checkmark */
+.checkmark:after {
+  left: 10px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* Custom Input */
+div.custom-input {
+  font-style: italic;
+  width: 100%;
+  padding: 6px 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 0 0 1px rgba(255, 56, 96, 0.25) inset;
+}
+
+/* Custom disable select */
+.disable-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.view {
+  margin-top: 7px;
+  padding-bottom: 4px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(128, 128, 128, 0.353);
+  padding-left: 8px;
+}
+
+/* const viewProfile = {
+  marginTop: 7,
+  paddingBottom: 4,
+  borderBottomStyle: "solid",
+  borderBottomWidth: 1,
+  borderBottomColor: "grey",
+  paddingLeft: 8,
+}; */
+
+/* {backgroundColor: "white", borderTopColor: "white", borderLeftColor: "white", borderRightColor: "white", borderBottomColor: "grey", color: "black"} */
+
+/* Custom ToolTip */
+span.react-tooltip-lite {
+  background-color: rgba(17, 16, 16, 0.632);
+  color: white;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+/* custom button cancel/back */
+button.custom-grey:hover,
+a.custom-grey:hover {
+  background-color: #ebebeb;
+}
+button.custom-borderless {
+  border: none;
+}
+
+/* Datepicker Popup */
+div.react-datepicker-popper {
+  z-index: 999;
+}
+
+/* Custom hover hand pointer */
+div.hand-pointer:hover {
+  cursor: pointer;
+  background-color: rgb(245, 245, 245);
+}
+
+/* Custom Profile Picture */
+.custom-profile {
+  height: auto;
+  margin-top: -65px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 100px;
+  border: 5px solid white;
+}
+
+/* Custom Dropzone Input */
+.dropzone {
+  border: dashed 3px #eee;
+  border-radius: 5px;
+  padding-top: 50px;
+  text-align: center;
+  min-height: 200px;
+  cursor: pointer;
+}
+
+.dropzone--isActive {
+  border: dashed 3px green;
+}
+
+/* Custom multiselect option */
+li.rw-multiselect-tag {
+  vertical-align: bottom;
+}
+li.rw-multiselect-tag div,
+li.rw-multiselect-tag span {
+  padding: 0 0;
+}
+
+button.rw-btn-select > span {
+  padding-right: 0.3em;
+}
+
+/* Custom ActiveTab */
+.tabs li.is-active > div {
+  border-bottom: 1px solid #3273dc;
+  color: #3273dc;
+}
+
+.tabs li > div:hover {
+  border-bottom: 1px solid #363636;
+  background-color: white;
+  color: #363636;
+}
+
+.tabs li.is-active > div:hover {
+  border-bottom: 1px solid #3273dc;
+  background-color: white;
+  color: #3273dc;
+}
+
+/* Custom Text-Overflow */
+.custom-text-overflow {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #363636;
+}
+
+@media (min-width: 769px) {
+  .menu-container {
+    width: 25%;
+    min-width: auto;
+    transform: translateX(0%);
+  }
+  .toggler,
+  .nav-toggler {
+    display: none;
+  }
+  .field-body > .field:not(.is-narrow) {
+    box-flex: 1;
+    flex-grow: 1;
+  }
+  .field-body > .field {
+    flex: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .menu-container {
+    width: 16.6667%;
+    min-width: auto;
+    transform: translateX(0%);
+  }
+}
