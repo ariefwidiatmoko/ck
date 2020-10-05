@@ -1,0 +1,9 @@
+                   PAGE             REDUXAPI        REDUXACTION     REDUXCONSTANT
+Items Index      : Index            itemsIndex      itemsGet        ITEMS_GET
+Item Add         : Add              itemAdd         itemCreate      ITEM_CREATE
+Item Edit        : Edit             itemEdit        itemUpdate      ITEM_UPDATE
+Item View        : View             itemView        itemGet         ITEM_GET
+Item Delete      : Delete           itemDel         itemDelete      ITEM_DELETE
+Item HardDel     : HardDel          itemHdel        itemHardDel     ITEM_HARDDEL
+Items Export     : Export           itemsExp        itemsExport     ITEMS_EXPORT
+Items Import     : Import           itemsImp        itemsImport     ITEMS_IMPORT
