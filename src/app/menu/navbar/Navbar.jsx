@@ -106,25 +106,28 @@ export class Navbar extends Component {
                   </div>
                   <div className='navbar-dropdown is-right'>
                     <Link
-                      to={`/pengaturan-umum/profil-user`}
+                      to={`/pengaturan-user/profil`}
                       className={
                         this.handleActiveLink() === true
                           ? 'navbar-item is-active has-background-white-ter'
                           : 'navbar-item'
                       }
                     >
-                      <i className='fas fa-user-circle icon' style={{marginRight: 2}}></i> Profil
+                      <i className='fas fa-user-circle icon mr-1'></i> Profil
                     </Link>
-                    <a href='/' className='navbar-item'>
-                    <i className='fas fa-key icon' style={{marginRight: 2}}></i> Ubah Password
-                    </a>
+                    <Link
+                      to={`/pengaturan-user/profil/akun`}
+                      className='navbar-item'
+                    >
+                      <i className='fas fa-key icon mr-1'></i> Ubah Password
+                    </Link>
                     <hr className='navbar-divider' />
                     {loading === true && elementName === 'logoutNav' ? (
                       <button
                         disabled
                         className='button is-loading is-text is-small'
                       >
-                        <i className='fas fa-sign-out-alt icon' style={{marginRight: 2}}></i> Logout
+                        <i className='fas fa-sign-out-alt icon mr-1'></i> Logout
                       </button>
                     ) : (
                       <Fragment>
@@ -132,7 +135,10 @@ export class Navbar extends Component {
                           onClick={() => this.handleSessionLogout('logoutNav')}
                           className='navbar-item hand-pointer'
                         >
-                          <i className='fas fa-sign-out-alt icon' style={{marginRight: 2}}></i> Logout
+                          <i
+                            className='fas fa-sign-out-alt icon mr-1'
+                          ></i>{' '}
+                          Logout
                         </div>
                       </Fragment>
                     )}

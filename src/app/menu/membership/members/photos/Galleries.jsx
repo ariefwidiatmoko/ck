@@ -6,7 +6,7 @@ const Galleries = ({
   mainPhoto,
   arrPhotos,
   deletePhoto,
-  setMainPhoto,
+  memberMainPhotoSet,
   loading
 }) => {
   const [buttonId, setButtonId] = useState("");
@@ -57,7 +57,7 @@ const Galleries = ({
                           : false
                       }
                       onClick={() => {
-                        setMainPhoto(photo);
+                        memberMainPhotoSet(photo);
                         setButtonId(photo + "set");
                       }}
                       className={

@@ -2,18 +2,18 @@ import React from 'react'
 import {connect} from 'react-redux';
 import TestModal from './TestModal';
 import SessionEndModal from './SessionEndModal';
+import MemberDelete from '../membership/members/Delete';
 import DeleteUserModal from './DeleteUserModal';
 import NotAuthorizedModal from './NotAuthorizedModal';
 import ActivationModal from './ActivationModal';
-// import DeletePostModal from './DeletePostModal';
 
 const modalLookup = {
     TestModal,
     SessionEndModal,
+    MemberDelete,
     NotAuthorizedModal,
     ActivationModal,
     DeleteUserModal,
-    // DeletePostModal
 }
 
 const mapState = (state) => ({

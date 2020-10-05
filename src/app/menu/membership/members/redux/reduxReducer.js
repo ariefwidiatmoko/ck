@@ -3,8 +3,8 @@ import {
   MEMBERS_GET,
   MEMBER_CREATE,
   MEMBER_UPDATE,
-  MEMBER_SOFT_DELETE,
   MEMBER_DELETE,
+  MEMBER_HARD_DELETE,
   MEMBERS_EXPORT,
 } from "./reduxConstant";
 import { membersExport } from "./reduxAction";
@@ -26,11 +26,11 @@ const memberUpdate = (state, payload) => {
   ];
 };
 
-const memberSoftDelete = (state, payload) => {
+const memberDelete = (state, payload) => {
   return [...state.filter((member) => member.id !== payload.member.id)];
 };
 
-const memberDelete = (state, payload) => {
+const memberHardDelete = (state, payload) => {
   return [...state.filter((member) => member.id !== payload.member.id)];
 };
 
@@ -38,7 +38,7 @@ export default createReducer(initialState, {
   [MEMBERS_GET]: membersGet,
   [MEMBER_CREATE]: memberCreate,
   [MEMBER_UPDATE]: memberUpdate,
-  [MEMBER_SOFT_DELETE]: memberSoftDelete,
   [MEMBER_DELETE]: memberDelete,
+  [MEMBER_HARD_DELETE]: memberHardDelete,
   [MEMBERS_EXPORT]: membersExport,
 });

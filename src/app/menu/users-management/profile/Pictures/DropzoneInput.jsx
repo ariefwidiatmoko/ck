@@ -18,6 +18,7 @@ const DropzoneInput = ({setFiles}) => {
       <input {...getInputProps()} />
       <i className="fas fa-upload fa-3x icon is-large" />
       <h1>Tambah Foto</h1>
+      <h1>& Upload</h1>
     </div>
   );
 };

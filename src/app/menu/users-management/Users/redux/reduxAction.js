@@ -4,7 +4,7 @@ import {
   USER_PROFILE_UPDATE,
   USER_DELETE,
   USERS_EXPORT,
-} from "./reduxConstant";
+} from './reduxConstant';
 
 export const usersGet = (users) => {
   return {

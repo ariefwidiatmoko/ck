@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { usersFetch, userDel } from './redux/reduxApi';
 import { openModal, closeModal } from '../../modals/redux/modalActions';
 import LoadingButton from '../../../main/LoadingButton';
-import List from './List/List';
+import Lists from './Lists/Lists';
 import { compose } from 'redux';
 import PageNumber from '../../pages/_part/_fragment/PageNumber';
 import SimpleSearch from '../../pages/_part/_fragment/SimpleSearch';
@@ -41,7 +41,7 @@ class Index extends Component {
     cp: 1,
     itn: 10,
     itemFilter: 'All Users',
-    is: '',
+    st: '',
     mB: false,
   };
 
@@ -53,32 +53,32 @@ class Index extends Component {
 
   handleItemNumber = (number) => {
     const { auth } = this.props;
-    const { is } = this.state;
+    const { st } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: number,
     }));
-    this.props.usersFetch(auth.token, number, 1, is);
+    this.props.usersFetch(auth.token, number, 1, st);
   };
 
   handlePage = (number) => {
     const { auth } = this.props;
-    const { cp, itn, is } = this.state;
+    const { cp, itn, st } = this.state;
     this.setState({
       cp: cp + number,
     });
-    this.props.usersFetch(auth.token, itn, cp + number, is);
+    this.props.usersFetch(auth.token, itn, cp + number, st);
   };
 
-  handleSimpleSearch = (searchText) => {
+  handleSimpleSearch = (st) => {
     const { auth } = this.props;
     const { itn } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: itn,
-      is: searchText,
+      st: st,
     }));
-    this.props.usersFetch(auth.token, itn, 1, searchText);
+    this.props.usersFetch(auth.token, itn, 1, st);
   };
 
   handleMoreButton = () => {
@@ -128,8 +128,7 @@ class Index extends Component {
                         <Fragment>
                           <Link
                             to='/pengaturan-user/user/tambah'
-                            className='button is-small is-primary is-rounded is-outlined'
-                            style={{ marginRight: 10 }}
+                            className='button is-small is-primary is-rounded is-outlined mr-2'
                           >
                             <i className='fas fa-plus icon' />
                           </Link>
@@ -148,7 +147,7 @@ class Index extends Component {
                               : 'dropdown'
                           }
                         >
-                          <div className='dropdown-trigger'>
+                          <div className='dropdown-trigger ml-2'>
                             <button
                               className='button is-small is-rounded is-outlined'
                               aria-haspopup='true'
@@ -170,19 +169,19 @@ class Index extends Component {
                             role='menu'
                           >
                             <div className='dropdown-content'>
-                              <Link className='dropdown-item'>
+                              <div className='dropdown-item'>
                                 <i className='fas fa-search-plus icon'></i>
                                 Pencarian+
-                              </Link>
+                              </div>
                               <Link
-                                to='/pengaturan-user/user/export'
+                                to='/pengaturan-user/user/import'
                                 className='dropdown-item'
                               >
                                 <i className='fas fa-file-import icon'></i>
                                 Import
                               </Link>
                               <Link
-                                to='/pengaturan-user/user/export'
+                                to='/pengaturan-user/user/recyclebin'
                                 className='dropdown-item'
                               >
                                 <i className='fas fa-trash icon'></i>
@@ -215,7 +214,7 @@ class Index extends Component {
                           </td>
                         </tr>
                       ) : (
-                        <List
+                        <Lists
                           auth={auth}
                           users={users}
                           cp={cp}

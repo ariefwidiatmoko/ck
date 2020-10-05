@@ -1,10 +1,10 @@
-import { PROFILE_UPDATE } from "./profileConstant";
+import { PROFILE_UPDATE } from './profileConstant';
 
-export const profileUpdate = profile => {
+export const profileUpdate = (profile) => {
   return {
     type: PROFILE_UPDATE,
     payload: {
-      profile
-    }
+      profile,
+    },
   };
 };

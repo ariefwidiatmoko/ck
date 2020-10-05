@@ -35,6 +35,7 @@ export const Profilecard = ({
           <div className="media-content has-text-centered">
             <p className="title is-5 is-capitalized">{auth.name}</p>
             <p className="subtitle is-7">{auth.username}</p>
+            <p className="subtitle is-7">{auth.code}</p>
           </div>
         </div>
 

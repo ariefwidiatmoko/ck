@@ -25,7 +25,6 @@ class SimpleSearch extends Component {
     const { loading, tl } = this.props;
     const {value} = this.state;
     return (
-      <div className="level-item">
         <form onSubmit={e => this.handleSearchSubmit(e)} autoComplete="off">
           <div className="field has-addons">
             <p className="control">
@@ -50,7 +49,6 @@ class SimpleSearch extends Component {
             </p>
           </div>
         </form>
-      </div>
     );
   }
 }

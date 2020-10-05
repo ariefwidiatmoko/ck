@@ -4,18 +4,19 @@ import userIsAuthenticated from '../common/util/authWrapper';
 import Navbar from '../menu/navbar/Navbar';
 import Login from '../menu/login/Login';
 import Dashboard from '../menu/dashboard/Dashboard';
-import Profile from '../menu/users-management/profile/Profile';
+import ProfileView from '../menu/users-management/profile/View';
 import MembersIndex from '../menu/membership/members/Index';
 import MemberForm from '../menu/membership/members/Form';
 import MemberView from '../menu/membership/members/View';
+import MembersImport from '../menu/membership/members/Import';
 import UsersIndex from '../menu/users-management/Users/Index';
-import UserFormView from '../menu/users-management/Users/UserFormView';
-import UserFormCreate from '../menu/users-management/Users/UserFormCreate';
-import UserFormEdit from '../menu/users-management/Users/UserFormEdit';
-import UserFormExport from '../menu/users-management/Users/UserFormExport';
-import ActivationIndex from '../menu/users-management/Activation/ActivationIndex';
-import RoleIndex from '../menu/users-management/Roles/RoleIndex';
-import RoleForm from '../menu/users-management/Roles/RoleForm';
+import UserView from '../menu/users-management/Users/View';
+import UserAdd from '../menu/users-management/Users/Add';
+import UserEdit from '../menu/users-management/Users/Edit';
+import UserImport from '../menu/users-management/Users/Import';
+import ActivationIndex from '../menu/users-management/Activation/Index';
+import RoleIndex from '../menu/users-management/Roles/Index';
+import RoleForm from '../menu/users-management/Roles/Form';
 import ModalManager from '../menu/modals/ModalManager';
 import RecyclebinIndex from '../menu/recyclebin/RecyclebinIndex';
 import Testarea from '../menu/testarea/TestareaComponent';
@@ -56,7 +57,7 @@ class App extends Component {
             />
             <Route
               path='/pengaturan-user/profil'
-              component={userIsAuthenticated(Profile)}
+              component={userIsAuthenticated(ProfileView)}
             />
             <Route
               exact
@@ -66,21 +67,21 @@ class App extends Component {
             <Route
               exact
               path='/pengaturan-user/user/detail/:id'
-              component={userIsAuthenticated(UserFormView)}
+              component={userIsAuthenticated(UserView)}
             />
             <Route
               exact
               path='/pengaturan-user/user/tambah'
-              component={userIsAuthenticated(UserFormCreate)}
+              component={userIsAuthenticated(UserAdd)}
             />
             <Route
               exact
               path='/pengaturan-user/user/edit/:id'
-              component={userIsAuthenticated(UserFormEdit)}
+              component={userIsAuthenticated(UserEdit)}
             />
             <Route
-              path='/pengaturan-user/user/export'
-              component={userIsAuthenticated(UserFormExport)}
+              path='/pengaturan-user/user/import'
+              component={userIsAuthenticated(UserImport)}
             />
             <Route
               exact
@@ -102,7 +103,7 @@ class App extends Component {
             />
             <Route
               path='/pengaturan-umum/profil-koperasi'
-              component={userIsAuthenticated(Profile)}
+              component={userIsAuthenticated(ProfileView)}
             />
             <Route
               path='/recyclebin'

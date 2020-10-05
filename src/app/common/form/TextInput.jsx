@@ -5,6 +5,7 @@ const TextInput = ({
   type,
   className,
   disabled,
+  readOnly,
   placeholder,
   label,
   style,
@@ -21,6 +22,7 @@ const TextInput = ({
             : "input is-size-6"
         }
         id={input.name}
+        readOnly={readOnly}
         type={type}
         disabled={disabled}
         placeholder={placeholder}

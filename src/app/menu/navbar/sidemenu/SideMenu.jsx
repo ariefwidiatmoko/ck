@@ -15,7 +15,7 @@ class SideMenu extends Component {
       elementName,
       history,
     } = this.props;
-    const regex = new RegExp(`/pengaturan-umum/profil-user/`);
+    const regex = new RegExp(`/pengaturan-user/profil/`);
     const isActive = regex.test(pathname);
     const setProfile = auth.arrAuth.detail.subm.filter((role) => {
       return role.id === "profil-user";
@@ -57,7 +57,7 @@ class SideMenu extends Component {
                   <div className="field has-addons">
                     <p className="control">
                       <button
-                        onClick={() => history.push(`/pengaturan-umum/profil-user`)}
+                        onClick={() => history.push(`/pengaturan-user/profil`)}
                         disabled={setProfile === undefined ? true :
                           loading === true && elementName === "logoutSide"
                         }

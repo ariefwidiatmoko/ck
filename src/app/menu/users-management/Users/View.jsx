@@ -1,46 +1,70 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { memberView } from './redux/reduxApi';
-import Tab from './Tab';
-import Info from './Info';
-import Photos from './photos/Photos';
-import Account from './Account';
+import { userFetch } from './redux/reduxApi';
+import EditTab from './EditTab';
+import ViewBasic from './ViewBasic';
+import ViewAccount from './ViewAccount';
+import ViewRole from './ViewRole';
 import background from '../../../../images/default-background.jpg';
 import profileDefault from '../../../../images/user-default.png';
 import { SITE_ADDRESS } from '../../../common/util/siteConfig';
 import { Profilecard } from '../../../common/components/Profilecard';
 
 const mapState = (state, ownProps) => {
-  const memberId = ownProps.match.params.id;
+  const userId = ownProps.match.params.id;
 
   let aS = {};
   if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'anggota')[0];
+    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'user')[0];
   }
 
-  let member = {};
-  if (state.members && state.members.length > 0) {
-    member = state.members.filter((member) => member.code === memberId)[0];
+  let user = {};
+  if (state.users && state.users.length > 0) {
+    user = state.users.filter((user) => user.id === Number(userId))[0];
   }
   return {
     auth: state.auth,
     aS: aS,
-    member: member,
+    user: user,
+    roles: state.roles,
   };
 };
 
 const actions = {
-  memberView,
+  userFetch,
 };
 
 class View extends Component {
   _isMounted = false;
   state = {
-    tl: 'anggota',
-    memberId: this.props.match.params.id,
-    member: this.props.member,
+    userId: this.props.match.params.id,
+    user: this.props.user,
     activeTab: 'basic',
+  };
+
+  componentDidMount = () => {
+    this._isMounted = true;
+    const { auth, userFetch } = this.props;
+    const { userId } = this.state;
+    userFetch(userId, auth);
+    setTimeout(() => {
+      this.updateInitialValues();
+    }, 100);
+  };
+
+  componentWillUnmount = () => {
+    this._isMounted = false;
+  };
+
+  updateInitialValues = () => {
+    const { user } = this.props;
+    const setUser = { ...user };
+    if (this._isMounted) {
+      this.setState({
+        user: setUser,
+      });
+    }
   };
 
   OnChangeActiveTab = (activeTab) => {
@@ -50,8 +74,9 @@ class View extends Component {
   };
 
   render() {
-    const { aS, auth, member } = this.props;
-    const { memberId, tl } = this.state;
+    const { roles, aS } = this.props;
+    const { userId, user } = this.state;
+    const profile = user && user.profile ? user.profile : null;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -66,21 +91,17 @@ class View extends Component {
                         aria-label='breadcrumbs'
                       >
                         <ul className='margin-10-25'>
-                          <li className='is-capitalized'>
-                            <Link to='/keanggotaan/anggota'>{tl}</Link>
+                          <li>
+                            <Link to='/pengaturan-user/user'>User</Link>
                           </li>
                           <li className='is-active'>
-                            <Link
-                              to={`/keanggotaan/anggota/detail/${memberId}`}
-                            >
+                            <Link to={`/pengaturan-user/user/${userId}`}>
                               Detail
                             </Link>
                           </li>
                           <li className='is-active'>
-                            <Link
-                              to={`/keanggotaan/anggota/detail/${memberId}`}
-                            >
-                              {member.code}
+                            <Link to={`/users-management/user/${userId}`}>
+                              {user.username}
                             </Link>
                           </li>
                         </ul>
@@ -93,7 +114,7 @@ class View extends Component {
                       <div className='buttons'>
                         {aS.u === true && (
                           <Link
-                            to={'/keanggotaan/anggota/edit/' + memberId}
+                            to={'/pengaturan-user/user/edit/' + userId}
                             className='button is-small is-primary is-rounded is-outlined'
                           >
                             <i className='fas fa-pen icon' />
@@ -101,14 +122,14 @@ class View extends Component {
                         )}
                         {aS.c === true && (
                           <Link
-                            to='/keanggotaan/anggota/tambah'
+                            to='/pengaturan-user/user/tambah'
                             className='button is-small is-primary is-rounded is-outlined'
                           >
                             <i className='fas fa-plus icon' />
                           </Link>
                         )}
                         <Link
-                          to='/keanggotaan/anggota'
+                          to='/pengaturan-user/user'
                           className='button custom-grey is-small is-rounded is-outlined'
                         >
                           <i className='fas fa-arrow-left icon' />
@@ -123,28 +144,28 @@ class View extends Component {
                       background={background}
                       profileDefault={profileDefault}
                       auth={{
-                        name: member ? member.name : '',
-                        code: member ? member.code : '',
+                        name: profile ? profile.name : '',
+                        username: user ? user.username : '',
                       }}
-                      profile={member ? member : ''}
+                      profile={profile ? profile : ''}
                       link={SITE_ADDRESS}
                     />
                   </div>
                   <div className='column'>
                     <div className='box'>
-                      <Tab
+                      <EditTab
                         onChangeActiveTab={this.OnChangeActiveTab}
                         activeTab={this.state.activeTab}
-                        memberId={memberId}
+                        userId={userId}
                       />
                       {this.state.activeTab === 'basic' && (
-                        <Info member={member} />
-                      )}
-                      {this.state.activeTab === 'photo' && (
-                        <Photos profile={member} auth={auth} />
+                        <ViewBasic user={user} />
                       )}
                       {this.state.activeTab === 'account' && (
-                        <Account member={member} />
+                        <ViewAccount user={user} roles={roles} />
+                      )}
+                      {this.state.activeTab === 'role' && (
+                        <ViewRole user={user} roles={roles} />
                       )}
                     </div>
                   </div>

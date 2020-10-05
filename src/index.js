@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
-import "./index.min.css";
-import App from "./app/main/App";
-import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import { configureStore } from "./app/store/configureStore";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import ReduxToastr from "react-redux-toastr";
-import ScrollToTop from "./app/common/util/ScrollToTop";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+import './index.min.css';
+import App from './app/main/App';
+import * as serviceWorker from './serviceWorker';
+import { BrowserRouter } from 'react-router-dom';
+import { configureStore } from './app/store/configureStore';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import ReduxToastr from 'react-redux-toastr';
+import ScrollToTop from './app/common/util/ScrollToTop';
 
 const { store, persistor } = configureStore();
 
-const rootEl = document.getElementById("root");
+const rootEl = document.getElementById('root');
 
 let render = () => {
   ReactDOM.render(
@@ -21,9 +21,9 @@ let render = () => {
       <BrowserRouter>
         <ScrollToTop>
           <ReduxToastr
-            position="bottom-right"
-            transitionIn="fadeIn"
-            transitionOut="fadeOut"
+            position='bottom-right'
+            transitionIn='fadeIn'
+            transitionOut='fadeOut'
           />
           <PersistGate persistor={persistor}>
             <App />
@@ -36,7 +36,7 @@ let render = () => {
 };
 
 if (module.hot) {
-  module.hot.accept("./app/main/App", () => {
+  module.hot.accept('./app/main/App', () => {
     setTimeout(render);
   });
 }

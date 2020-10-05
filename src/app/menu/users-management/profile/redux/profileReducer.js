@@ -1,5 +1,5 @@
-import { PROFILE_UPDATE } from "./profileConstant";
-import { createReducer } from "../../../../common/util/reducerUtils";
+import { PROFILE_UPDATE } from './profileConstant';
+import { createReducer } from '../../../../common/util/reducerUtils';
 
 const initialState = {};
 
@@ -8,5 +8,5 @@ const profileUpdate = (state, payload) => {
 };
 
 export default createReducer(initialState, {
-  [PROFILE_UPDATE]: profileUpdate
+  [PROFILE_UPDATE]: profileUpdate,
 });

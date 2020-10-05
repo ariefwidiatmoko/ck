@@ -1,27 +1,18 @@
 import React, { Component, Fragment } from 'react';
-import Item from './Item';
+import UserListItem from './Item';
 
 class Lists extends Component {
   render() {
-    const {
-      items,
-      roles,
-      cp,
-      itn,
-      tl,
-      loading,
-      aS,
-      onDelete,
-    } = this.props;
+    const { users, roles, cp, itn, loading, aS, onDelete } = this.props;
     return (
       <Fragment>
-        {items &&
-          items.length !== 0 &&
-          items.map((item, index) => (
-            <Item
-              key={item.id}
+        {users &&
+          users.length !== 0 &&
+          users.map((user, index) => (
+            <UserListItem
+              key={user.id}
               index={index}
-              item={item}
+              user={user}
               cp={cp}
               itn={itn}
               roles={roles}
@@ -30,9 +21,9 @@ class Lists extends Component {
               onDelete={onDelete}
             />
           ))}
-        {items && items.length === 0 && (
+        {users && users.length === 0 && (
           <tr>
-            <td colSpan='5 is-capitalized'>Tidak Ada {tl}</td>
+            <td colSpan='5'>Tidak Ada User</td>
           </tr>
         )}
       </Fragment>
