@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
-import { withRouter } from "react-router";
-import { SITE_ADDRESS } from "../../common/util/siteConfig";
-import { postSessionLogin, postSessionLogout } from "../login/redux/authApi";
-import UserProfile from "../../../images/user-default.png";
-import CustomTextInput from "../../common/form/CustomTextInput";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'react-router';
+import { SITE_ADDRESS } from '../../common/util/siteConfig';
+import { postSessionLogin, postSessionLogout } from '../login/redux/authApi';
+import UserProfile from '../../../images/user-default.png';
+import CustomTextInput from '../../common/form/CustomTextInput';
 
 const mapState = (state) => ({
   auth: state.auth,
@@ -36,7 +36,7 @@ class SessionEndModal extends Component {
 
   handleSwitchUser = () => {
     const { history } = this.props;
-    this.props.postSessionLogout("switchUser", history);
+    this.props.postSessionLogout('switchUser', history);
   };
 
   render() {
@@ -51,24 +51,24 @@ class SessionEndModal extends Component {
     } = this.props;
 
     return (
-      <div className="modal is-active">
+      <div className='modal is-active'>
         <div
-          className="modal-background"
-          style={{ backgroundColor: "black", opacity: 0.93 }}
+          className='modal-background'
+          style={{ backgroundColor: 'black', opacity: 0.93 }}
         ></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title has-text-primary">
-              <i className="fas fa-lock icon"></i> 
-                  {auth.username ? " Sesi Berakhir" : " Login Kembali"}
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title has-text-primary'>
+              <i className='fas fa-lock icon'></i>
+              {auth.username ? ' Sesi Berakhir' : ' Login Kembali'}
             </p>
             {this.state.showLogin && (
               <button
                 disabled={loading}
                 className={
                   loading
-                    ? "button custom-grey is-small is-rounded is-outlined is-loading"
-                    : "button custom-grey is-small is-rounded is-outlined"
+                    ? 'button custom-grey is-small is-rounded is-outlined is-loading'
+                    : 'button custom-grey is-small is-rounded is-outlined'
                 }
                 style={{ marginLeft: 15 }}
                 onClick={this.handleSwitchUser}
@@ -77,16 +77,18 @@ class SessionEndModal extends Component {
               </button>
             )}
           </header>
-          <section className="modal-card-body">
+          <section className='modal-card-body'>
             {!this.state.showLogin && (
               <div>
                 <br />
-                <p className="has-text-centered">
-                  {auth.username ? "Sesi anda telah berakhir, anda perlu login." : "Anda harus login kembali."}
+                <p className='has-text-centered'>
+                  {auth.username
+                    ? 'Sesi anda telah berakhir, anda perlu login.'
+                    : 'Anda harus login kembali.'}
                 </p>
-                <p className="has-text-centered" style={{ marginTop: 15 }}>
+                <p className='has-text-centered' style={{ marginTop: 15 }}>
                   <button
-                    className="button is-rounded is-primary is-outlined"
+                    className='button is-rounded is-primary is-outlined'
                     onClick={this.onClickLogin}
                   >
                     Login
@@ -96,7 +98,7 @@ class SessionEndModal extends Component {
               </div>
             )}
             {this.state.showLogin && (
-              <SessionLoginForm
+              <LoginForm
                 auth={auth}
                 initialValues={initialValues}
                 handleSubmit={handleSubmit}
@@ -108,7 +110,7 @@ class SessionEndModal extends Component {
               />
             )}
           </section>
-          <footer className="modal-card-foot"></footer>
+          <footer className='modal-card-foot'></footer>
         </div>
       </div>
     );
@@ -120,13 +122,13 @@ export default withRouter(
     mapState,
     actions
   )(
-    reduxForm({ form: "reauthenticateForm", enableReinitialize: true })(
+    reduxForm({ form: 'reauthenticateForm', enableReinitialize: true })(
       SessionEndModal
     )
   )
 );
 
-class SessionLoginForm extends Component {
+class LoginForm extends Component {
   render() {
     const {
       auth,
@@ -138,48 +140,48 @@ class SessionLoginForm extends Component {
       handleLogin,
     } = this.props;
     return (
-      <div className="box">
-        <div className="media">
-          <div className="media-left">
-            <figure className="image is-128x128" style={{ marginTop: "2.4em" }}>
+      <div className='box'>
+        <div className='media'>
+          <div className='media-left'>
+            <figure className='image is-128x128' style={{ marginTop: '2.4em' }}>
               <img
-                className="is-rounded"
+                className='is-rounded'
                 src={
                   auth.mainPhoto ? SITE_ADDRESS + auth.mainPhoto : UserProfile
                 }
-                alt="Profile"
+                alt='Profile'
               />
             </figure>
           </div>
-          <div className="media-content">
-            <div className="content">
-              <div className="title">Login</div>
-              <form onSubmit={handleSubmit(handleLogin)} autoComplete="off">
+          <div className='media-content'>
+            <div className='content'>
+              <div className='title'>Login</div>
+              <form onSubmit={handleSubmit(handleLogin)} autoComplete='off'>
                 <Field
-                  name="username"
-                  disabled={auth.username ? "disabled" : ""}
-                  type="text"
+                  name='username'
+                  disabled={auth.username ? 'disabled' : ''}
+                  type='text'
                   component={CustomTextInput}
-                  placeholder="Username"
-                  label="Username"
-                  icon="user"
+                  placeholder='Username'
+                  label='Username'
+                  icon='user'
                 />
                 <Field
-                  name="password"
-                  type="password"
+                  name='password'
+                  type='password'
                   component={CustomTextInput}
-                  placeholder="Password"
-                  label="Password"
-                  icon="lock"
+                  placeholder='Password'
+                  label='Password'
+                  icon='lock'
                 />
-                <div className="field">
-                  {error && <p className="help is-danger">{error}</p>}
+                <div className='field'>
+                  {error && <p className='help is-danger'>{error}</p>}
                   <button
                     disabled={invalid || loading || pristine}
                     className={
                       loading
-                        ? "button is-link is-small is-rounded is-outlined is-loading"
-                        : "button is-link is-small is-rounded is-outlined"
+                        ? 'button is-link is-small is-rounded is-outlined is-loading'
+                        : 'button is-link is-small is-rounded is-outlined'
                     }
                   >
                     Submit

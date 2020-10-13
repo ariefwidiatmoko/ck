@@ -1,29 +1,29 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router';
 
 class NotAuthorizedModal extends Component {
   render() {
     const { history } = this.props;
 
     return (
-      <div className="modal is-active">
+      <div className='modal is-active'>
         <div
-          className="modal-background"
-          style={{ backgroundColor: "black", opacity: 1 }}
+          className='modal-background'
+          style={{ backgroundColor: 'black', opacity: 1 }}
         ></div>
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <p className="modal-card-title has-text-danger">
-              <i className="fas fa-lock icon"></i> Tidak Memiliki otoritas
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title has-text-danger'>
+              <i className='fas fa-lock icon'></i> Tidak Memiliki otoritas
             </p>
           </header>
-          <section className="modal-card-body">
+          <section className='modal-card-body'>
             <div>
               <br />
-              <p className="has-text-centered">Anda tidak memiliki otoritas!</p>
-              <p className="has-text-centered" style={{ marginTop: 15 }}>
+              <p className='has-text-centered'>Anda tidak memiliki otoritas!</p>
+              <p className='has-text-centered' style={{ marginTop: 15 }}>
                 <button
-                  className="button is-rounded is-primary is-outlined"
+                  className='button is-rounded is-primary is-outlined'
                   onClick={() => history.goBack()}
                 >
                   Kembali
@@ -32,7 +32,7 @@ class NotAuthorizedModal extends Component {
               <br />
             </div>
           </section>
-          <footer className="modal-card-foot"></footer>
+          <footer className='modal-card-foot'></footer>
         </div>
       </div>
     );

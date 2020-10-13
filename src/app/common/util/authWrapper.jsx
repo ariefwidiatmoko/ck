@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { checkAuthScope, checkSession } from "./checkAuth";
-import { openModal } from "../../menu/modals/redux/modalActions";
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { checkAuthScope, checkSession } from './checkAuth';
+import { openModal } from '../../menu/modals/redux/modalActions';
 
 const mapState = (state) => {
   return {
@@ -28,7 +28,14 @@ export default function (ComposedComponent) {
     };
 
     checkAndRedirect = async () => {
-      const { expiresIn, aS, location, checkAuthScope, checkSession, openModal } = this.props;
+      const {
+        expiresIn,
+        aS,
+        location,
+        checkAuthScope,
+        checkSession,
+        openModal,
+      } = this.props;
       try {
         if (Date.now() < expiresIn) {
           checkAuthScope(openModal, aS, location.pathname);

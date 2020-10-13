@@ -1,5 +1,10 @@
-import { ROLES_GET, ROLE_CREATE, ROLE_UPDATE, ROLE_DELETE } from "./rolesConstant";
-import { createReducer } from "../../../../common/util/reducerUtils";
+import {
+  ROLES_GET,
+  ROLE_CREATE,
+  ROLE_UPDATE,
+  ROLE_DELETE,
+} from './rolesConstant';
+import { createReducer } from '../../../../common/util/reducerUtils';
 
 const initialState = [];
 
@@ -24,5 +29,4 @@ export default createReducer(initialState, {
   [ROLE_CREATE]: roleCreate,
   [ROLE_UPDATE]: roleUpdate,
   [ROLE_DELETE]: roleDelete,
-
 });

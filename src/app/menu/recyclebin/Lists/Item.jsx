@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 // import { Link } from "react-router-dom";
 // import { format, parseISO } from "date-fns";
 // import { arrKeyValue } from "../../../../common/helpers/objectHelpers";
 
-class RecyclebinListItem extends Component {
+class Item extends Component {
   render() {
-    const { 
-      // user, 
-      // roles, 
-      // index, 
-      loading, 
-      // aS, 
+    const {
+      // user,
+      // roles,
+      // index,
+      loading,
+      // aS,
     } = this.props;
     // let setRoles;
     // const arrRoles =
@@ -42,23 +42,19 @@ class RecyclebinListItem extends Component {
       );
     return (
       <tr>
-        <td className="has-text-centered">
-          {/* {index + 1} */}
-          </td>
-        <td>
-          {/* {user.email} */}
-          </td>
-        <td className="is-capitalized has-text-centered">
+        <td className='has-text-centered'>{/* {index + 1} */}</td>
+        <td>{/* {user.email} */}</td>
+        <td className='is-capitalized has-text-centered'>
           {/* {user.profile.name} */}
         </td>
-        <td className="has-text-centered">
+        <td className='has-text-centered'>
           {/* {setRoles.toString().length > 0 ? setRoles : ""} */}
         </td>
-        <td className="has-text-centered">
+        <td className='has-text-centered'>
           {/* {user.createdAt &&
             format(parseISO(user.createdAt), "d LLLL yyyy hh:mm:aa")} */}
         </td>
-        <td className="has-text-centered">
+        <td className='has-text-centered'>
           {/* <div className="buttons">
             {aS.v === true && (
               <Link
@@ -88,4 +84,4 @@ class RecyclebinListItem extends Component {
   }
 }
 
-export default RecyclebinListItem;
+export default Item;

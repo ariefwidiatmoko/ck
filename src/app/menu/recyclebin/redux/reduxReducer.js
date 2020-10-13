@@ -1,5 +1,5 @@
-import { createReducer } from "../../../common/util/reducerUtils";
-import { RECYCLEBINS_GET, RECYCLEBIN_RESTORE } from "./recyclebinConstant";
+import { createReducer } from '../../../common/util/reducerUtils';
+import { RECYCLEBINS_GET, RECYCLEBIN_RESTORE } from './reduxConstant';
 
 const initialState = [];
 

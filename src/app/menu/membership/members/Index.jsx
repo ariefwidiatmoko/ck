@@ -38,7 +38,6 @@ class Index extends Component {
     tl: 'anggota',
     cp: 1,
     itn: 10,
-    itf: 'Semua Anggota',
     st: '',
     mB: false,
   };
@@ -97,7 +96,7 @@ class Index extends Component {
   };
 
   render() {
-    const { aS, totals, items, loading } = this.props;
+    const { aS, totals, items, loading, openModal } = this.props;
     const tt = totals && totals.total ? totals.total : 0;
     const { tl, cp, itn, mB } = this.state;
     return (
@@ -173,7 +172,13 @@ class Index extends Component {
                             role='menu'
                           >
                             <div className='dropdown-content'>
-                              <div className='dropdown-item'>
+                              <div
+                                onClick={() => {
+                                  openModal('AdvanceSearch');
+                                  this.setState({ mB: !mB });
+                                }}
+                                className='dropdown-item hand-pointer'
+                              >
                                 <i className='fas fa-search-plus icon'></i>
                                 Pencarian+
                               </div>

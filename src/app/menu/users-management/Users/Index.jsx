@@ -40,7 +40,6 @@ class Index extends Component {
     tl: 'user',
     cp: 1,
     itn: 10,
-    itemFilter: 'All Users',
     st: '',
     mB: false,
   };
@@ -90,11 +89,11 @@ class Index extends Component {
 
   onDelete = (id, username) => {
     const { auth } = this.props;
-    this.props.openModal('DeleteModal', { id, username, auth });
+    this.props.openModal('UserDelete', { id, username, auth });
   };
 
   render() {
-    const { users, roles, loading, auth, aS, totals } = this.props;
+    const { users, roles, loading, auth, aS, totals, openModal } = this.props;
     const tt = totals && totals.total ? totals.total : 0;
     const { tl, cp, itn, mB } = this.state;
     return (
@@ -169,7 +168,7 @@ class Index extends Component {
                             role='menu'
                           >
                             <div className='dropdown-content'>
-                              <div className='dropdown-item'>
+                              <div onClick={() => {openModal('AdvanceSearch'); this.setState({mB: !mB})}} className='dropdown-item hand-pointer'>
                                 <i className='fas fa-search-plus icon'></i>
                                 Pencarian+
                               </div>

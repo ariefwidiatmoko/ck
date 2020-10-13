@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { incrementCounter, decrementCounter } from "./redux/testareaAction";
-import { openModal } from "../modals/redux/modalActions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { incrementCounter, decrementCounter } from './redux/testareaAction';
+import { openModal } from '../modals/redux/modalActions';
 
 const mapState = (state) => ({
   data: state.test.data,
@@ -16,55 +16,54 @@ const actions = {
 };
 
 class TestareaComponent extends Component {
-
   render() {
     const { data, incrementCounter, decrementCounter, openModal } = this.props;
     return (
-      <div className="column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile">
-        <div className="p-1">
-          <div className="columns is-variable is-desktop">
-            <div className="column">
-              <div className="box">
-                <h1 className="title">Test Area</h1>
+      <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
+        <div className='p-1'>
+          <div className='columns is-variable is-desktop'>
+            <div className='column'>
+              <div className='box'>
+                <h1 className='title'>Test Area</h1>
                 <h3>The answer is: {data}</h3>
-                <div className="field is-group">
+                <div className='field is-group'>
                   <button
-                    name="increment"
+                    name='increment'
                     onClick={incrementCounter}
-                    className={"button is-link is-small is-rounded is-outlined"}
+                    className={'button is-link is-small is-rounded is-outlined'}
                     style={{ marginRight: 5 }}
                   >
-                    <i className="icon fas fa-plus" />
+                    <i className='icon fas fa-plus' />
                   </button>
 
                   <button
-                    name="decrement"
+                    name='decrement'
                     onClick={decrementCounter}
-                    className={"button is-link is-small is-rounded is-outlined"}
+                    className={'button is-link is-small is-rounded is-outlined'}
                     style={{ marginRight: 5 }}
                   >
-                    <i className="icon fas fa-minus" />
+                    <i className='icon fas fa-minus' />
                   </button>
                 </div>
-                <div className="field">
+                <div className='field'>
                   <button
-                    onClick={() => openModal("TestModal", { data: 42 })}
-                    className="button is-primary is-rounded is-small is-outlined"
+                    onClick={() => openModal('TestModal', { data: 42 })}
+                    className='button is-primary is-rounded is-small is-outlined'
                   >
                     Open Modal
                   </button>
                 </div>
                 <div
-                  className="field"
+                  className='field'
                   style={{ marginTop: 20, marginBottom: 20 }}
                 >
-                  <div className="control">
+                  <div className='control'>
                     <button
                       onClick={this.handleClickSubmit}
-                      type="submit"
-                      className="button is-primary is-small is-rounded is-outlined"
+                      type='submit'
+                      className='button is-primary is-small is-rounded is-outlined'
                     >
-                      <i className="fas fa-save" aria-hidden="true" />
+                      <i className='fas fa-save' aria-hidden='true' />
                     </button>
                   </div>
                 </div>

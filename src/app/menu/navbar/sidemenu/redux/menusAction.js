@@ -1,4 +1,4 @@
-import { MENUS_GET } from "./menusConstant";
+import { MENUS_GET } from './menusConstant';
 
 export const menusGet = (menus) => {
   return {

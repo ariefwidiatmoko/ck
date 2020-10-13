@@ -6,8 +6,7 @@ import {
   MEMBER_HARD_DELETE,
   MEMBERS_EXPORT,
   MEMBERS_IMPORT,
-  RESET_IMPORT,
-} from "./reduxConstant";
+} from './reduxConstant';
 
 export const membersGet = (members) => {
   return {
@@ -63,20 +62,11 @@ export const membersExport = (membersExport) => {
   };
 };
 
-export const membersImport = (membersExport) => {
+export const membersImport = (membersImport) => {
   return {
     type: MEMBERS_IMPORT,
     payload: {
       membersImport,
-    },
-  };
-};
-
-export const resetImport = (resetImport) => {
-  return {
-    type: RESET_IMPORT,
-    payload: {
-      resetImport,
     },
   };
 };

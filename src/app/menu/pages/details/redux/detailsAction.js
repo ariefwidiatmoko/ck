@@ -1,6 +1,4 @@
-import {
-  DETAILS_ITEM,
-} from "./detailsConstant";
+import { DETAILS_ITEM } from './detailsConstant';
 
 export const detailsItem = (details) => {
   return {

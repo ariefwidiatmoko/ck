@@ -4,7 +4,6 @@ import {
   memberUpdate,
   memberDelete,
   membersImport,
-  resetImport,
 } from './reduxAction';
 import { detailsItem } from '../../../pages/details/redux/detailsAction';
 import { toastr } from 'react-redux-toastr';
@@ -13,6 +12,8 @@ import {
   asyncActionError,
 } from '../../../../async/asyncActions';
 import { ASYNC_ACTION_START } from '../../../../async/asyncConstant';
+import { randomNumber } from '../../../../common/helpers/othersHelpers';
+import { progressPercent } from '../../../pages/progress/redux/progressAction';
 import { openModal } from '../../../modals/redux/modalActions';
 import { SITE_ADDRESS } from '../../../../common/util/siteConfig';
 
@@ -357,15 +358,26 @@ export const memberDel = (memberId, code, auth) => {
   };
 };
 // url: '/keanggotaan/anggota/import'
-export const membersImp = (auth) => {
+export const membersImp = (data, auth) => {
   return async (dispatch) => {
-    dispatch({type: ASYNC_ACTION_START, payload: 'membersImp'});
+    dispatch({ type: ASYNC_ACTION_START, payload: 'membersImport' });
     try {
-      const fetchData = await fetch(SITE_ADDRESS + 'api/members/import', {
+      let progress = randomNumber(1, 15);
+      dispatch(progressPercent(progress));
+      const membersData = JSON.stringify(data);
+      const formData = new FormData();
+      formData.append('members', membersData);
+      progress = randomNumber(20, 40);
+      dispatch(progressPercent(progress));
+      const fetchData = await fetch('http://localhost:3000/api/members/import', {
+        method: 'POST',
+        body: formData,
         headers: {
           Authorization: 'Bearer ' + auth.token,
         },
       });
+      progress = randomNumber(50, 70);
+      dispatch(progressPercent(progress));
       const response = await fetchData.json();
       if (response.message === 'jwt expired') {
         dispatch(openModal('SessionEndModal'));
@@ -376,8 +388,18 @@ export const membersImp = (auth) => {
         const error = new Error(response.message);
         throw error;
       }
-      const members = response.members;
-      dispatch(membersImport(members));
+      progress = randomNumber(71, 99);
+      dispatch(progressPercent(progress));
+      const dataSuccess = response.membersSuccess;
+      const dataError = response.membersError;
+      dispatch(membersImport([dataSuccess, dataError]));
+      let addNotif = '';
+      if (dataError.length > 0) {
+        addNotif = ', tapi ditemukan duplikasi';
+      }
+      toastr.success('Sukses', 'Import anggota selesai' + addNotif);
+      progress = 100;
+      dispatch(progressPercent(progress));
       dispatch(asyncActionFinish());
     } catch (error) {
       if (error.message === 'jwt expired') {
@@ -388,13 +410,17 @@ export const membersImp = (auth) => {
       }
       dispatch(asyncActionError());
     }
-  }
-}
-
+  };
+};
+// url: "/keanggotaan/anggota/import"
 export const resetImp = () => {
   return async (dispatch) => {
-    dispatch({type: ASYNC_ACTION_START, payload: 'resetImport'});
-    dispatch(resetImport());
-    dispatch(asyncActionFinish());
-  }
-}
+    try {
+      dispatch(membersImport([]));
+      dispatch(progressPercent(0));
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

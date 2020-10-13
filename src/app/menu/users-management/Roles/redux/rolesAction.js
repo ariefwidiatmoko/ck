@@ -1,4 +1,4 @@
-import { ROLES_GET, ROLE_CREATE, ROLE_UPDATE } from "./rolesConstant";
+import { ROLES_GET, ROLE_CREATE, ROLE_UPDATE } from './rolesConstant';
 
 export const rolesGet = (roles) => {
   return {

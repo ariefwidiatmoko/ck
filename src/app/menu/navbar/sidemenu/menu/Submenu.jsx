@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Fragment } from "react";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Fragment } from 'react';
 
 class Submenu extends Component {
   render() {
@@ -19,8 +19,8 @@ class Submenu extends Component {
               to={subm.subUrl}
               className={
                 isActive === true
-                  ? "is-active has-background-primary custom-text-overflow disable-select"
-                  : "custom-text-overflow disable-select"
+                  ? 'is-active has-background-primary custom-text-overflow disable-select'
+                  : 'custom-text-overflow disable-select'
               }
             >
               {subm.submenuTitle}

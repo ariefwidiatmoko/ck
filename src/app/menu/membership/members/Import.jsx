@@ -4,12 +4,14 @@ import XLSX from 'xlsx';
 import { membersImp, resetImp } from './redux/reduxApi';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import ImportFileInput from '../../../common/components/ImportFileInput';
+import { format } from 'date-fns';
 
 const mapState = (state) => ({
   auth: state.auth,
   loading: state.async.loading,
   progress: state.progress,
-  dataImport: state.memberImport,
+  dataImport: state.membersExIm,
 });
 
 const actions = {
@@ -21,6 +23,7 @@ class Import extends Component {
   state = {
     data: [],
     inputKey: Date.now(),
+    tl: 'Anggota',
   };
 
   handleExcelUpload = (e) => {
@@ -44,36 +47,41 @@ class Import extends Component {
     }
   };
 
-  handleExport = () => {
-    this.props.membersImp(this.state.data, this.props.auth);
+  handleImport = () => {
+    const { membersImp, auth } = this.props;
+    const { data } = this.state;
+    membersImp(data, auth);
     this.handleCancel();
   };
 
   handleCancel = () => {
+    const { onChange } = this.props;
     this.setState({
       data: [],
       inputKey: Date.now(),
     });
-    if (this.props.onChange) this.props.onChange(null);
+    if (onChange) onChange(null);
   };
 
   handleRetry = () => {
+    const { onChange, resetImp } = this.props;
     this.setState({
       data: [],
       inputKey: Date.now(),
     });
-    if (this.props.onChange) this.props.onChange(null);
-    this.props.resetImp();
+    if (onChange) onChange(null);
+    resetImp();
   };
 
   handleGoBack = () => {
-    this.props.history.push('/keanggotaan/anggota');
-    this.props.resetImp();
+    const { history, resetImp } = this.props;
+    history.push('/keanggotaan/anggota');
+    resetImp();
   };
 
   render() {
     const { loading, dataImport, progress } = this.props;
-    const { data } = this.state;
+    const { data, inputKey, tl } = this.state;
     const successData = dataImport[0];
     const errorData = dataImport[1];
     return (
@@ -82,10 +90,7 @@ class Import extends Component {
           <div className='columns is-variable'>
             <div className='column is-third-quarter'>
               <div className='box'>
-                <form
-                  autoComplete='off'
-                  style={{ marginTop: 15, marginBottom: 30 }}
-                >
+                <form autoComplete='off'>
                   <div className='level'>
                     <div className='level-left'>
                       <div className='level-item'>
@@ -95,11 +100,11 @@ class Import extends Component {
                         >
                           <ul className='margin-10-25'>
                             <li>
-                              <Link to='/pengaturan-user/user'>User</Link>
+                              <Link to='/keanggotaan/anggota'>{tl}</Link>
                             </li>
                             <li className='is-active'>
-                              <Link to={`/pengaturan-user/user/export`}>
-                                Export
+                              <Link to={`/keanggotaan/anggota/import`}>
+                                Import
                               </Link>
                             </li>
                           </ul>
@@ -115,14 +120,13 @@ class Import extends Component {
                               <button
                                 disabled={loading}
                                 onClick={this.props.handleSubmit(
-                                  this.handleExport
+                                  this.handleImport
                                 )}
                                 className={
                                   loading
                                     ? 'button is-small is-primary is-rounded is-outlined is-loading'
-                                    : 'button is-small is-primary is-rounded is-outlined'
+                                    : 'button is-small is-primary is-rounded is-outlined mr-2'
                                 }
-                                style={{ marginRight: 10 }}
                               >
                                 <i className='fas fa-save icon' />
                               </button>
@@ -155,43 +159,16 @@ class Import extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className='columns'>
+                  <div className='columns hero'>
                     <div className='column is-4 is-offset-4'>
                       <div className='field'>
                         {!loading && !data[0] && dataImport.length === 0 && (
-                          <>
-                            <br />
-                            <div className='field'>
-                              <h5 className='label has-text-centered'>
-                                Pilih Excel (.xls, .xlsx) untuk export user
-                              </h5>
-                              <div className='file is-info has-name is-small is-fullwidth'>
-                                <label className='file-label'>
-                                  <input
-                                    name='export-user'
-                                    className='file-input'
-                                    type='file'
-                                    multiple={false}
-                                    accept='.xls,.xlsx'
-                                    onChange={(e) => this.handleExcelUpload(e)}
-                                    key={this.state.inputKey}
-                                  />
-                                  <span className='file-cta'>
-                                    <span className='file-icon'>
-                                      <i className='fas fa-upload'></i>
-                                    </span>
-                                    <span className='file-label'>
-                                      Upload File
-                                    </span>
-                                  </span>
-                                  <span className='file-name'>
-                                    Pilih file...
-                                  </span>
-                                </label>
-                              </div>
-                            </div>
-                            <br />
-                          </>
+                          <ImportFileInput
+                            handleExcelUpload={this.handleExcelUpload}
+                            inputKey={inputKey}
+                            tl={tl}
+                            link={'/templates/Import_Anggota_Template.xlsx'}
+                          />
                         )}
                       </div>
                     </div>
@@ -255,7 +232,7 @@ class Import extends Component {
                   {loading && (
                     <div>
                       <h5>Memproses...</h5>
-                      <progress class='progress is-small is-info' max='100'>
+                      <progress className='progress is-small is-info' max='100'>
                         {progress}%
                       </progress>
                     </div>
@@ -268,8 +245,8 @@ class Import extends Component {
                             {data && data[0] && (
                               <thead className='has-background-info'>
                                 <tr>
-                                  <th colSpan='4' className='has-text-white'>
-                                    Preview ({data.length} user)
+                                  <th colSpan='11' className='has-text-white'>
+                                    Preview ({data.length} {tl})
                                   </th>
                                 </tr>
                               </thead>
@@ -340,6 +317,7 @@ export default connect(
 export class Item extends Component {
   render() {
     const { item, index } = this.props;
+    console.log(new Date((item.Tanggal_Lahir - (25567 + 2))*86400*1000).toISOString());
     return (
       <tr>
         <td>{index + 1}</td>
@@ -348,7 +326,7 @@ export class Item extends Component {
         <td>{item.No_Telpon}</td>
         <td>{item.Jenis_Kelamin}</td>
         <td>{item.Tempat_Lahir}</td>
-        <td>{item.Tanggal_Lahir}</td>
+        <td>{format(new Date((item.Tanggal_Lahir - (25567 + 2))*86400*1000), 'd LLLL yyyy')}</td>
         <td>{item.Agama}</td>
         <td>{item.Status_Kawin}</td>
         <td>{item.Pekerjaan}</td>

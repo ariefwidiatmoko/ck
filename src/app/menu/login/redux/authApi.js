@@ -1,23 +1,23 @@
-import { authLogin, authLogout } from "./authAction";
-import { menusGet } from "../../navbar/sidemenu/redux/menusAction";
+import { authLogin, authLogout } from './authAction';
+import { menusGet } from '../../navbar/sidemenu/redux/menusAction';
 import {
   asyncActionFinish,
   asyncActionError,
-} from "../../../async/asyncActions";
-import { ASYNC_ACTION_START } from "../../../async/asyncConstant";
-import { toastr } from "react-redux-toastr";
-import { closeModal } from "../../modals/redux/modalActions";
-const jwtDecode = require("jwt-decode");
+} from '../../../async/asyncActions';
+import { ASYNC_ACTION_START } from '../../../async/asyncConstant';
+import { toastr } from 'react-redux-toastr';
+import { closeModal } from '../../modals/redux/modalActions';
+const jwtDecode = require('jwt-decode');
 
 export const postAuthLogin = (creds) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: "login" });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'login' });
     try {
       const formData = new FormData();
-      formData.append("username", creds.username);
-      formData.append("password", creds.password);
-      let fetchData = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
+      formData.append('username', creds.username);
+      formData.append('password', creds.password);
+      let fetchData = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
         body: formData,
       });
       const response = await fetchData.json();
@@ -43,7 +43,7 @@ export const postAuthLogin = (creds) => {
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
-      toastr.error("Error", error.message);
+      toastr.error('Error', error.message);
       dispatch(asyncActionError());
     }
   };
@@ -51,13 +51,13 @@ export const postAuthLogin = (creds) => {
 
 export const postSessionLogin = (creds, history) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: "sessionLogin" });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'sessionLogin' });
     try {
       const formData = new FormData();
-      formData.append("username", creds.username);
-      formData.append("password", creds.password);
-      let fetchData = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
+      formData.append('username', creds.username);
+      formData.append('password', creds.password);
+      let fetchData = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
         body: formData,
       });
       const response = await fetchData.json();
@@ -81,11 +81,11 @@ export const postSessionLogin = (creds, history) => {
       dispatch(menusGet(menus));
       dispatch(authLogin(setUser));
       dispatch(closeModal());
-      history.push("/dashboard");
+      history.push('/dashboard');
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
-      toastr.error("Error", error.message);
+      toastr.error('Error', error.message);
       dispatch(asyncActionError());
     }
   };
@@ -95,13 +95,13 @@ export const postSessionLogout = (elementName, history) => {
   return async (dispatch) => {
     dispatch({ type: ASYNC_ACTION_START, payload: elementName });
     try {
-      history.push("/");
+      history.push('/');
       dispatch(authLogout());
       dispatch(closeModal());
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
-      toastr.error("Error", error.message);
+      toastr.error('Error', error.message);
       dispatch(asyncActionError());
     }
   };

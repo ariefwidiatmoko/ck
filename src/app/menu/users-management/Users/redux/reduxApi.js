@@ -3,7 +3,7 @@ import {
   userCreate,
   userProfileUpdate,
   userDelete,
-  usersExport,
+  usersImport,
 } from './reduxAction';
 import { detailsItem } from '../../../pages/details/redux/detailsAction';
 import { progressPercent } from '../../../pages/progress/redux/progressAction';
@@ -470,10 +470,10 @@ export const userDel = (id, auth) => {
     }
   };
 };
-// url: "/pengaturan-user/user/export"
-export const usersExp = (data, auth) => {
+// url: "/pengaturan-user/user/import"
+export const usersImp = (data, auth) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'usersExport' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'usersImport' });
     try {
       let progress = randomNumber(1, 15);
       dispatch(progressPercent(progress));
@@ -482,7 +482,7 @@ export const usersExp = (data, auth) => {
       formData.append('users', usersData);
       progress = randomNumber(20, 40);
       dispatch(progressPercent(progress));
-      const fetchData = await fetch('http://localhost:3000/api/users/export', {
+      const fetchData = await fetch('http://localhost:3000/api/users/import', {
         method: 'POST',
         body: formData,
         headers: {
@@ -505,12 +505,12 @@ export const usersExp = (data, auth) => {
       dispatch(progressPercent(progress));
       const dataSuccess = response.usersSuccess;
       const dataError = response.usersError;
-      dispatch(usersExport([dataSuccess, dataError]));
+      dispatch(usersImport([dataSuccess, dataError]));
       let addNotif = '';
       if (dataError.length > 0) {
         addNotif = ', tapi ditemukan duplikasi';
       }
-      toastr.success('Sukses', 'Export user selesai' + addNotif);
+      toastr.success('Sukses', 'Import user selesai' + addNotif);
       progress = 100;
       dispatch(progressPercent(progress));
       dispatch(asyncActionFinish());
@@ -525,17 +525,16 @@ export const usersExp = (data, auth) => {
     }
   };
 };
-// url: "/pengaturan-user/user/export"
-export const resetExport = () => {
+// url: "/pengaturan-user/user/import"
+export const resetImp = () => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'resetExport' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'resetImport' });
     try {
-      dispatch(usersExport([]));
+      dispatch(usersImport([]));
       dispatch(progressPercent(0));
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);
-      toastr.error('Error', `${error.message}`);
     }
   };
 };

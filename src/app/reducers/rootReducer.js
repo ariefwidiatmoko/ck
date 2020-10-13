@@ -9,11 +9,14 @@ import asyncReducer from '../async/asyncReducer';
 import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import membersReducer from '../menu/membership/members/redux/reduxReducer';
+import membersExImReducer from '../menu/membership/members/redux/reduxExImReducer';
+import accountsReducer from '../menu/finances/accounts/redux/reduxReducer';
+import accountsExImReducer from '../menu/finances/accounts/redux/reduxExImReducer';
 import usersReducer from '../menu/users-management/Users/redux/reduxReducer';
+import usersExImReducer from '../menu/users-management/Users/redux/reduxExImReducer';
 import rolesReducer from '../menu/users-management/Roles/redux/rolesReducer';
-import recyclebinsReducer from '../menu/recyclebin/redux/recyclebinsReducer';
+import recyclebinsReducer from '../menu/recyclebin/redux/reduxReducer';
 import modalReducer from '../menu/modals/redux/modalReducer';
-import usersExportReducer from '../menu/users-management/Users/redux/reduxExportReducer';
 import progressReducer from '../menu/pages/progress/redux/progressReducer';
 import detailsReducer from '../menu/pages/details/redux/detailsReducer';
 
@@ -26,8 +29,11 @@ const appReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
   members: membersReducer,
+  membersExIm: membersExImReducer,
+  accounts: accountsReducer,
+  accountsExIm: accountsExImReducer,
   users: usersReducer,
-  usersExport: usersExportReducer,
+  usersExIm: usersExImReducer,
   roles: rolesReducer,
   details: detailsReducer,
   progress: progressReducer,

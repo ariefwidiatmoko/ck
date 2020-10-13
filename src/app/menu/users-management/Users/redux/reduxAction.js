@@ -3,7 +3,7 @@ import {
   USER_CREATE,
   USER_PROFILE_UPDATE,
   USER_DELETE,
-  USERS_EXPORT,
+  USERS_IMPORT,
 } from './reduxConstant';
 
 export const usersGet = (users) => {
@@ -42,11 +42,11 @@ export const userDelete = (userId) => {
   };
 };
 
-export const usersExport = (usersExport) => {
+export const usersImport = (usersImport) => {
   return {
-    type: USERS_EXPORT,
+    type: USERS_IMPORT,
     payload: {
-      usersExport,
+      usersImport,
     },
   };
 };

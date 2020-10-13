@@ -1,5 +1,5 @@
-import { MENUS_GET } from "./menusConstant";
-import { createReducer } from "../../../../common/util/reducerUtils";
+import { MENUS_GET } from './menusConstant';
+import { createReducer } from '../../../../common/util/reducerUtils';
 
 const initialState = [];
 

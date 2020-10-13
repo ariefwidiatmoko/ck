@@ -1,4 +1,4 @@
-import { RECYCLEBINS_GET, RECYCLEBIN_RESTORE } from "./recyclebinConstant";
+import { RECYCLEBINS_GET, RECYCLEBIN_RESTORE } from './reduxConstant';
 
 export const recyclebinsGet = (items) => {
   return {
@@ -17,5 +17,3 @@ export const recyclebinRestore = (itemId) => {
     },
   };
 };
-
-

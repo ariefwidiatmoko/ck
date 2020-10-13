@@ -1,1 +1,1 @@
-export const MENUS_GET = "MENUS_GET";
+export const MENUS_GET = 'MENUS_GET';

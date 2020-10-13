@@ -1,14 +1,14 @@
-import React, { useState, useEffect, Fragment } from "react";
-import DropzoneInput from "./DropzoneInput";
-import CropperInput from "./CropperInput";
-import { connect } from "react-redux";
+import React, { useState, useEffect, Fragment } from 'react';
+import DropzoneInput from './DropzoneInput';
+import CropperInput from './CropperInput';
+import { connect } from 'react-redux';
 import {
   memberPhotoUpload,
   memberMainPhotoSet,
-  memberPhotoDelete
-} from "../redux/reduxApi";
-import { toastr } from "react-redux-toastr";
-import Galleries from "./Galleries";
+  memberPhotoDelete,
+} from '../redux/reduxApi';
+import { toastr } from 'react-redux-toastr';
+import Galleries from './Galleries';
 
 const actions = {
   memberPhotoUpload,
@@ -25,51 +25,46 @@ const TabPhoto = ({
   memberPhotoDelete,
 }) => {
   const [files, setFiles] = useState([]);
-  const [cropResult, setCropResult] = useState("");
+  const [cropResult, setCropResult] = useState('');
   const [addPic, setAddPic] = useState(false);
   const [image, setImage] = useState(null);
 
   useEffect(() => {
     return () => {
-      files.forEach(file => URL.revokeObjectURL(file.preview));
+      files.forEach((file) => URL.revokeObjectURL(file.preview));
     };
   }, [files, cropResult]);
 
   const handleUploadImage = async () => {
     const authData = auth;
     try {
-      await memberPhotoUpload(
-        image,
-        files[0].name,
-        authData,
-        profile.userId,
-      );
+      await memberPhotoUpload(image, files[0].name, authData, profile.userId);
       handleCancelCrop();
     } catch (error) {
       console.log(error);
-      toastr.error("Oops", "Something went wrong");
+      toastr.error('Oops', 'Something went wrong');
     }
   };
 
   const handleCancelCrop = () => {
     setFiles([]);
     setImage(null);
-    setCropResult("");
+    setCropResult('');
   };
 
-  const handleMainPhotoSet = async photo => {
+  const handleMainPhotoSet = async (photo) => {
     try {
       await memberMainPhotoSet(profile.code, photo, auth);
     } catch (error) {
-      toastr.error("Oops", error.message);
+      toastr.error('Oops', error.message);
     }
   };
 
-  const handleDeletePhoto = async photo => {
+  const handleDeletePhoto = async (photo) => {
     try {
       await memberPhotoDelete(profile.userId, photo, auth);
     } catch (error) {
-      toastr.error("Oops", error.message);
+      toastr.error('Oops', error.message);
     }
   };
 
@@ -79,26 +74,30 @@ const TabPhoto = ({
 
   const addPicMenu = (
     <div>
-      <div className="columns">
-        <div className="column">
+      <div className='columns'>
+        <div className='column'>
           <button
             onClick={handleAddPic}
             className={
               addPic
-                ? "button custom-grey is-small is-rounded is-outlined"
-                : "button is-small is-link is-rounded is-outlined"
+                ? 'button custom-grey is-small is-rounded is-outlined'
+                : 'button is-small is-link is-rounded is-outlined'
             }
           >
-            {addPic ? (<i className='fas fa-times icon' />) : (<><i className='fas fa-plus icon' style={{marginRight: 1}} />Foto</>)}
+            {addPic ? (
+              <i className='fas fa-times icon' />
+            ) : (
+              <>
+                <i className='fas fa-plus icon' style={{ marginRight: 1 }} />
+                Foto
+              </>
+            )}
           </button>
         </div>
       </div>
-      <div
-        className={addPic ? "" : "is-hidden"}
-        style={{ marginBottom: 15 }}
-      >
-        <div className="columns">
-          <div className="column is-half is-offset-one-quarter has-text-centered">
+      <div className={addPic ? '' : 'is-hidden'} style={{ marginBottom: 15 }}>
+        <div className='columns'>
+          <div className='column is-half is-offset-one-quarter has-text-centered'>
             {files.length === 0 && (
               <Fragment>
                 Tambah & Upload
@@ -113,29 +112,29 @@ const TabPhoto = ({
                   imagePreview={files[0].preview}
                 />
                 <div
-                  className="field has-addons"
+                  className='field has-addons'
                   style={{
-                    display: "block",
-                    marginTop: "-32px",
-                    marginLeft: "auto",
-                    marginRight: "auto"
+                    display: 'block',
+                    marginTop: '-32px',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
                   }}
                 >
                   <button
                     onClick={handleUploadImage}
                     className={
                       loading
-                        ? "button is-small is-link is-rounded is-loading"
-                        : "button is-small is-link is-rounded"
+                        ? 'button is-small is-link is-rounded is-loading'
+                        : 'button is-small is-link is-rounded'
                     }
-                    style={{ marginRight: "10px" }}
+                    style={{ marginRight: '10px' }}
                   >
                     Upload
                   </button>
                   <button
                     disabled={loading}
                     onClick={handleCancelCrop}
-                    className="button custom-grey is-small is-rounded"
+                    className='button custom-grey is-small is-rounded'
                   >
                     Batalkan
                   </button>
@@ -146,14 +145,14 @@ const TabPhoto = ({
         </div>
       </div>
     </div>
-  )
+  );
 
   return (
     <Fragment>
-      {profile.arrPhotos === null && (
-        addPicMenu
-      )}
-      {profile.arrPhotos && profile.arrPhotos.split(",").length < 3 && addPicMenu }
+      {profile.arrPhotos === null && addPicMenu}
+      {profile.arrPhotos &&
+        profile.arrPhotos.split(',').length < 3 &&
+        addPicMenu}
       <Galleries
         mainPhoto={profile.mainPhoto}
         arrPhotos={profile.arrPhotos}

@@ -1,9 +1,5 @@
-import {
-  AUTH_LOGIN,
-  AUTH_LOGOUT,
-  AUTH_UPDATE
-} from "./authConstant";
-import { createReducer } from "../../../common/util/reducerUtils";
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_UPDATE } from './authConstant';
+import { createReducer } from '../../../common/util/reducerUtils';
 
 const initialState = {
   isAuth: false,
@@ -13,14 +9,14 @@ const initialState = {
   name: null,
   username: null,
   mainPhoto: null,
-  expiresIn: null
+  expiresIn: null,
 };
 
 const authLogin = (state, payload) => {
   return { ...state, ...payload.auth };
 };
 
-const authLogout = state => {
+const authLogout = (state) => {
   return {
     isAuth: false,
     token: null,
@@ -29,19 +25,19 @@ const authLogout = state => {
     name: null,
     username: null,
     mainPhoto: null,
-    expiresIn: null
+    expiresIn: null,
   };
 };
 
 const authUpdate = (state, payload) => {
   return {
     ...state,
-    ...payload.auth
-  }
-}
+    ...payload.auth,
+  };
+};
 
 export default createReducer(initialState, {
   [AUTH_LOGIN]: authLogin,
   [AUTH_LOGOUT]: authLogout,
-  [AUTH_UPDATE]: authUpdate
+  [AUTH_UPDATE]: authUpdate,
 });

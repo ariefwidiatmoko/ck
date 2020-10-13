@@ -1,7 +1,5 @@
-import { createReducer } from "../../../../common/util/reducerUtils";
-import {
-  PROGRESS_PERCENT,
-} from "./progressConstant";
+import { createReducer } from '../../../../common/util/reducerUtils';
+import { PROGRESS_PERCENT } from './progressConstant';
 
 const initialState = 0;
 

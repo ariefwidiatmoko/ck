@@ -1,26 +1,28 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import XLSX from 'xlsx';
-import { usersExp as usersExport, resetExport } from './redux/reduxApi';
+import { usersImp, resetImp } from './redux/reduxApi';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import ImportFileInput from '../../../common/components/ImportFileInput';
 
 const mapState = (state) => ({
   auth: state.auth,
   loading: state.async.loading,
   progress: state.progress,
-  dataExport: state.usersExport,
+  dataImport: state.usersExIm,
 });
 
 const actions = {
-  usersExport,
-  resetExport,
+  usersImp,
+  resetImp,
 };
 
 class Import extends Component {
   state = {
     data: [],
     inputKey: Date.now(),
+    tl: 'User',
   };
 
   handleExcelUpload = (e) => {
@@ -44,8 +46,8 @@ class Import extends Component {
     }
   };
 
-  handleExport = () => {
-    this.props.usersExport(this.state.data, this.props.auth);
+  handleImport = () => {
+    this.props.usersImp(this.state.data, this.props.auth);
     this.handleCancel();
   };
 
@@ -63,19 +65,19 @@ class Import extends Component {
       inputKey: Date.now(),
     });
     if (this.props.onChange) this.props.onChange(null);
-    this.props.resetExport();
+    this.props.resetImp();
   };
 
   handleGoBack = () => {
     this.props.history.push('/pengaturan-user/user');
-    this.props.resetExport();
+    this.props.resetImp();
   };
 
   render() {
-    const { loading, dataExport, progress } = this.props;
-    const { data } = this.state;
-    const successData = dataExport[0];
-    const errorData = dataExport[1];
+    const { loading, dataImport, progress } = this.props;
+    const { data, inputKey, tl } = this.state;
+    const successData = dataImport[0];
+    const errorData = dataImport[1];
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -95,7 +97,7 @@ class Import extends Component {
                         >
                           <ul className='margin-10-25'>
                             <li>
-                              <Link to='/pengaturan-user/user'>User</Link>
+                              <Link to='/pengaturan-user/user'>{tl}</Link>
                             </li>
                             <li className='is-active'>
                               <Link to={`/pengaturan-user/user/export`}>
@@ -115,7 +117,7 @@ class Import extends Component {
                               <button
                                 disabled={loading}
                                 onClick={this.props.handleSubmit(
-                                  this.handleExport
+                                  this.handleImport
                                 )}
                                 className={
                                   loading
@@ -135,7 +137,7 @@ class Import extends Component {
                               </button>
                             </Fragment>
                           )}
-                          {dataExport.length > 0 && (
+                          {dataImport.length > 0 && (
                             <button
                               disabled={loading}
                               onClick={this.handleRetry}
@@ -158,45 +160,18 @@ class Import extends Component {
                   <div className='columns'>
                     <div className='column is-4 is-offset-4'>
                       <div className='field'>
-                        {!loading && !data[0] && dataExport.length === 0 && (
-                          <Fragment>
-                            <br />
-                            <div className='field'>
-                              <h5 className='label has-text-centered'>
-                                Pilih Excel (.xls, .xlsx) untuk export user
-                              </h5>
-                              <div className='file is-info has-name is-small is-fullwidth'>
-                                <label className='file-label'>
-                                  <input
-                                    name='export-user'
-                                    className='file-input'
-                                    type='file'
-                                    multiple={false}
-                                    accept='.xls,.xlsx'
-                                    onChange={(e) => this.handleExcelUpload(e)}
-                                    key={this.state.inputKey}
-                                  />
-                                  <span className='file-cta'>
-                                    <span className='file-icon'>
-                                      <i className='fas fa-upload'></i>
-                                    </span>
-                                    <span className='file-label'>
-                                      Upload File
-                                    </span>
-                                  </span>
-                                  <span className='file-name'>
-                                    Pilih file...
-                                  </span>
-                                </label>
-                              </div>
-                            </div>
-                            <br />
-                          </Fragment>
+                        {!loading && !data[0] && dataImport.length === 0 && (
+                          <ImportFileInput
+                            handleExcelUpload={this.handleExcelUpload}
+                            inputKey={inputKey}
+                            tl={tl}
+                            link={'/templates/Import_User_Template.xlsx'}
+                          />
                         )}
                       </div>
                     </div>
                   </div>
-                  {dataExport && successData && (
+                  {dataImport && successData && (
                     <div className='columns'>
                       <div className='column is-12'>
                         <div className='table-container'>
@@ -261,12 +236,12 @@ class Import extends Component {
                   {loading && (
                     <div>
                       <h5>Memproses...</h5>
-                      <progress class='progress is-small is-info' max='100'>
+                      <progress className='progress is-small is-info' max='100'>
                         {progress}%
                       </progress>
                     </div>
                   )}
-                  {!loading && dataExport.length < 1 && (
+                  {!loading && dataImport.length < 1 && (
                     <div className='columns'>
                       <div className='column is-12'>
                         <div className='table-container'>
@@ -344,7 +319,7 @@ export class Item extends Component {
         <td>{index + 1}</td>
         <td>{item.Panggilan}</td>
         <td>{item.Username}</td>
-        <td>{item.Password}</td>
+        <td>{item.Password && '*'.repeat(item.Password.length)}</td>
       </tr>
     );
   }

@@ -1,13 +1,11 @@
-import { createReducer } from "../../../../common/util/reducerUtils";
+import { createReducer } from '../../../../common/util/reducerUtils';
 import {
   MEMBERS_GET,
   MEMBER_CREATE,
   MEMBER_UPDATE,
   MEMBER_DELETE,
   MEMBER_HARD_DELETE,
-  MEMBERS_EXPORT,
-} from "./reduxConstant";
-import { membersExport } from "./reduxAction";
+} from './reduxConstant';
 
 const initialState = [];
 
@@ -40,5 +38,4 @@ export default createReducer(initialState, {
   [MEMBER_UPDATE]: memberUpdate,
   [MEMBER_DELETE]: memberDelete,
   [MEMBER_HARD_DELETE]: memberHardDelete,
-  [MEMBERS_EXPORT]: membersExport,
 });
