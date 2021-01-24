@@ -10,11 +10,17 @@ import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import membersReducer from '../menu/membership/members/redux/reduxReducer';
 import membersExImReducer from '../menu/membership/members/redux/reduxExImReducer';
-import accountsReducer from '../menu/finances/accounts/redux/reduxReducer';
-import accountsExImReducer from '../menu/finances/accounts/redux/reduxExImReducer';
+import savingsReducer from '../menu/finances/savings/redux/reduxReducer';
+import loansReducer from '../menu/finances/loans/redux/reduxReducer';
+import installmentsReducer from '../menu/finances/installments/redux/reduxReducer';
+import receptionsReducer from '../menu/finances/receptions/redux/reduxReducer';
+import journalsReducer from '../menu/accountings/journals/redux/reduxReducer';
+import accountsReducer from '../menu/accountings/accounts/redux/reduxReducer';
+import accountsExImReducer from '../menu/accountings/accounts/redux/reduxExImReducer';
 import usersReducer from '../menu/users-management/Users/redux/reduxReducer';
 import usersExImReducer from '../menu/users-management/Users/redux/reduxExImReducer';
-import rolesReducer from '../menu/users-management/Roles/redux/rolesReducer';
+import rolesReducer from '../menu/users-management/Roles/redux/reduxReducer';
+import autoJournalsReducer from '../menu/settings/autoJournal/redux/reduxReducer';
 import recyclebinsReducer from '../menu/recyclebin/redux/reduxReducer';
 import modalReducer from '../menu/modals/redux/modalReducer';
 import progressReducer from '../menu/pages/progress/redux/progressReducer';
@@ -30,6 +36,11 @@ const appReducer = combineReducers({
   profile: profileReducer,
   members: membersReducer,
   membersExIm: membersExImReducer,
+  savings: savingsReducer,
+  loans: loansReducer,
+  installments: installmentsReducer,
+  receptions: receptionsReducer,
+  journals: journalsReducer,
   accounts: accountsReducer,
   accountsExIm: accountsExImReducer,
   users: usersReducer,
@@ -37,6 +48,7 @@ const appReducer = combineReducers({
   roles: rolesReducer,
   details: detailsReducer,
   progress: progressReducer,
+  autoJournals: autoJournalsReducer,
   toastr: toastrReducer,
   form: formReducer,
   async: asyncReducer,

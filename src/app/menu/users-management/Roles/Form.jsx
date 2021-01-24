@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { roleNew, roleEdit } from './redux/rolesApi';
+import { roleAdd, roleEdit } from './redux/reduxApi';
+import {userView} from '../Users/redux/reduxApi';
 import FormInput from './FormInput';
 
 const mapState = (state, ownProps) => {
@@ -20,14 +21,25 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  roleNew,
+  roleAdd,
   roleEdit,
+  userView,
 };
 
 class Form extends Component {
   state = {
     roleId: this.props.match.params.id,
+    createdBy: '',
+    updatedBy: '',
   };
+
+  // componentDidMount = async () => {
+  //   const {role, auth} = this.props;
+  //   const {createdBy, updatedBy} = this.state;
+    
+  //   const cB = await fetch()
+
+  // }
 
   objFn = () => {
     const { menus } = this.props;
@@ -102,7 +114,7 @@ class Form extends Component {
       auth,
       menus,
       history,
-      roleNew,
+      roleAdd,
       roleEdit,
       loading,
       role,
@@ -116,7 +128,7 @@ class Form extends Component {
               <FormInput
                 Link={Link}
                 auth={auth}
-                roleNew={roleNew}
+                roleAdd={roleAdd}
                 roleEdit={roleEdit}
                 history={history}
                 loading={loading}

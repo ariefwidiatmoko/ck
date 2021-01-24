@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import { usersFetch, userDel } from './redux/reduxApi';
+import { usersIndex, userDel } from './redux/reduxApi';
 import { openModal, closeModal } from '../../modals/redux/modalActions';
 import LoadingButton from '../../../main/LoadingButton';
 import Lists from './Lists/Lists';
@@ -11,25 +11,27 @@ import SimpleSearch from '../../pages/_part/_fragment/SimpleSearch';
 
 const mapState = (state) => {
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'user')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'user')[0];
   }
-  let totals = {};
-  if (state.details) {
-    totals = state.details.filter((i) => i.id === 'user')[0];
+  const details = state.details;
+  let detail = {};
+  if (details) {
+    detail = details.filter((i) => i.id === 'user')[0];
   }
   return {
-    auth: state.auth,
+    auth: auth,
     aS: aS,
-    totals: totals,
-    users: state.users,
+    detail: detail,
+    items: state.users,
     roles: state.roles,
     loading: state.async.loading,
   };
 };
 
 const actions = {
-  usersFetch,
+  usersIndex,
   userDel,
   openModal,
   closeModal,
@@ -45,39 +47,39 @@ class Index extends Component {
   };
 
   componentDidMount = () => {
-    const { auth } = this.props;
+    const { auth, usersIndex } = this.props;
     const { itn } = this.state;
-    this.props.usersFetch(auth.token, itn, 1, '');
+    usersIndex(auth.token, itn, 1, '');
   };
 
   handleItemNumber = (number) => {
-    const { auth } = this.props;
+    const { auth, usersIndex } = this.props;
     const { st } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: number,
     }));
-    this.props.usersFetch(auth.token, number, 1, st);
+    usersIndex(auth.token, number, 1, st);
   };
 
   handlePage = (number) => {
-    const { auth } = this.props;
+    const { auth, usersIndex } = this.props;
     const { cp, itn, st } = this.state;
     this.setState({
       cp: cp + number,
     });
-    this.props.usersFetch(auth.token, itn, cp + number, st);
+    usersIndex(auth.token, itn, cp + number, st);
   };
 
   handleSimpleSearch = (st) => {
-    const { auth } = this.props;
+    const { auth, usersIndex } = this.props;
     const { itn } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: itn,
       st: st,
     }));
-    this.props.usersFetch(auth.token, itn, 1, st);
+    usersIndex(auth.token, itn, 1, st);
   };
 
   handleMoreButton = () => {
@@ -87,15 +89,65 @@ class Index extends Component {
     });
   };
 
-  onDelete = (id, username) => {
-    const { auth } = this.props;
-    this.props.openModal('UserDelete', { id, username, auth });
+  onClickRecyclebin = () => {
+    const { auth, usersIndex } = this.props;
+    const { itn, mB } = this.state;
+    this.setState({
+      st: 'deleted',
+    });
+    usersIndex(auth.token, itn, 1, 'deleted');
+    this.setState({
+      mB: !mB,
+    });
+  };
+
+  itnRed = () => {
+    const { itn } = this.state;
+    this.setState({
+      itn: itn - 1,
+    });
+  };
+
+  onDelete = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('UserDelete', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
+  onRestore = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('UserRestore', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
+  onHDelete = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('UserHardDel', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
   };
 
   render() {
-    const { users, roles, loading, auth, aS, totals, openModal } = this.props;
-    const tt = totals && totals.total ? totals.total : 0;
-    const { tl, cp, itn, mB } = this.state;
+    const { items, roles, loading, auth, aS, detail, openModal } = this.props;
+    const tt = detail && detail.total ? detail.total : 0;
+    const { tl, cp, itn, st, mB } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -123,15 +175,23 @@ class Index extends Component {
 
                   <div className='level-right'>
                     <div className='level-item'>
+                      {st && st.length > 0 && (
+                        <Link
+                          to='/pengaturan-user/user'
+                          className='button is-small is-primary is-rounded is-outlined mr-2'
+                        >
+                          <i className='fas fa-redo icon' />
+                        </Link>
+                      )}
                       {aS.c === true && (
-                        <Fragment>
+                        <>
                           <Link
                             to='/pengaturan-user/user/tambah'
                             className='button is-small is-primary is-rounded is-outlined mr-2'
                           >
                             <i className='fas fa-plus icon' />
                           </Link>
-                        </Fragment>
+                        </>
                       )}
                       <SimpleSearch
                         tl={tl}
@@ -168,7 +228,13 @@ class Index extends Component {
                             role='menu'
                           >
                             <div className='dropdown-content'>
-                              <div onClick={() => {openModal('AdvanceSearch'); this.setState({mB: !mB})}} className='dropdown-item hand-pointer'>
+                              <div
+                                onClick={() => {
+                                  openModal('AdvanceSearch');
+                                  this.setState({ mB: !mB });
+                                }}
+                                className='dropdown-item hand-pointer'
+                              >
                                 <i className='fas fa-search-plus icon'></i>
                                 Pencarian+
                               </div>
@@ -177,15 +243,15 @@ class Index extends Component {
                                 className='dropdown-item'
                               >
                                 <i className='fas fa-file-import icon'></i>
-                                Import
+                                Impor
                               </Link>
-                              <Link
-                                to='/pengaturan-user/user/recyclebin'
-                                className='dropdown-item'
+                              <div
+                                onClick={this.onClickRecyclebin}
+                                className='dropdown-item hand-pointer'
                               >
                                 <i className='fas fa-trash icon'></i>
                                 Recycle Bin
-                              </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -202,7 +268,8 @@ class Index extends Component {
                         <th className='has-text-centered'>Panggilan</th>
                         <th className='has-text-centered'>Role</th>
                         <th className='has-text-centered'>Dibuat</th>
-                        <th>Aksi</th>
+                        <th className='has-text-centered'>Oleh</th>
+                        <th className='has-text-centered'>Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -215,12 +282,15 @@ class Index extends Component {
                       ) : (
                         <Lists
                           auth={auth}
-                          users={users}
+                          items={items}
+                          tl={tl}
                           cp={cp}
                           itn={itn}
                           roles={roles}
                           aS={aS}
                           onDelete={this.onDelete}
+                          onRestore={this.onRestore}
+                          onHDelete={this.onHDelete}
                         />
                       )}
                     </tbody>

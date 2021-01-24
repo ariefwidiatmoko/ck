@@ -15,8 +15,9 @@ const mapState = (state, ownProps) => {
   const memberId = ownProps.match.params.id;
 
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'anggota')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'anggota')[0];
   }
 
   let member = {};
@@ -26,6 +27,7 @@ const mapState = (state, ownProps) => {
   return {
     auth: state.auth,
     aS: aS,
+    memberId: memberId,
     member: member,
   };
 };
@@ -41,6 +43,11 @@ class View extends Component {
     memberId: this.props.match.params.id,
     member: this.props.member,
     activeTab: 'basic',
+  };
+
+  componentDidMount = () => {
+    const { memberId, auth, memberView } = this.props;
+    memberView(memberId, auth);
   };
 
   OnChangeActiveTab = (activeTab) => {

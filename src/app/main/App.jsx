@@ -10,8 +10,15 @@ import StaffsIndex from '../menu/membership/staffs/Index';
 import MemberForm from '../menu/membership/members/Form';
 import MemberView from '../menu/membership/members/View';
 import MembersImport from '../menu/membership/members/Import';
-import AccountsIndex from '../menu/finances/accounts/Index';
-import AccountsImport from '../menu/finances/accounts/Import';
+import SavingsIndex from '../menu/finances/savings/Index';
+import LoansIndex from '../menu/finances/loans/Index';
+import InstallmentsIndex from '../menu/finances/installments/Index';
+import InstallmentForm from '../menu/finances/installments/Form';
+import ReceptionsIndex from '../menu/finances/receptions/Index';
+import AccountsIndex from '../menu/accountings/accounts/Index';
+import JournalsIndex from '../menu/accountings/journals/Index';
+import JournalForm from '../menu/accountings/journals/Form/Form';
+import AccountsImport from '../menu/accountings/accounts/Import';
 import UsersIndex from '../menu/users-management/Users/Index';
 import UserView from '../menu/users-management/Users/View';
 import UserAdd from '../menu/users-management/Users/Add';
@@ -20,6 +27,8 @@ import UserImport from '../menu/users-management/Users/Import';
 import ActivationIndex from '../menu/users-management/Activation/Index';
 import RoleIndex from '../menu/users-management/Roles/Index';
 import RoleForm from '../menu/users-management/Roles/Form';
+import autoJournalIndex from '../menu/settings/autoJournal/Index';
+import autoJournalForm from '../menu/settings/autoJournal/Form';
 import ModalManager from '../menu/modals/ModalManager';
 import RecyclebinIndex from '../menu/recyclebin/Index';
 import Testarea from '../menu/testarea/TestareaComponent';
@@ -34,10 +43,7 @@ class App extends Component {
           <Navbar />
           <Switch key={this.props.location.key}>
             <Route exact path='/' component={Login} />
-            <Route
-              path='/dashboard'
-              component={isAuthenticated(Dashboard)}
-            />
+            <Route path='/dashboard' component={isAuthenticated(Dashboard)} />
             <Route
               exact
               path='/keanggotaan/anggota'
@@ -70,12 +76,57 @@ class App extends Component {
             />
             <Route
               exact
-              path='/keuangan/akun'
+              path='/keuangan/simpanan'
+              component={isAuthenticated(SavingsIndex)}
+            />
+            <Route
+              exact
+              path='/keuangan/pinjaman'
+              component={isAuthenticated(LoansIndex)}
+            />
+            <Route
+              exact
+              path='/keuangan/angsuran'
+              component={isAuthenticated(InstallmentsIndex)}
+            />
+            <Route
+              exact
+              path='/keuangan/angsuran/:id'
+              component={isAuthenticated(InstallmentForm)}
+            />
+            <Route
+              exact
+              path='/keuangan/angsuran/edit/:id'
+              component={isAuthenticated(InstallmentForm)}
+            />
+            <Route
+              exact
+              path='/keuangan/penerimaan'
+              component={isAuthenticated(ReceptionsIndex)}
+            />
+            <Route
+              exact
+              path='/akuntansi/jurnal'
+              component={isAuthenticated(JournalsIndex)}
+            />
+            <Route
+              exact
+              path='/akuntansi/jurnal/tambah/:id'
+              component={isAuthenticated(JournalForm)}
+            />
+            <Route
+              exact
+              path='/akuntansi/jurnal/edti/:id'
+              component={isAuthenticated(JournalForm)}
+            />
+            <Route
+              exact
+              path='/akuntansi/akun'
               component={isAuthenticated(AccountsIndex)}
             />
             <Route
               exact
-              path='/keuangan/akun/import'
+              path='/akuntansi/akun/import'
               component={isAuthenticated(AccountsImport)}
             />
             <Route
@@ -103,6 +154,7 @@ class App extends Component {
               component={isAuthenticated(UserEdit)}
             />
             <Route
+              exact
               path='/pengaturan-user/user/import'
               component={isAuthenticated(UserImport)}
             />
@@ -117,22 +169,50 @@ class App extends Component {
               component={isAuthenticated(RoleIndex)}
             />
             <Route
+              exact
               path='/pengaturan-user/role/tambah'
               component={isAuthenticated(RoleForm)}
             />
             <Route
+              exact
               path='/pengaturan-user/role/edit/:id'
               component={isAuthenticated(RoleForm)}
             />
             <Route
+              exact
+              path='/pengaturan-umum/jurnal-auto'
+              component={isAuthenticated(autoJournalIndex)}
+            />
+            <Route
+              exact
+              path='/pengaturan-umum/jurnal-auto/tambah'
+              component={isAuthenticated(autoJournalForm)}
+            />
+            <Route
+              exact
+              path='/pengaturan-umum/jurnal-auto/edit/:id'
+              component={isAuthenticated(autoJournalForm)}
+            />
+            <Route
+              exact
+              path='/pengaturan-umum/jurnal-auto/edit/:id'
+              component={isAuthenticated(autoJournalForm)}
+            />
+            <Route
+              exact
               path='/pengaturan-umum/profil-koperasi'
               component={isAuthenticated(ProfileView)}
             />
             <Route
+              exact
               path='/recyclebin'
               component={isAuthenticated(RecyclebinIndex)}
             />
-            <Route path='/testarea' component={isAuthenticated(Testarea)} />
+            <Route
+              exact
+              path='/testarea'
+              component={isAuthenticated(Testarea)}
+            />
           </Switch>
         </Fragment>
       </Fragment>

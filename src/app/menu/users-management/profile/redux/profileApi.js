@@ -29,11 +29,11 @@ export const profileView = (userId, token) => {
         throw error;
       }
       const user = response.user;
-      const getHobbies = user.profile.arrHobbies;
-      const arrHobbies = getHobbies ? getHobbies.split(',') : [];
+      const getHobbies = user.profile.hobbies;
+      const hobbies = getHobbies ? getHobbies.split(',') : [];
       const username = user.username;
       const objProfile = {
-        arrHobbies: arrHobbies,
+        hobbies: hobbies,
         username: username,
       };
       const profile = user.profile;
@@ -61,7 +61,7 @@ export const profileEdit = (profile, auth) => {
     const formData = new FormData();
     const arr = Object.entries(profile);
     for (const [key, value] of arr) {
-      if (key !== 'dob' && key !== 'arrHobbies' && key !== 'updatedBy') {
+      if (key !== 'dob' && key !== 'hobbies' && key !== 'updatedBy') {
         if (value !== null && value) {
           formData.append(key, value);
         }
@@ -71,7 +71,7 @@ export const profileEdit = (profile, auth) => {
     if (dob !== null) {
       formData.append('dob', dob);
     }
-    formData.append('arrHobbies', profile.arrHobbies.toString());
+    formData.append('hobbies', profile.hobbies.toString());
     if (profile.religion && profile.religion !== 'other') {
       formData.append('religionDetail', '');
     }
@@ -97,10 +97,10 @@ export const profileEdit = (profile, auth) => {
         throw error;
       }
       const user = response.user;
-      const gethobbies = user.profile.arrHobbies;
-      const arrHobbies = gethobbies ? gethobbies.split(',') : [];
+      const gethobbies = user.profile.hobbies;
+      const hobbies = gethobbies ? gethobbies.split(',') : [];
       const objProfile = {
-        arrHobbies: arrHobbies,
+        hobbies: hobbies,
       };
       const oldProfile = user.profile;
       const newProfile = {
@@ -158,8 +158,8 @@ export const profilePhotoUpload = (file, filename, auth) => {
       }
       let profile = response.profile;
       let mainPhoto = profile.mainPhoto;
-      let arrPhotos = profile.arrPhotos;
-      let newProfile = { mainPhoto: mainPhoto, arrPhotos: arrPhotos };
+      let photos = profile.photos;
+      let newProfile = { mainPhoto: mainPhoto, photos: photos };
       dispatch(authUpdate({ mainPhoto: mainPhoto }));
       dispatch(profileUpdate(newProfile));
       toastr.success('Sukses', 'Upload foto');
@@ -229,7 +229,7 @@ export const profilePhotoDelete = (photo, auth) => {
     formData.append('photo', photo);
     try {
       let fetchData = await fetch(
-        SITE_ADDRESS + 'api/profile/picture-delete/' + userId,
+        SITE_ADDRESS + 'api/profile/photo-delete/' + userId,
         {
           method: 'POST',
           body: formData,
@@ -249,8 +249,8 @@ export const profilePhotoDelete = (photo, auth) => {
         throw error;
       }
       let profile = response.profile;
-      let arrPhotos = profile.arrPhotos;
-      let newProfile = { arrPhotos: arrPhotos };
+      let photos = profile.photos;
+      let newProfile = { photos: photos };
       dispatch(profileUpdate(newProfile));
       toastr.success('Sukses', 'Hapus foto');
       dispatch(asyncActionFinish());

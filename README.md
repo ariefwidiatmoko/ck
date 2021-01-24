@@ -66,3 +66,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### TO DO LIST
+Update Role, because need to edit user role, after Create Edit Delete Restore HardDel finish continue to User Edit Role
+Role edit, if current user has the role being update, need to reset role to all user

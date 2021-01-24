@@ -1,6 +1,6 @@
 export const activeStatus = [
-  { key: 1, text: 'Aktif', value: true },
-  { key: 2, text: 'Non Aktif', value: false },
+  { key: 1, text: 'Anggota', value: true },
+  { key: 2, text: 'Non Anggota', value: false },
 ];
 
 export const gender = [
@@ -16,7 +16,7 @@ export const religion = [
   { key: 5, text: 'Budha', value: 'Budha' },
   { key: 6, text: 'Konghucu', value: 'Konghucu' },
   { key: 7, text: 'Kepercayaan', value: 'Kepercayaan' },
-  { key: 8, text: 'Lainnya...', value: 'Other' },
+  { key: 8, text: 'Lainnya', value: 'Lainnya' },
 ];
 
 export const maritalStatus = [
@@ -30,10 +30,27 @@ export const hobbies = [
   'Olahraga',
   'Musik',
   'Film',
-  'Berwisata',
+  'Game',
+  'Liburan',
   'Membaca',
   'Bertualang',
   'Lainnya',
 ];
 
 export const NUM_ALPHABET = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+export const levels = [
+  { key: 1, text: '1', value: 1 },
+  { key: 2, text: '2', value: 2 },
+  { key: 3, text: '3', value: 3 },
+];
+
+export const headerDetails = [
+  { key: 'Header', text: 'Header', value: 'Header' },
+  { key: 'Detail', text: 'Detail', value: 'Detail' },
+];
+
+export const types = [
+  { key: 'Debit', text: 'Debit', value: 'Debit' },
+  { key: 'Kredit', text: 'Kredit', value: 'Kredit' },
+];

@@ -3,6 +3,8 @@ import {
   memberCreate,
   memberUpdate,
   memberDelete,
+  memberRestore,
+  memberHardDel,
   membersImport,
 } from './reduxAction';
 import { detailsItem } from '../../../pages/details/redux/detailsAction';
@@ -12,10 +14,8 @@ import {
   asyncActionError,
 } from '../../../../async/asyncActions';
 import { ASYNC_ACTION_START } from '../../../../async/asyncConstant';
-import { randomNumber } from '../../../../common/helpers/othersHelpers';
-import { progressPercent } from '../../../pages/progress/redux/progressAction';
-import { openModal } from '../../../modals/redux/modalActions';
 import { SITE_ADDRESS } from '../../../../common/util/siteConfig';
+import { checkRes, checkErr } from '../../../../common/helpers/checkRes';
 
 // url: /keanggotaan/anggota
 export const membersIndex = (token, itn, cp, st) => {
@@ -35,25 +35,15 @@ export const membersIndex = (token, itn, cp, st) => {
         },
       });
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
-      }
-      dispatch(detailsItem({ id: 'anggota', total: response.totals }));
+      dispatch(detailsItem({ id: 'anggota', total: response.total }));
       dispatch(membersGet(response.members));
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -88,14 +78,9 @@ export const memberAdd = (member, auth, history) => {
         },
       });
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 201) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 201);
+      if (resultCheck) {
+        throw resultCheck;
       }
       const member = response.member;
       dispatch(memberCreate(member));
@@ -103,12 +88,7 @@ export const memberAdd = (member, auth, history) => {
       history.push(`/keanggotaan/anggota/detail/${response.member.code}`);
       toastr.success('Sukses', 'Anggota telah dibuat');
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -124,25 +104,15 @@ export const memberView = (memberId, auth) => {
         },
       });
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
       const member = response.member;
       dispatch(memberUpdate(member));
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -185,26 +155,16 @@ export const memberEdit = (values, auth, memberId) => {
         }
       );
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
       const member = response.member;
       dispatch(memberUpdate(member));
       toastr.success('Sukses', `Update Anggota.`);
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -229,26 +189,16 @@ export const memberPhotoUpload = (file, filename, auth, memberId) => {
         }
       );
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
       let member = response.member;
       dispatch(memberUpdate(member));
       toastr.success('Sukses', 'Profil foto tersimpan');
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -271,54 +221,57 @@ export const memberMainPhotoSet = (memberId, photo, auth) => {
         }
       );
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
       let member = response.member;
       dispatch(memberUpdate(member));
       toastr.success('Sukses', 'Update foto profil');
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
 };
 
-export const memberPhotoDelete = (id, auth) => {
+export const memberPhotoDelete = (photo, auth, memberId) => {
   return async (dispatch) => {
     dispatch({ type: ASYNC_ACTION_START, payload: 'memberPhotoDelete' });
+    const token = auth.token;
+    const formData = new FormData();
+    formData.append('photo', photo);
     try {
-      const formData = new FormData();
-      const userId = auth.userId;
-      formData.append('userId', userId);
+      let fetchData = await fetch(
+        SITE_ADDRESS + 'api/members/photo-delete/' + memberId,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
+      const response = await fetchData.json();
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
+      }
+      let member = response.member;
+      dispatch(memberUpdate(member));
+      toastr.success('Sukses', 'Hapus foto');
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
 };
-
-export const memberDel = (memberId, code, auth) => {
+// url: '/keanggotaan/anggota/[modal: Delete]'
+export const memberDel = (memberId, auth, total) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'memberDelete' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'memberDel' });
     const formData = new FormData();
     const userId = auth.userId;
     formData.append('userId', userId);
@@ -334,25 +287,88 @@ export const memberDel = (memberId, code, auth) => {
         }
       );
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
-      }
-      if (fetchData.status !== 200) {
-        const error = new Error(response.message);
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
       const member = response.member;
-      dispatch(memberDelete(member.userId));
+      dispatch(detailsItem({ id: 'anggota', total: total - 1 }));
+      dispatch(memberDelete(member.id));
+      toastr.success('Sukses', `${member.code} - ${member.name} telah dihapus`);
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
+      checkErr(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+// url: '/keanggotaan/anggota/[modal: Restore]'
+export const memberRes = (memberId, auth, total) => {
+  return async (dispatch) => {
+    dispatch({ type: ASYNC_ACTION_START, payload: 'memberDel' });
+    const formData = new FormData();
+    const userId = auth.userId;
+    formData.append('userId', userId);
+    try {
+      let fetchData = await fetch(
+        SITE_ADDRESS + 'api/members/restore/' + memberId,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: 'Bearer ' + auth.token,
+          },
+        }
+      );
+      const response = await fetchData.json();
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
       }
+      const member = response.member;
+      dispatch(detailsItem({ id: 'anggota', total: total - 1 }));
+      dispatch(memberRestore(member.id));
+      toastr.success(
+        'Sukses',
+        `${member.code} - ${member.name} telah direstore`
+      );
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      checkErr(error);
+      dispatch(asyncActionError());
+    }
+  };
+};
+// url: '/keanggotaan/anggota/[modal: HardDel]'
+export const memberHDel = (memberId, auth, total) => {
+  return async (dispatch) => {
+    dispatch({ type: ASYNC_ACTION_START, payload: 'memberHDel' });
+    const formData = new FormData();
+    const userId = auth.userId;
+    formData.append('userId', userId);
+    try {
+      let fetchData = await fetch(
+        SITE_ADDRESS + 'api/members/hard-delete/' + memberId,
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            Authorization: 'Bearer ' + auth.token,
+          },
+        }
+      );
+      const response = await fetchData.json();
+      const resultCheck = checkRes(response, fetchData, dispatch, 200);
+      if (resultCheck) {
+        throw resultCheck;
+      }
+      const member = response.member;
+      dispatch(detailsItem({ id: 'anggota', total: total - 1 }));
+      dispatch(memberHardDel(member.id));
+      toastr.success('Sukses', `${member.code} - ${member.name} telah dihapus`);
+      dispatch(asyncActionFinish());
+    } catch (error) {
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -362,34 +378,29 @@ export const membersImp = (data, auth) => {
   return async (dispatch) => {
     dispatch({ type: ASYNC_ACTION_START, payload: 'membersImport' });
     try {
-      let progress = randomNumber(1, 15);
-      dispatch(progressPercent(progress));
       const membersData = JSON.stringify(data);
+      const logs = [
+        {
+          action: 'create',
+          user: { id: auth.userId, username: auth.username },
+          time: new Date().toISOString(),
+        },
+      ];
       const formData = new FormData();
       formData.append('members', membersData);
-      progress = randomNumber(20, 40);
-      dispatch(progressPercent(progress));
-      const fetchData = await fetch('http://localhost:3000/api/members/import', {
+      formData.append('logs', JSON.stringify(logs));
+      const fetchData = await fetch(SITE_ADDRESS + 'api/members/import', {
         method: 'POST',
         body: formData,
         headers: {
           Authorization: 'Bearer ' + auth.token,
         },
       });
-      progress = randomNumber(50, 70);
-      dispatch(progressPercent(progress));
       const response = await fetchData.json();
-      if (response.message === 'jwt expired') {
-        dispatch(openModal('SessionEndModal'));
-        const error = new Error('jwt expired');
-        throw error;
+      const resultCheck = checkRes(response, fetchData, dispatch, 201);
+      if (resultCheck) {
+        throw resultCheck;
       }
-      if (fetchData.status !== 201) {
-        const error = new Error(response.message);
-        throw error;
-      }
-      progress = randomNumber(71, 99);
-      dispatch(progressPercent(progress));
       const dataSuccess = response.membersSuccess;
       const dataError = response.membersError;
       dispatch(membersImport([dataSuccess, dataError]));
@@ -398,16 +409,9 @@ export const membersImp = (data, auth) => {
         addNotif = ', tapi ditemukan duplikasi';
       }
       toastr.success('Sukses', 'Import anggota selesai' + addNotif);
-      progress = 100;
-      dispatch(progressPercent(progress));
       dispatch(asyncActionFinish());
     } catch (error) {
-      if (error.message === 'jwt expired') {
-        console.log(error);
-      } else {
-        console.log(error);
-        toastr.error('Error', `${error.message}`);
-      }
+      checkErr(error);
       dispatch(asyncActionError());
     }
   };
@@ -417,7 +421,6 @@ export const resetImp = () => {
   return async (dispatch) => {
     try {
       dispatch(membersImport([]));
-      dispatch(progressPercent(0));
       dispatch(asyncActionFinish());
     } catch (error) {
       console.log(error);

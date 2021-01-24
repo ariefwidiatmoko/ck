@@ -6,6 +6,7 @@ const TextInput = ({
   className,
   disabled,
   readOnly,
+  autoFocus,
   placeholder,
   label,
   style,
@@ -16,6 +17,7 @@ const TextInput = ({
     <div className={className + " control"}>
       <input
         {...input}
+        autoFocus={autoFocus}
         className={
           touched && !!error
             ? "is-6 input is-danger is-size-6"

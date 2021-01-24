@@ -11,17 +11,19 @@ import SimpleSearch from '../../pages/_part/_fragment/SimpleSearch';
 
 const mapState = (state) => {
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'anggota')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'anggota')[0];
   }
-  let totals = {};
-  if (state.details) {
-    totals = state.details.filter((i) => i.id === 'anggota')[0];
+  const details = state.details
+  let detail = {};
+  if (details) {
+    detail = details.filter((i) => i.id === 'anggota')[0];
   }
   return {
-    auth: state.auth,
+    auth: auth,
     aS: aS,
-    totals: totals,
+    detail: detail,
     items: state.members,
     loading: state.async.loading,
   };
@@ -43,39 +45,39 @@ class Index extends Component {
   };
 
   componentDidMount = () => {
-    const { auth } = this.props;
+    const { auth, membersIndex } = this.props;
     const { itn } = this.state;
-    this.props.membersIndex(auth.token, itn, 1, '');
+    membersIndex(auth.token, itn, 1, '');
   };
 
   handleItemNumber = (number) => {
-    const { auth } = this.props;
+    const { auth, membersIndex } = this.props;
     const { st } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: number,
     }));
-    this.props.membersIndex(auth.token, number, 1, st);
+    membersIndex(auth.token, number, 1, st);
   };
 
   handlePage = (number) => {
-    const { auth } = this.props;
+    const { auth, membersIndex } = this.props;
     const { cp, itn, st } = this.state;
     this.setState({
       cp: cp + number,
     });
-    this.props.membersIndex(auth.token, itn, cp + number, st);
+    membersIndex(auth.token, itn, cp + number, st);
   };
 
   handleSimpleSearch = (st) => {
-    const { auth } = this.props;
+    const { auth, membersIndex } = this.props;
     const { itn } = this.state;
     this.setState((prevState) => ({
       cp: 1,
       itn: itn,
       st: st,
     }));
-    this.props.membersIndex(auth.token, itn, 1, st);
+    membersIndex(auth.token, itn, 1, st);
   };
 
   handleMoreButton = () => {
@@ -84,21 +86,66 @@ class Index extends Component {
       mB: !mB,
     });
   };
+  
+  onClickRecyclebin = () => {
+    const { auth, membersIndex } = this.props;
+    const { itn, mB } = this.state;
+    this.setState({
+      st: 'deleted',
+    });
+    membersIndex(auth.token, itn, 1, 'deleted');
+    this.setState({
+      mB: !mB,
+    });
+  };
 
-  onDelete = (id, code, name) => {
-    const { auth } = this.props;
-    this.props.openModal('MemberDelete', {
-      id: id,
-      code: code,
-      name: name,
-      auth: auth,
+  itnRed = () => {
+    const { itn } = this.state;
+    this.setState({
+      itn: itn - 1,
+    });
+  };
+
+  onDelete = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('MemberDelete', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
+  onRestore = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('MemberRestore', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
+  onHDelete = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('MemberHardDel', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
     });
   };
 
   render() {
-    const { aS, totals, items, loading, openModal } = this.props;
-    const tt = totals && totals.total ? totals.total : 0;
-    const { tl, cp, itn, mB } = this.state;
+    const { aS, detail, items, loading, openModal } = this.props;
+    const tt = detail && detail.total ? detail.total : 0;
+    const { tl, cp, itn, st, mB } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -117,7 +164,7 @@ class Index extends Component {
                             <Link to='/keanggotaan/anggota'>{tl}</Link>
                           </li>
                           <li className='is-active'>
-                            <Link to='/keanggotaan/anggota'>Index</Link>
+                            <Link to='/keanggotaan/anggota'>{st !== 'deleted' ? 'Index' : 'Recycle Bin'}</Link>
                           </li>
                         </ul>
                       </nav>
@@ -126,6 +173,15 @@ class Index extends Component {
 
                   <div className='level-right'>
                     <div className='level-item'>
+                      {st && st.length > 0 && (
+                        <Link
+                          to='/keanggotaan/anggota'
+                          className='button is-small is-primary is-rounded is-outlined'
+                          style={{ marginRight: 10 }}
+                        >
+                          <i className='fas fa-redo icon' />
+                        </Link>
+                      )}
                       {aS.c === true && (
                         <Fragment>
                           <Link
@@ -187,15 +243,15 @@ class Index extends Component {
                                 className='dropdown-item'
                               >
                                 <i className='fas fa-file-import icon'></i>
-                                Import
+                                Impor
                               </Link>
-                              <Link
-                                to='/keanggotaan/anggota/recyclebin'
-                                className='dropdown-item'
+                              <div
+                                onClick={this.onClickRecyclebin}
+                                className='dropdown-item hand-pointer'
                               >
                                 <i className='fas fa-trash icon'></i>
                                 Recycle Bin
-                              </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -231,6 +287,8 @@ class Index extends Component {
                           tl={tl}
                           aS={aS}
                           onDelete={this.onDelete}
+                          onRestore={this.onRestore}
+                          onHDelete={this.onHDelete}
                         />
                       )}
                     </tbody>
@@ -238,7 +296,7 @@ class Index extends Component {
                 </div>
                 <PageNumber
                   cp={cp}
-                  itn={itn}
+                  itn={tt < 10 ? tt : itn}
                   handleNumber={this.handleItemNumber}
                   tt={tt}
                   getPage={this.handlePage}

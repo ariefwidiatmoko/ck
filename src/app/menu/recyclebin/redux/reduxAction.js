@@ -1,4 +1,4 @@
-import { RECYCLEBINS_GET, RECYCLEBIN_RESTORE } from './reduxConstant';
+import { RECYCLEBINS_GET, RECYCLEBIN_DELETE } from './reduxConstant';
 
 export const recyclebinsGet = (items) => {
   return {
@@ -11,7 +11,16 @@ export const recyclebinsGet = (items) => {
 
 export const recyclebinRestore = (itemId) => {
   return {
-    type: RECYCLEBIN_RESTORE,
+    type: RECYCLEBIN_DELETE,
+    payload: {
+      itemId,
+    },
+  };
+};
+
+export const recyclebinDelete = (itemId) => {
+  return {
+    type: RECYCLEBIN_DELETE,
     payload: {
       itemId,
     },

@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-const DropzoneInput = ({ setFiles }) => {
+export default function DropzoneInput(props) {
+  const {setFiles} = props;
   const onDrop = useCallback(
     (acceptedFiles) => {
       setFiles(
@@ -19,7 +20,7 @@ const DropzoneInput = ({ setFiles }) => {
     multiple: false,
     accept: 'image/*',
   });
-
+  
   return (
     <div
       {...getRootProps()}
@@ -30,7 +31,6 @@ const DropzoneInput = ({ setFiles }) => {
       <h1>Tambah Foto</h1>
       <h1>& Upload</h1>
     </div>
-  );
-};
+  )
+}
 
-export default DropzoneInput;

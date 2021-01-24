@@ -5,12 +5,12 @@ import { membersImp, resetImp } from './redux/reduxApi';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import ImportFileInput from '../../../common/components/ImportFileInput';
+import Progressbar from '../../../common/components/Progressbar'
 import { format } from 'date-fns';
 
 const mapState = (state) => ({
   auth: state.auth,
   loading: state.async.loading,
-  progress: state.progress,
   dataImport: state.membersExIm,
 });
 
@@ -80,7 +80,7 @@ class Import extends Component {
   };
 
   render() {
-    const { loading, dataImport, progress } = this.props;
+    const { loading, dataImport } = this.props;
     const { data, inputKey, tl } = this.state;
     const successData = dataImport[0];
     const errorData = dataImport[1];
@@ -90,7 +90,7 @@ class Import extends Component {
           <div className='columns is-variable'>
             <div className='column is-third-quarter'>
               <div className='box'>
-                <form autoComplete='off'>
+                <form style={{ marginTop: 1 }} autoComplete='off'>
                   <div className='level'>
                     <div className='level-left'>
                       <div className='level-item'>
@@ -104,7 +104,7 @@ class Import extends Component {
                             </li>
                             <li className='is-active'>
                               <Link to={`/keanggotaan/anggota/import`}>
-                                Import
+                                Impor
                               </Link>
                             </li>
                           </ul>
@@ -145,7 +145,7 @@ class Import extends Component {
                               onClick={this.handleRetry}
                               className='button is-primary is-small is-rounded is-outlined'
                             >
-                              <i className='fas fa-file-export icon' />
+                              <i className='fas fa-file-import icon' />
                             </button>
                           )}
                           <button
@@ -230,12 +230,7 @@ class Import extends Component {
                     </div>
                   )}
                   {loading && (
-                    <div>
-                      <h5>Memproses...</h5>
-                      <progress className='progress is-small is-info' max='100'>
-                        {progress}%
-                      </progress>
-                    </div>
+                    <Progressbar />
                   )}
                   {!loading && dataImport.length < 1 && (
                     <div className='columns'>
@@ -252,21 +247,6 @@ class Import extends Component {
                               </thead>
                             )}
                             <thead>
-                              {!data[0] && (
-                                <tr>
-                                  <th>No</th>
-                                  <th>Panggilan</th>
-                                  <th>Nama_Lengkap</th>
-                                  <th>No_Telpon</th>
-                                  <th>Jenis_Kelamin</th>
-                                  <th>Tempat_Lahir</th>
-                                  <th>Tanggal_Lahir</th>
-                                  <th>Agama</th>
-                                  <th>Status_Kawin</th>
-                                  <th>Pekerjaan</th>
-                                  <th>Alamat</th>
-                                </tr>
-                              )}
                               {data && data[0] && (
                                 <tr>
                                   {data[0] &&
@@ -277,11 +257,6 @@ class Import extends Component {
                               )}
                             </thead>
                             <tbody>
-                              {!data[0] && (
-                                <tr>
-                                  <td colSpan='4'>Tidak Ada data</td>
-                                </tr>
-                              )}
                               {data && data[0] && (
                                 <>
                                   {data.map((item, index) => (
@@ -317,7 +292,6 @@ export default connect(
 export class Item extends Component {
   render() {
     const { item, index } = this.props;
-    console.log(new Date((item.Tanggal_Lahir - (25567 + 2))*86400*1000).toISOString());
     return (
       <tr>
         <td>{index + 1}</td>
@@ -326,7 +300,12 @@ export class Item extends Component {
         <td>{item.No_Telpon}</td>
         <td>{item.Jenis_Kelamin}</td>
         <td>{item.Tempat_Lahir}</td>
-        <td>{format(new Date((item.Tanggal_Lahir - (25567 + 2))*86400*1000), 'd LLLL yyyy')}</td>
+        <td>
+          {format(
+            new Date((item.Tanggal_Lahir - (25567 + 2)) * 86400 * 1000),
+            'd LLLL yyyy'
+          )}
+        </td>
         <td>{item.Agama}</td>
         <td>{item.Status_Kawin}</td>
         <td>{item.Pekerjaan}</td>

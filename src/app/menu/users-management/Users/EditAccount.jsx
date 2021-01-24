@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import {
   composeValidators,
@@ -21,62 +21,60 @@ const validate = combineValidators({
   )(),
 });
 
-class EditAccount extends Component {
-  render() {
-    const {
-      onFormSubmit,
-      handleSubmit,
-      invalid,
-      submitting,
-      pristine,
-      history,
-      errorMessage,
-    } = this.props;
-    return (
-      <form onSubmit={handleSubmit(onFormSubmit)} autoComplete='off'>
-        <Field
-          name='username'
-          type='text'
-          component={TextInput}
-          placeholder='Username'
-          label='Username'
-        />
-        <Field
-          label='Reset Password'
-          name='newPassword1'
-          autoComplete='off'
-          type='password'
-          component={TextInput}
-          placeholder='Reset Password'
-          className='is-expanded'
-        />
-        {errorMessage && <p className='help is-danger'>{errorMessage}</p>}
-        <div
-          className='field is-grouped'
-          style={{ marginTop: 20, marginBottom: 20 }}
-        >
-          <div className='control'>
-            <Button
-              type='submit'
-              disabled={invalid || submitting || pristine}
-              className='button is-primary is-small is-rounded is-outlined'
-              loading={submitting}
-              icon='save'
-            />
-          </div>
-          <div className='control'>
-            <button
-              onClick={() => history.goBack()}
-              className='button custom-grey is-small is-rounded is-outlined'
-              type='button'
-            >
-              <i className='fas fa-arrow-left icon' />
-            </button>
-          </div>
+function EditAccount(props) {
+  const {
+    onFormSubmit,
+    handleSubmit,
+    invalid,
+    submitting,
+    pristine,
+    history,
+    errorMessage,
+  } = props;
+  return (
+    <form onSubmit={handleSubmit(onFormSubmit)} autoComplete='off'>
+      <Field
+        name='username'
+        type='text'
+        component={TextInput}
+        placeholder='Username'
+        label='Username'
+      />
+      <Field
+        label='Reset Password'
+        name='newPassword1'
+        autoComplete='off'
+        type='password'
+        component={TextInput}
+        placeholder='Reset Password'
+        className='is-expanded'
+      />
+      {errorMessage && <p className='help is-danger'>{errorMessage}</p>}
+      <div
+        className='field is-grouped'
+        style={{ marginTop: 20, marginBottom: 20 }}
+      >
+        <div className='control'>
+          <Button
+            type='submit'
+            disabled={invalid || submitting || pristine}
+            className='button is-primary is-small is-rounded is-outlined'
+            loading={submitting}
+            icon='save'
+          />
         </div>
-      </form>
-    );
-  }
+        <div className='control'>
+          <button
+            onClick={() => history.goBack()}
+            className='button custom-grey is-small is-rounded is-outlined'
+            type='button'
+          >
+            <i className='fas fa-arrow-left icon' />
+          </button>
+        </div>
+      </div>
+    </form>
+  )
 }
 
 export default reduxForm({

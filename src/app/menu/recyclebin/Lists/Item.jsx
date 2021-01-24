@@ -1,87 +1,49 @@
-import React, { Component } from 'react';
-// import { Link } from "react-router-dom";
-// import { format, parseISO } from "date-fns";
-// import { arrKeyValue } from "../../../../common/helpers/objectHelpers";
+import React from 'react';
+import { format, parseISO } from 'date-fns';
 
-class Item extends Component {
-  render() {
-    const {
-      // user,
-      // roles,
-      // index,
-      loading,
-      // aS,
-    } = this.props;
-    // let setRoles;
-    // const arrRoles =
-    //   user.arrRoles && user.arrRoles.toString().length > 0
-    //     ? user.arrRoles.toString().split(",")
-    //     : [];
-    // const initRoles = arrKeyValue(roles, arrRoles, "id", "roleName");
-    // if (arrRoles[0]) {
-    //   arrRoles.forEach((role) => {
-    //     if (role === "SA") {
-    //       initRoles.push("Superadmin");
-    //     }
-    //   });
-    // }
-    // setRoles = initRoles.map((role) => (
-    //   <span
-    //     key={role}
-    //     className="tag is-warning"
-    //     style={initRoles.length > 1 ? { marginRight: 5, marginBottom: 3 } : { marginRight: 5 }}
-    //   >
-    //     {role}
-    //   </span>
-    // ));
-    if (loading)
-      return (
-        <tr>
-          <td>Loading...</td>
-        </tr>
-      );
+export default function Item(props) {
+  const { item, cp, itn, index, loading, aS, 
+    // onRestore, 
+    onDelete } = props;
+  const profile = item.user && item.user.profile ? item.user.profile : '';
+  if (loading)
     return (
       <tr>
-        <td className='has-text-centered'>{/* {index + 1} */}</td>
-        <td>{/* {user.email} */}</td>
-        <td className='is-capitalized has-text-centered'>
-          {/* {user.profile.name} */}
-        </td>
-        <td className='has-text-centered'>
-          {/* {setRoles.toString().length > 0 ? setRoles : ""} */}
-        </td>
-        <td className='has-text-centered'>
-          {/* {user.createdAt &&
-            format(parseISO(user.createdAt), "d LLLL yyyy hh:mm:aa")} */}
-        </td>
-        <td className='has-text-centered'>
-          {/* <div className="buttons">
-            {aS.v === true && (
-              <Link
-                to={`/users-management/users/view/${user.id}`}
-                className="button is-small is-rounded is-primary is-outlined"
-              >
-                View
-              </Link>
-            )}
-            {aS.u === true && (
-              <Link
-                to={`/users-management/users/edit/${user.id}`}
-                className="button is-small is-rounded is-primary is-outlined"
-              >
-                Edit
-              </Link>
-            )}
-            {aS.d === true && (
-              <button className="button is-small is-rounded is-danger is-outlined">
-                Delete
-              </button>
-            )}
-          </div> */}
-        </td>
+        <td>Loading...</td>
       </tr>
     );
-  }
+  const pg = (cp - 1) * itn;
+  return (
+    <tr>
+      <td className='has-text-centered'>{pg + index + 1}</td>
+      <td className='has-text-centered'>{item.itemId}</td>
+      <td className='is-capitalized has-text-centered'>{item.name}</td>
+      <td className='has-text-centered'>{item.category}</td>
+      <td className='has-text-centered'>
+        {item.createdAt &&
+          format(parseISO(item.createdAt), 'd LLLL yyyy hh:mm:ss aa')}
+      </td>
+      <td className='is-capitalized has-text-centered'>{profile.name}</td>
+      <td className='has-text-centered'>
+        <div>
+          {/* {aS.r === true && (
+            <button
+              className='button is-small is-rounded is-success is-outlined mr-1 mb-1'
+              onClick={() => onRestore(item)}
+            >
+              <i className='fas fa-reply-all icon' />
+            </button>
+          )} */}
+          {aS.d === true && (
+            <button
+              className='button is-small is-rounded is-danger is-outlined mr-1 mb-1'
+              onClick={() => onDelete(item)}
+            >
+              <i className='fas fa-trash-alt icon' />
+            </button>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 }
-
-export default Item;

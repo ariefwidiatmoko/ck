@@ -22,7 +22,7 @@ class SimpleSearch extends Component {
   };
 
   render() {
-    const { loading, tl } = this.props;
+    const { loading, tl, autoFocus } = this.props;
     const { value } = this.state;
     return (
       <form onSubmit={(e) => this.handleSearchSubmit(e)} autoComplete='off'>
@@ -36,6 +36,7 @@ class SimpleSearch extends Component {
               type='text'
               placeholder={`Cari ${tl}`}
               onFocus={this.handleFocus}
+              autoFocus={autoFocus}
             />
           </p>
           <p className='control'>

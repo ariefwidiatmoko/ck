@@ -1,43 +1,43 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import Item from './Item';
 
-class Lists extends Component {
-  render() {
-    const {
-      items,
-      roles,
-      cp,
-      itn,
-      tl,
-      loading,
-      aS,
-      onDelete,
-    } = this.props;
-    return (
-      <Fragment>
-        {items &&
-          items.length !== 0 &&
-          items.map((item, index) => (
-            <Item
-              key={item.id}
-              index={index}
-              item={item}
-              cp={cp}
-              itn={itn}
-              roles={roles}
-              loading={loading}
-              aS={aS}
-              onDelete={onDelete}
-            />
-          ))}
-        {items && items.length === 0 && (
-          <tr>
-            <td colSpan='5 is-capitalized'>Tidak Ada {tl}</td>
-          </tr>
-        )}
-      </Fragment>
-    );
-  }
+export default function Lists(props) {
+  const {
+    items,
+    cp,
+    itn,
+    tl,
+    loading,
+    aS,
+    onDelete,
+    onRestore,
+    onHDelete,
+  } = props;
+  return (
+    <>
+      {items &&
+        items.length !== 0 &&
+        items.map((item, index) => (
+          <Item
+            key={item.id}
+            index={index}
+            item={item}
+            cp={cp}
+            itn={itn}
+            loading={loading}
+            aS={aS}
+            onDelete={onDelete}
+            onRestore={onRestore}
+            onHDelete={onHDelete}
+          />
+        ))}
+      {items && items.length === 0 && (
+        <tr>
+          <td colSpan='5' className='is-capitalized'>
+            Tidak Ada data {tl}
+          </td>
+        </tr>
+      )}
+    </>
+  );
 }
-
-export default Lists;

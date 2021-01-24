@@ -1,21 +1,18 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 
-class ViewAccount extends Component {
-  render() {
-    const { user } = this.props;
-    return (
-      <Fragment>
-        <div className='columns'>
-          <div className='column is-full'>
-            <h3 className='has-text-weight-bold'>Username</h3>
-            <div className='view'>
-              <p>{user.username || '-'}</p>
-            </div>
+export default function ViewAccount(props) {
+  const { user } = props;
+  return (
+    <>
+      <div className='columns'>
+        <div className='column is-full'>
+          <h3 className='has-text-weight-bold'>Username</h3>
+          <div className='view'>
+            <p>{user.username || '-'}</p>
           </div>
         </div>
-      </Fragment>
-    );
-  }
+      </div>
+    </>
+  )
 }
 
-export default ViewAccount;

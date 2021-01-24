@@ -78,7 +78,7 @@ class About extends Component {
         </div>
         <Field
           label='Hobi'
-          name='arrHobbies'
+          name='hobbies'
           placeholder='Pilih Hobi'
           component={MultiSelectInput}
           data={hobbies}

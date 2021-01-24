@@ -4,18 +4,18 @@ import MultiSelectInput from '../../../common/form/MultiSelectInput';
 
 class EditRole extends Component {
   state = {
-    arrRoles: [],
+    allRoles: [],
   };
   componentDidMount = () => {
     const { auth, rolesFetch, roles } = this.props;
     const token = auth.token;
     rolesFetch(token);
-    let getArr = [];
+    let getRoles = [];
     roles.forEach((role, index) => {
-      getArr[index] = role.roleName;
+      getRoles[index] = role.name;
     });
     this.setState({
-      arrRoles: getArr,
+      allRoles: getRoles,
     });
   };
 
@@ -27,15 +27,15 @@ class EditRole extends Component {
       pristine,
       history,
     } = this.props;
-    const { arrRoles } = this.state;
+    const { allRoles } = this.state;
     return (
       <form onSubmit={handleSubmit(onFormSubmit)} autoComplete='off'>
         <Field
           label='Role'
-          name='arrRoles'
+          name='roles'
           placeholder='Pilih Role'
           component={MultiSelectInput}
-          data={arrRoles}
+          data={allRoles}
         />
         <div
           className='field is-grouped'

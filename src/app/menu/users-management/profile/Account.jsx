@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import { reduxForm, Field } from 'redux-form';
 import {
   composeValidators,
@@ -19,71 +19,68 @@ const validate = combineValidators({
   )(),
 });
 
-class Account extends Component {
-  render() {
-    const {
-      error,
-      pristine,
-      invalid,
-      submitting,
-      handleSubmit,
-      updatePassword,
-    } = this.props;
-
-    return (
-      <Fragment>
-        <Field
-          name='username'
-          disabled='disabled'
-          type='text'
-          component={TextInput}
-          placeholder='Username'
-          label='Username'
-        />
-        <form autoComplete='off' onSubmit={handleSubmit(updatePassword)}>
-          <div className='field is-horizontal'>
-            <div className='field-body'>
-              <Field
-                label='Password Baru'
-                name='newPassword1'
-                type='password'
-                component={TextInput}
-                placeholder='Password Baru'
-                className='is-expanded'
-              />
-              <Field
-                label='Password Konfirmasi'
-                name='newPassword2'
-                type='password'
-                component={TextInput}
-                placeholder='Password Konfirmasi'
-                className='is-expanded'
-              />
-            </div>
+function Account(props) {
+  const {
+    error,
+    pristine,
+    invalid,
+    submitting,
+    handleSubmit,
+    updatePassword,
+  } = props;
+  return (
+    <>
+      <Field
+        name='username'
+        disabled='disabled'
+        type='text'
+        component={TextInput}
+        placeholder='Username'
+        label='Username'
+      />
+      <form autoComplete='off' onSubmit={handleSubmit(updatePassword)}>
+        <div className='field is-horizontal'>
+          <div className='field-body'>
+            <Field
+              label='Password Baru'
+              name='newPassword1'
+              type='password'
+              component={TextInput}
+              placeholder='Password Baru'
+              className='is-expanded'
+            />
+            <Field
+              label='Password Konfirmasi'
+              name='newPassword2'
+              type='password'
+              component={TextInput}
+              placeholder='Password Konfirmasi'
+              className='is-expanded'
+            />
           </div>
-          {error && <p className='help is-danger'>{error}</p>}
-          <div
-            className='field is-grouped'
-            style={{ marginTop: 20, marginBottom: 20 }}
-          >
-            <div className='control'>
-              <button
-                type='submit'
-                disabled={submitting || invalid || pristine}
-                className={
-                  submitting
-                    ? 'button is-primary is-small is-rounded is-outlined is-loading'
-                    : 'button is-primary is-small is-rounded is-outlined'
-                }
-              >
-                Simpan
-              </button>
-            </div>
+        </div>
+        {error && <p className='help is-danger'>{error}</p>}
+        <div
+          className='field is-grouped'
+          style={{ marginTop: 20, marginBottom: 20 }}
+        >
+          <div className='control'>
+            <button
+              type='submit'
+              disabled={submitting || invalid || pristine}
+              className={
+                submitting
+                  ? 'button is-primary is-small is-rounded is-outlined is-loading'
+                  : 'button is-primary is-small is-rounded is-outlined'
+              }
+            >
+              Simpan
+            </button>
           </div>
-        </form>
-      </Fragment>
-    );
-  }
+        </div>
+      </form>
+    </>
+  )
 }
 
 export default reduxForm({

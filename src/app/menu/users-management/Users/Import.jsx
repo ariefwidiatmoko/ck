@@ -9,7 +9,6 @@ import ImportFileInput from '../../../common/components/ImportFileInput';
 const mapState = (state) => ({
   auth: state.auth,
   loading: state.async.loading,
-  progress: state.progress,
   dataImport: state.usersExIm,
 });
 
@@ -47,30 +46,35 @@ class Import extends Component {
   };
 
   handleImport = () => {
-    this.props.usersImp(this.state.data, this.props.auth);
+    const { usersImp, auth } = this.props;
+    const { data } = this.state;
+    usersImp(data, auth);
     this.handleCancel();
   };
 
   handleCancel = () => {
+    const { onChange } = this.props;
     this.setState({
       data: [],
       inputKey: Date.now(),
     });
-    if (this.props.onChange) this.props.onChange(null);
+    if (onChange) onChange(null);
   };
 
   handleRetry = () => {
+    const { onChange, resetImp } = this.props;
     this.setState({
       data: [],
       inputKey: Date.now(),
     });
-    if (this.props.onChange) this.props.onChange(null);
-    this.props.resetImp();
+    if (onChange) onChange(null);
+    resetImp();
   };
 
   handleGoBack = () => {
-    this.props.history.push('/pengaturan-user/user');
-    this.props.resetImp();
+    const { history, resetImp } = this.props;
+    history.push('/pengaturan-user/user');
+    resetImp();
   };
 
   render() {
@@ -86,7 +90,7 @@ class Import extends Component {
               <div className='box'>
                 <form
                   autoComplete='off'
-                  style={{ marginTop: 15, marginBottom: 30 }}
+                  style={{marginTop: 1}}
                 >
                   <div className='level'>
                     <div className='level-left'>
@@ -100,8 +104,8 @@ class Import extends Component {
                               <Link to='/pengaturan-user/user'>{tl}</Link>
                             </li>
                             <li className='is-active'>
-                              <Link to={`/pengaturan-user/user/export`}>
-                                Export
+                              <Link to={`/pengaturan-user/user/import`}>
+                                Impor
                               </Link>
                             </li>
                           </ul>
@@ -113,7 +117,7 @@ class Import extends Component {
                       <div className='level-item'>
                         <div className='buttons'>
                           {data && data[0] && (
-                            <Fragment>
+                            <>
                               <button
                                 disabled={loading}
                                 onClick={this.props.handleSubmit(
@@ -135,7 +139,7 @@ class Import extends Component {
                               >
                                 <i className='fas fa-redo icon' />
                               </button>
-                            </Fragment>
+                            </>
                           )}
                           {dataImport.length > 0 && (
                             <button
@@ -143,7 +147,7 @@ class Import extends Component {
                               onClick={this.handleRetry}
                               className='button is-primary is-small is-rounded is-outlined'
                             >
-                              <i className='fas fa-file-export icon' />
+                              <i className='fas fa-file-import icon' />
                             </button>
                           )}
                           <button
@@ -256,14 +260,6 @@ class Import extends Component {
                               </thead>
                             )}
                             <thead>
-                              {!data[0] && (
-                                <tr>
-                                  <th>No</th>
-                                  <th>Panggilan</th>
-                                  <th>Username</th>
-                                  <th>Password</th>
-                                </tr>
-                              )}
                               {data && data[0] && (
                                 <tr>
                                   {data[0] &&
@@ -274,11 +270,6 @@ class Import extends Component {
                               )}
                             </thead>
                             <tbody>
-                              {!data[0] && (
-                                <tr>
-                                  <td colSpan='4'>Tidak Ada data</td>
-                                </tr>
-                              )}
                               {data && data[0] && (
                                 <Fragment>
                                   {data.map((item, index) => (

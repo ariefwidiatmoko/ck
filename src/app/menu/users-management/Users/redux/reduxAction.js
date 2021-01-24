@@ -3,6 +3,8 @@ import {
   USER_CREATE,
   USER_PROFILE_UPDATE,
   USER_DELETE,
+  USER_RESTORE,
+  USER_HARDDEL,
   USERS_IMPORT,
 } from './reduxConstant';
 
@@ -36,6 +38,24 @@ export const userProfileUpdate = (user) => {
 export const userDelete = (userId) => {
   return {
     type: USER_DELETE,
+    payload: {
+      userId,
+    },
+  };
+};
+
+export const userRestore = (userId) => {
+  return {
+    type: USER_RESTORE,
+    payload: {
+      userId,
+    },
+  };
+};
+
+export const userHardDel = (userId) => {
+  return {
+    type: USER_HARDDEL,
     payload: {
       userId,
     },

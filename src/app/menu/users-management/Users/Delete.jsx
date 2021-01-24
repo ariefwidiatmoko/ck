@@ -9,13 +9,16 @@ const actions = {
 };
 
 class Delete extends Component {
-  onDelete = (id, auth) => {
-    this.props.userDel(id, auth);
-    this.props.closeModal();
+  onDelete = () => {
+    const { data, userDel, closeModal } = this.props;
+    userDel(data.item.id, data.auth, data.total);
+    data.itnRed();
+    closeModal();
   };
 
   render() {
-    const { id, username, auth, closeModal } = this.props;
+    const { data, closeModal } = this.props;
+    const item = data.item;
     return (
       <div className='modal is-active'>
         <div className='modal-background' onClick={closeModal}></div>
@@ -33,13 +36,13 @@ class Delete extends Component {
           <section className='modal-card-body is-size-6'>
             <p className='my-3 mx-1'>
               Apakah anda yakin ingin menghapus{' '}
-              <span className='has-text-danger has-text-weight-semibold'>{`${username}`}</span>{' '}
+              <span className='has-text-danger has-text-weight-semibold'>{`${item.username}`}</span>{' '}
               ?
             </p>
           </section>
           <footer className='modal-card-foot'>
             <button
-              onClick={() => this.onDelete(id, auth)}
+              onClick={() => this.onDelete()}
               className='button is-danger is-small is-rounded is-outlined'
             >
               <i className='fas fa-trash-alt icon' />

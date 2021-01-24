@@ -1,23 +1,23 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import profileDefault from '../../../../../images/user-default.png';
 import { SITE_ADDRESS } from '../../../../common/util/siteConfig';
 
 const Galleries = ({
   mainPhoto,
-  arrPhotos,
+  photos,
   deletePhoto,
   setMainPhoto,
   loading,
 }) => {
   const [buttonId, setButtonId] = useState('');
   let filteredPhotos;
-  if (arrPhotos) {
-    filteredPhotos = arrPhotos.split(',').filter((photo) => {
+  if (photos) {
+    filteredPhotos = photos.split(',').filter((photo) => {
       return photo !== mainPhoto;
     });
   }
   return (
-    <Fragment>
+    <>
       <p className='title is-5'>Galeri</p>
       <div className='columns'>
         <div className='column is-one-quarter-desktop is-half-tablet'>
@@ -43,7 +43,7 @@ const Galleries = ({
         </div>
       </div>
       <div className='columns is-multiline'>
-        {arrPhotos &&
+        {photos &&
           filteredPhotos.map((photo) => (
             <div
               className='column is-one-quarter-desktop is-half-tablet'
@@ -97,7 +97,7 @@ const Galleries = ({
             </div>
           ))}
       </div>
-    </Fragment>
+    </>
   );
 };
 

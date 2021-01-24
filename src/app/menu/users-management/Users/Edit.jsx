@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { reset } from 'redux-form';
 import {
-  userFetch,
-  userRolesFetch,
+  userView,
+  userRolesIndex,
   userEdit,
   userAccountEdit,
   userRoleEdit,
@@ -22,9 +22,9 @@ import { Profilecard } from '../../../common/components/Profilecard';
 
 const mapState = (state, ownProps) => {
   const userId = ownProps.match.params.id;
-
+  const users = state.users;
   let user = {};
-  if (state.users && state.users.length > 0) {
+  if (users && users.length > 0) {
     user = state.users.filter((user) => user.id === Number(userId))[0];
   }
   return {
@@ -36,8 +36,8 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  userFetch,
-  userRolesFetch,
+  userView,
+  userRolesIndex,
   userEdit,
   userAccountEdit,
   userRoleEdit,
@@ -59,9 +59,9 @@ class Edit extends Component {
   };
 
   componentDidMount = async () => {
-    const { auth, userFetch } = this.props;
+    const { auth, userView } = this.props;
     const { userId } = this.state;
-    await userFetch(userId, auth);
+    await userView(userId, auth);
     this.updateInitialValues();
     this.handleToggle();
   };
@@ -80,9 +80,9 @@ class Edit extends Component {
     let setToggle;
     if (value === true) {
       setToggle = true;
-    } else if (value === false && profile && profile.religion === 'Other') {
+    } else if (value === false && profile && profile.religion === 'Lainnya') {
       setToggle = false;
-    } else if (profile && profile.religion === 'Other') {
+    } else if (profile && profile.religion === 'Lainnya') {
       setToggle = true;
     }
     this.setState({
@@ -97,22 +97,30 @@ class Edit extends Component {
   };
 
   onFormSubmit = async (values) => {
+    console.log(values);
     const { auth, userEdit } = this.props;
     const { userId } = this.state;
     try {
       const religionDetail =
-        values.religion !== 'other' ? null : values.religionDetail;
+        values.religion !== 'Lainnya' ? null : values.religionDetail;
       const dob = !isNaN(values.dob)
         ? typeof values.dob === 'number'
           ? new Date(values.dob).toISOString()
           : values.dob.toISOString()
         : null;
+      const getHob = values.hobbies;
+      const hobbies =
+        getHob !== null
+          ? getHob.toString().length() > 0
+            ? getHob.toString()
+            : null
+          : null;
       const newValues = {
         ...values,
         id: userId,
         dob: dob,
+        hobbies: hobbies,
         religionDetail: religionDetail,
-        updatedBy: auth.userId,
       };
       await userEdit(newValues, auth);
     } catch (error) {
@@ -136,8 +144,8 @@ class Edit extends Component {
   onFormRoleSubmit = (values) => {
     const { auth, roles, userRoleEdit, history } = this.props;
     const { userId } = this.state;
-    const arrRoles = arrKeyValue(roles, values.arrRoles, 'roleName', 'id');
-    userRoleEdit(arrRoles, userId, auth, history);
+    const allRoles = arrKeyValue(roles, values.roles, 'roleName', 'id');
+    userRoleEdit(allRoles, userId, auth, history);
   };
 
   render() {
@@ -147,18 +155,18 @@ class Edit extends Component {
       history,
       loading,
       roles,
-      userRolesFetch,
+      userRolesIndex,
       reset,
     } = this.props;
     const { userId, initialValues, toggle } = this.state;
     const profile = user && user.profile ? user.profile : null;
-    const arrRoles =
-      user.arrRoles && user.arrRoles.toString().length > 0
-        ? user.arrRoles.toString().split(',')
+    const allRoles =
+      user.roles && user.roles.toString().length > 0
+        ? user.roles.toString().split(',')
         : [];
-    const initRoles = arrKeyValue(roles, arrRoles, 'id', 'roleName');
-    if (arrRoles.toString().split(',')[0]) {
-      arrRoles
+    const initRoles = arrKeyValue(roles, allRoles, 'id', 'roleName');
+    if (allRoles.toString().split(',')[0]) {
+      allRoles
         .toString()
         .split(',')
         .forEach((role) => {
@@ -258,10 +266,10 @@ class Edit extends Component {
                         <EditRole
                           auth={auth}
                           roles={roles}
-                          rolesFetch={userRolesFetch}
+                          rolesFetch={userRolesIndex}
                           loading={loading}
                           history={history}
-                          initialValues={{ arrRoles: initRoles }}
+                          initialValues={{ allRoles: initRoles }}
                           onFormSubmit={this.onFormRoleSubmit}
                           reset={reset}
                           updateInitialValues={this.updateInitialValues}

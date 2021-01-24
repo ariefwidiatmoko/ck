@@ -11,17 +11,19 @@ import SimpleSearch from '../../pages/_part/_fragment/SimpleSearch';
 
 const mapState = (state) => {
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'pengurus')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'pengurus')[0];
   }
-  let totals = {};
-  if (state.details) {
-    totals = state.details.filter((i) => i.id === 'pengurus')[0];
+  const details = state.details
+  let detail = {};
+  if (details) {
+    detail = details.filter((i) => i.id === 'pengurus')[0];
   }
   return {
-    auth: state.auth,
+    auth: auth,
     aS: aS,
-    totals: totals,
+    detail: detail,
     items: state.staffs,
     loading: state.async.loading,
   };
@@ -96,8 +98,8 @@ class Index extends Component {
   };
 
   render() {
-    const { aS, totals, items, loading, openModal } = this.props;
-    const tt = totals && totals.total ? totals.total : 0;
+    const { aS, detail, items, loading, openModal } = this.props;
+    const tt = detail && detail.total ? detail.total : 0;
     const { tl, cp, itn, mB } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>

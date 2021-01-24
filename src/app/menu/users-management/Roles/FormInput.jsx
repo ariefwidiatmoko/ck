@@ -10,12 +10,12 @@ import {
 import TextInput from '../../../common/form/TextInput';
 
 const validate = combineValidators({
-  roleName: composeValidators(
-    isRequired({ message: 'Role name is required' }),
+  name: composeValidators(
+    isRequired({ message: 'Nama role perlu diisi' }),
     hasLengthGreaterThan(2)({
-      message: 'Role name is at least 3 characters ',
+      message: 'Nama role paling sedikit 3 karakter',
     }),
-    hasLengthLessThan(20)({ message: 'Role name is at max 20 characters ' })
+    hasLengthLessThan(21)({ message: 'Nama role paling banyak 20 karakter' })
   )(),
 });
 
@@ -25,10 +25,10 @@ class FormInput extends Component {
   componentDidMount = () => {
     const { role, roleId } = this.props;
     if (roleId) {
-      let setA = JSON.parse(role.arrAuthorities);
+      let setA = JSON.parse(role.authorities);
       const roleData = {
         roleId: role.id,
-        roleName: role.roleName,
+        name: role.name,
         m: setA[0],
         subm: setA[1],
         createdBy: role.createdBy,
@@ -68,7 +68,7 @@ class FormInput extends Component {
   };
 
   handleClickSubmit = (values) => {
-    const { auth, roleNew, roleEdit, history, roleId } = this.props;
+    const { auth, roleAdd, roleEdit, history, roleId } = this.props;
     const { dataM, dataSubm, dataAc } = this.state;
     let setM = [];
     let setSubm = [];
@@ -167,9 +167,9 @@ class FormInput extends Component {
         .values(),
     ];
     if (roleId) {
-      roleEdit(roleId, values.roleName, setM, setAc, auth, history);
+      roleEdit(roleId, values.name, setM, setAc, auth, history);
     } else {
-      roleNew(values.roleName, setM, setAc, auth, history);
+      roleAdd(values.name, setM, setAc, auth, history);
     }
   };
 
@@ -209,9 +209,7 @@ class FormInput extends Component {
                       </li>
                       {roleId && role && (
                         <li className='is-active is-capitalized'>
-                          <Link to={`/pengaturan-user/role`}>
-                            {role.roleName}
-                          </Link>
+                          <Link to={`/pengaturan-user/role`}>{role.name}</Link>
                         </li>
                       )}
                     </ul>
@@ -245,7 +243,7 @@ class FormInput extends Component {
             </div>
             <Field
               label='Nama Role'
-              name='roleName'
+              name='name'
               type='text'
               component={TextInput}
               placeholder='Nama Role'
@@ -666,6 +664,23 @@ class FormInput extends Component {
                       ))}
                   </Fragment>
                 ))}
+            </tbody>
+          </table>
+        </div>
+        <div className='box'>
+          <table className='table is-bordered is-striped is-narrow is-hoverable is-fullwidth'>
+            <thead>
+              <tr>
+                <th>Sistem Log</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Dibuat oleh <b>Admin</b> pada <b>12 Juli 2021 09:00:00</b></p>
+                  <p>Diupdate oleh <b>Admin</b> pada <b>12 Juli 2021 09:00:00</b></p>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

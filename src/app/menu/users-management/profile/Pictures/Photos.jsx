@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropzoneInput from './DropzoneInput';
 import CropperInput from './CropperInput';
 import { connect } from 'react-redux';
@@ -39,6 +39,7 @@ const Photos = ({
     const authData = auth;
     try {
       await profilePhotoUpload(image, files[0].name, authData);
+      setAddPic(!addPic);
       handleCancelCrop();
     } catch (error) {
       console.log(error);
@@ -95,16 +96,16 @@ const Photos = ({
           </button>
         </div>
       </div>
-      <div className={addPic ? '' : 'is-hidden'} style={{ marginBottom: 15 }}>
+      <div className={addPic ? 'mb-3' : 'is-hidden'}>
         <div className='columns'>
           <div className='column is-half is-offset-one-quarter has-text-centered'>
             {files.length === 0 && (
-              <Fragment>
+              <>
                 <DropzoneInput setFiles={setFiles} />
-              </Fragment>
+              </>
             )}
             {files.length > 0 && (
-              <Fragment>
+              <>
                 <CropperInput
                   setImage={setImage}
                   setCropResult={setCropResult}
@@ -138,7 +139,7 @@ const Photos = ({
                     <i className='fas fa-times icon' />
                   </button>
                 </div>
-              </Fragment>
+              </>
             )}
           </div>
         </div>
@@ -147,19 +148,19 @@ const Photos = ({
   );
 
   return (
-    <Fragment>
-      {profile.arrPhotos === null && addPicMenu}
-      {profile.arrPhotos &&
-        profile.arrPhotos.split(',').length < 3 &&
+    <>
+      {profile.photos === null && addPicMenu}
+      {profile.photos &&
+        profile.photos.split(',').length < 3 &&
         addPicMenu}
       <Galleries
         mainPhoto={profile.mainPhoto}
-        arrPhotos={profile.arrPhotos}
+        photos={profile.photos}
         setMainPhoto={handleSetMainPhoto}
         deletePhoto={handleDeletePhoto}
         loading={loading}
       />
-    </Fragment>
+    </>
   );
 };
 

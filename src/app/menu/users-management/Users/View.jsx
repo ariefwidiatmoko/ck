@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userFetch } from './redux/reduxApi';
+import { userView } from './redux/reduxApi';
 import EditTab from './EditTab';
 import ViewBasic from './ViewBasic';
 import ViewAccount from './ViewAccount';
@@ -10,13 +10,15 @@ import background from '../../../../images/default-background.jpg';
 import profileDefault from '../../../../images/user-default.png';
 import { SITE_ADDRESS } from '../../../common/util/siteConfig';
 import { Profilecard } from '../../../common/components/Profilecard';
+import SystemLog from '../../../common/components/SystemLog';
 
 const mapState = (state, ownProps) => {
   const userId = ownProps.match.params.id;
 
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'user')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'user')[0];
   }
 
   let user = {};
@@ -24,7 +26,7 @@ const mapState = (state, ownProps) => {
     user = state.users.filter((user) => user.id === Number(userId))[0];
   }
   return {
-    auth: state.auth,
+    auth: auth,
     aS: aS,
     user: user,
     roles: state.roles,
@@ -32,7 +34,7 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  userFetch,
+  userView,
 };
 
 class View extends Component {
@@ -45,9 +47,9 @@ class View extends Component {
 
   componentDidMount = () => {
     this._isMounted = true;
-    const { auth, userFetch } = this.props;
+    const { auth, userView } = this.props;
     const { userId } = this.state;
-    userFetch(userId, auth);
+    userView(userId, auth);
     setTimeout(() => {
       this.updateInitialValues();
     }, 100);
@@ -168,6 +170,9 @@ class View extends Component {
                         <ViewRole user={user} roles={roles} />
                       )}
                     </div>
+                    {this.state.activeTab === 'basic' && (
+                      <SystemLog logs={JSON.parse(profile.logs)} />
+                    )}
                   </div>
                 </div>
               </div>

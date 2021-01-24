@@ -6,7 +6,7 @@ import { openModal } from '../../menu/modals/redux/modalActions';
 const mapState = (state) => {
   return {
     auth: state.auth,
-    aS: state.auth.arrAuth.detail,
+    aS: state.auth.authorities.details,
     expiresIn: state.auth.expiresIn,
   };
 };
@@ -17,7 +17,7 @@ const actions = {
   openModal,
 };
 
-export default function (ComposedComponent) {
+export default function AuthWrapper(ComposedComponent) {
   class Authenticate extends Component {
     componentDidMount = () => {
       this.checkAndRedirect();

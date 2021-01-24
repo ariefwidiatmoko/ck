@@ -3,7 +3,8 @@ import {
   MEMBER_CREATE,
   MEMBER_UPDATE,
   MEMBER_DELETE,
-  MEMBER_HARD_DELETE,
+  MEMBER_RESTORE,
+  MEMBER_HARDDEL,
   MEMBERS_EXPORT,
   MEMBERS_IMPORT,
 } from './reduxConstant';
@@ -44,9 +45,18 @@ export const memberDelete = (memberId) => {
   };
 };
 
-export const memberHardDelete = (memberId) => {
+export const memberRestore = (memberId) => {
   return {
-    type: MEMBER_HARD_DELETE,
+    type: MEMBER_RESTORE,
+    payload: {
+      memberId,
+    },
+  };
+};
+
+export const memberHardDel = (memberId) => {
+  return {
+    type: MEMBER_HARDDEL,
     payload: {
       memberId,
     },

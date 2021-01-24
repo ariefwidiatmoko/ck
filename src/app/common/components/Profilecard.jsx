@@ -44,13 +44,13 @@ export const Profilecard = ({
         </div>
         <br />
         <div className="has-text-centered">
-          {profile.createdAt && (
+          {profile.joinDate && (
             <Tooltip content="Dibuat">
               <i className="fas fa-user-clock icon" />
             </Tooltip>
           )}{" "}
-          {profile.createdAt &&
-            formatDistance(Date.now(), parseISO(profile.createdAt)) + " ago"}
+          {profile.joinDate &&
+            formatDistance(Date.now(), parseISO(profile.joinDate)) + " ago"}
         </div>
       </div>
     </div>

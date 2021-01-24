@@ -38,7 +38,7 @@ const SelectInput = ({
             readOnly={readOnly}
             style={style}
           >
-            <option value=''>Pilih {label}</option>
+            <option value=''>{placeholder}</option>
             {options &&
               options.map((item) => (
                 <option key={item.key} value={item.value} style={style}>

@@ -2,4 +2,6 @@ export const USERS_GET = 'USERS_GET';
 export const USER_CREATE = 'USER_CREATE';
 export const USER_PROFILE_UPDATE = 'USER_PROFILE_UPDATE';
 export const USER_DELETE = 'USER_DELETE';
+export const USER_RESTORE = 'USER_RESTORE';
+export const USER_HARDDEL = 'USER_HARDDEL';
 export const USERS_IMPORT = 'USERS_IMPORT';

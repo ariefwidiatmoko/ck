@@ -37,7 +37,9 @@ export default class PageNumber extends Component {
                     <span>
                       {(cp - 1) * itn + 1}-
                       {cp === Math.ceil(tt / itn)
-                        ? (cp - 1) * itn + (tt % itn)
+                        ? tt !== itn
+                          ? (cp - 1) * itn + (tt % itn)
+                          : itn
                         : cp * itn}{' '}
                       dari {tt ? tt : ''} {tl}
                     </span>

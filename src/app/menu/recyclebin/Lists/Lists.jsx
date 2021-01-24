@@ -1,36 +1,40 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import Item from './Item';
 
-class Lists extends Component {
-  render() {
-    const {
-      // users,
-      // roles,
-      loading,
-      // aS,
-    } = this.props;
-    return (
-      <Fragment>
-        {/* {users &&
-          users.length !== 0 &&
-          users.map((user, index) => ( */}
-        <Item
-          // key={user.id}
-          // index={index}
-          // user={user}
-          // roles={roles}
-          loading={loading}
-          // aS={aS}
-        />
-        {/* ))} */}
-        {/* {users && users.length === 0 && (
-           <tr>
-           <td>No Item</td>
-          </tr>
-        )} */}
-      </Fragment>
-    );
-  }
+export default function Lists(props) {
+  const {
+    items,
+    cp,
+    itn,
+    tl,
+    loading,
+    aS,
+    onRestore,
+    onDelete,
+  } = props;
+  return (
+    <>
+      {items &&
+        items.length !== 0 &&
+        items.map((item, index) => (
+          <Item
+            key={item.id}
+            index={index}
+            item={item}
+            cp={cp}
+            itn={itn}
+            loading={loading}
+            aS={aS}
+            onRestore={onRestore}
+            onDelete={onDelete}
+          />
+        ))}
+      {items && items.length === 0 && (
+        <tr>
+          <td colSpan='5 is-capitalized'>Tidak Ada data di {tl}</td>
+        </tr>
+      )}
+    </>
+  )
 }
 
-export default Lists;

@@ -10,13 +10,15 @@ const actions = {
 
 class Delete extends Component {
   onDelete = () => {
-    const { id, auth, memberDel, closeModal } = this.props;
-    memberDel(id, auth);
+    const { data, memberDel, closeModal } = this.props;
+    memberDel(data.item.id, data.auth, data.total);
+    data.itnRed();
     closeModal();
   };
 
   render() {
-    const { code, name, closeModal } = this.props;
+    const { data, closeModal } = this.props;
+    const item = data.item;
     return (
       <div className='modal is-active'>
         <div className='modal-background' onClick={closeModal}></div>
@@ -35,7 +37,7 @@ class Delete extends Component {
             <p className='my-3 mx-1'>
               Apakah anda yakin ingin menghapus{' '}
               <span className='has-text-danger has-text-weight-semibold'>
-                {`${code} - ${name}`}
+                {`${item.code} - ${item.name}`}
               </span>{' '}
               ?
             </p>

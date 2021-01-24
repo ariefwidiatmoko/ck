@@ -1,0 +1,13 @@
+                   PAGE             REDUXAPI        REDUXACTION     REDUXCONSTANT       ROUTE                       CONTROLLER
+Items Index      : Index            itemsIndex      itemsGet        ITEMS_GET           items/                      itemsGet
+Item Add         : Add              itemAdd         itemCreate      ITEM_CREATE         items/create                itemCreate
+Item Edit        : Edit             itemEdit        itemUpdate      ITEM_UPDATE         items/update/:itemId        itemUpdate
+Item View        : View             itemView        itemGet         ITEM_GET            items/:itemId               itemGet
+Item Delete      : Delete           itemDel         itemDelete      ITEM_DELETE         items/delete/:itemId        itemDelete
+item Restore     : Restore          itemRes         itemRestore     ITEM_RESTORE        items/Restore/:itemId       itemRestore
+Item HardDel     : HardDel          itemHDel        itemHardDel     ITEM_HARDDEL        items/hard-delete/:itemId   itemHardDel
+Items Export     : Export           itemsExp        itemsExport     ITEMS_EXPORT        items/export                itemsExport
+Items Import     : Import           itemsImp        itemsImport     ITEMS_IMPORT        items/import                itemsImport
+
+Create Model Sequelize:
+npx sequelize model:create --name Saving --attributes code:string,memberId:integer,memberCode:string,memberName:string,primarySaving:string,secondarySaving:string,tertierSaving:string,remarks:string,createdBy:string,updatedBy:string,deletedAt:string,deletedBy:string,userId:integer

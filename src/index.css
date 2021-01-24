@@ -170,6 +170,13 @@ table td {
   width: 25px;
   background-color: #eee;
 }
+/* custom button check on hover */
+.custom:hover {
+  display: block;
+}
+.custom-check-show:hover {
+  display: none;
+}
 /* Custom Handler Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -196,7 +203,7 @@ table td {
 
 /* Custom Checkbox - checkmark hidden when not checked */
 .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
 }
@@ -283,9 +290,13 @@ div.react-datepicker-popper {
 }
 
 /* Custom hover hand pointer */
-div.hand-pointer:hover {
+.hand-pointer:hover {
+  color: #3273dc;
   cursor: pointer;
   background-color: rgb(245, 245, 245);
+}
+.custom-background:hover {
+  background-color: #3273dc;
 }
 
 /* Custom Profile Picture */
@@ -352,7 +363,7 @@ button.rw-btn-select > span {
   color: #363636;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1280px) {
   .menu-container {
     width: 25%;
     min-width: auto;

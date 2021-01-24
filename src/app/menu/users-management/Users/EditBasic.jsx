@@ -24,7 +24,7 @@ class EditBasic extends Component {
   };
 
   onChange = (e) => {
-    if (e.target.value === 'Other') {
+    if (e.target.value === 'Lainnya') {
       this.props.handleToggle(true);
     } else {
       this.props.handleToggle(false);
@@ -98,7 +98,7 @@ class EditBasic extends Component {
               name='dob'
               type='date'
               component={DateInput}
-              placeholder='Pilih Tanggal'
+              placeholder='2000/05/21'
               showMonthDropdown
               showYearDropdown
               defaultSelected={null}
@@ -158,7 +158,7 @@ class EditBasic extends Component {
         </div>
         <Field
           label='Hobi'
-          name='arrHobbies'
+          name='hobbies'
           placeholder='Pilih Hobi'
           component={MultiSelectInput}
           data={hobbies}

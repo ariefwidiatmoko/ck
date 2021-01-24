@@ -36,7 +36,7 @@ export const staffsIndex = (token, itn, cp, st) => {
         const error = new Error(response.message);
         throw error;
       }
-      dispatch(detailsItem({ id: 'pengurus', total: response.totals }));
+      dispatch(detailsItem({ id: 'pengurus', total: response.total }));
       dispatch(staffsGet(response.staffs));
       dispatch(asyncActionFinish());
     } catch (error) {

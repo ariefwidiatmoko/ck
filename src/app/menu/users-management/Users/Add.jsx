@@ -9,7 +9,7 @@ import {
   hasLengthGreaterThan,
 } from 'revalidate';
 import TextInput from '../../../common/form/TextInput';
-import { userNew } from './redux/reduxApi';
+import { userAdd } from './redux/reduxApi';
 
 const mapState = (state) => ({
   loading: state.async.loading,
@@ -17,7 +17,7 @@ const mapState = (state) => ({
 });
 
 const actions = {
-  userNew,
+  userAdd,
 };
 
 const validate = combineValidators({
@@ -40,7 +40,7 @@ class Add extends Component {
   onFormSubmit = async (values) => {
     const { auth, history } = this.props;
     try {
-      await this.props.userNew(values, auth, history);
+      await this.props.userAdd(values, auth, history);
     } catch (error) {
       console.log(error);
     }

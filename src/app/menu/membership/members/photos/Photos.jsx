@@ -39,6 +39,7 @@ const TabPhoto = ({
     const authData = auth;
     try {
       await memberPhotoUpload(image, files[0].name, authData, profile.userId);
+      setAddPic(!addPic);
       handleCancelCrop();
     } catch (error) {
       console.log(error);
@@ -62,7 +63,7 @@ const TabPhoto = ({
 
   const handleDeletePhoto = async (photo) => {
     try {
-      await memberPhotoDelete(profile.userId, photo, auth);
+      await memberPhotoDelete(photo, auth, profile.userId);
     } catch (error) {
       toastr.error('Oops', error.message);
     }
@@ -88,14 +89,14 @@ const TabPhoto = ({
               <i className='fas fa-times icon' />
             ) : (
               <>
-                <i className='fas fa-plus icon' style={{ marginRight: 1 }} />
+                <i className='fas fa-plus icon mr-1' />
                 Foto
               </>
             )}
           </button>
         </div>
       </div>
-      <div className={addPic ? '' : 'is-hidden'} style={{ marginBottom: 15 }}>
+      <div className={addPic ? 'mb-3' : 'is-hidden'}>
         <div className='columns'>
           <div className='column is-half is-offset-one-quarter has-text-centered'>
             {files.length === 0 && (
@@ -129,14 +130,14 @@ const TabPhoto = ({
                     }
                     style={{ marginRight: '10px' }}
                   >
-                    Upload
+                    <i className='fas fa-upload icon' />
                   </button>
                   <button
                     disabled={loading}
                     onClick={handleCancelCrop}
                     className='button custom-grey is-small is-rounded'
                   >
-                    Batalkan
+                    <i className='fas fa-times icon' />
                   </button>
                 </div>
               </Fragment>
@@ -149,13 +150,13 @@ const TabPhoto = ({
 
   return (
     <Fragment>
-      {profile.arrPhotos === null && addPicMenu}
-      {profile.arrPhotos &&
-        profile.arrPhotos.split(',').length < 3 &&
+      {profile.photos === null && addPicMenu}
+      {profile.photos &&
+        profile.photos.split(',').length < 3 &&
         addPicMenu}
       <Galleries
         mainPhoto={profile.mainPhoto}
-        arrPhotos={profile.arrPhotos}
+        photos={profile.photos}
         memberMainPhotoSet={handleMainPhotoSet}
         deletePhoto={handleDeletePhoto}
         loading={loading}

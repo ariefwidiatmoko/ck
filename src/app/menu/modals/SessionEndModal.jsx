@@ -80,13 +80,12 @@ class SessionEndModal extends Component {
           <section className='modal-card-body'>
             {!this.state.showLogin && (
               <div>
-                <br />
-                <p className='has-text-centered'>
+                <p className='has-text-centered mt-4'>
                   {auth.username
                     ? 'Sesi anda telah berakhir, anda perlu login.'
                     : 'Anda harus login kembali.'}
                 </p>
-                <p className='has-text-centered' style={{ marginTop: 15 }}>
+                <p className='has-text-centered mt-4 mb-4'>
                   <button
                     className='button is-rounded is-primary is-outlined'
                     onClick={this.onClickLogin}
@@ -94,7 +93,6 @@ class SessionEndModal extends Component {
                     Login
                   </button>
                 </p>
-                <br />
               </div>
             )}
             {this.state.showLogin && (
@@ -140,57 +138,64 @@ class LoginForm extends Component {
       handleLogin,
     } = this.props;
     return (
-      <div className='box'>
-        <div className='media'>
-          <div className='media-left'>
-            <figure className='image is-128x128' style={{ marginTop: '2.4em' }}>
-              <img
-                className='is-rounded'
-                src={
-                  auth.mainPhoto ? SITE_ADDRESS + auth.mainPhoto : UserProfile
-                }
-                alt='Profile'
-              />
-            </figure>
-          </div>
-          <div className='media-content'>
-            <div className='content'>
-              <div className='title'>Login</div>
-              <form onSubmit={handleSubmit(handleLogin)} autoComplete='off'>
-                <Field
-                  name='username'
-                  disabled={auth.username ? 'disabled' : ''}
-                  type='text'
-                  component={CustomTextInput}
-                  placeholder='Username'
-                  label='Username'
-                  icon='user'
+      <div className='columns' style={{marginTop: 19, marginBottom: 19}}>
+        <div className='column is-one-quarter'></div>
+        <div className='column is-two-quarter'>
+          <div className='media mx-7'>
+            <div className='media-left'>
+              <figure
+                className='image is-128x128'
+                style={{ marginTop: '2.4em' }}
+              >
+                <img
+                  className='is-rounded'
+                  src={
+                    auth.mainPhoto ? SITE_ADDRESS + auth.mainPhoto : UserProfile
+                  }
+                  alt='Profile'
                 />
-                <Field
-                  name='password'
-                  type='password'
-                  component={CustomTextInput}
-                  placeholder='Password'
-                  label='Password'
-                  icon='lock'
-                />
-                <div className='field'>
-                  {error && <p className='help is-danger'>{error}</p>}
-                  <button
-                    disabled={invalid || loading || pristine}
-                    className={
-                      loading
-                        ? 'button is-link is-small is-rounded is-outlined is-loading'
-                        : 'button is-link is-small is-rounded is-outlined'
-                    }
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
+              </figure>
+            </div>
+            <div className='media-content'>
+              <div className='content'>
+                <div className='title'>Login</div>
+                <form onSubmit={handleSubmit(handleLogin)} autoComplete='off'>
+                  <Field
+                    name='username'
+                    disabled={auth.username ? 'disabled' : ''}
+                    type='text'
+                    component={CustomTextInput}
+                    placeholder='Username'
+                    label='Username'
+                    icon='user'
+                  />
+                  <Field
+                    name='password'
+                    type='password'
+                    component={CustomTextInput}
+                    placeholder='Password'
+                    label='Password'
+                    icon='lock'
+                  />
+                  <div className='field'>
+                    {error && <p className='help is-danger'>{error}</p>}
+                    <button
+                      disabled={invalid || loading || pristine}
+                      className={
+                        loading
+                          ? 'button is-link is-small is-rounded is-outlined is-loading'
+                          : 'button is-link is-small is-rounded is-outlined'
+                      }
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+        <div className='column is-one-quarter'></div>
       </div>
     );
   }

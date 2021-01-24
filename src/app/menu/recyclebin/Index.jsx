@@ -1,147 +1,257 @@
-import React, {
-  Component,
-  // Fragment,
-} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import { recyclebinsFetch } from './redux/reduxApi';
+import { recyclebinsIndex } from './redux/reduxApi';
+import { openModal, closeModal } from '../modals/redux/modalActions';
 import LoadingButton from '../../main/LoadingButton';
-import RecyclebinList from './Lists/Lists';
+import Lists from './Lists/Lists';
 import { compose } from 'redux';
+import PageNumber from '../pages/_part/_fragment/PageNumber';
+import SimpleSearch from '../pages/_part/_fragment/SimpleSearch';
 
 const mapState = (state) => {
   let aS = {};
-  if (state.auth) {
-    aS = state.auth.arrAuth.detail.subm.filter((i) => i.id === 'users')[0];
+  const auth = state.auth;
+  if (auth && auth.authorities.details) {
+    aS = auth.authorities.details.m.filter((i) => i.id === 'recyclebin')[0];
+  }
+  const details = state.details;
+  let detail = {};
+  if (details) {
+    detail = details.filter((i) => i.id === 'recyclebin')[0];
   }
   return {
-    recyclebins: state.recyclebins,
     auth: state.auth,
     aS: aS,
+    detail: detail,
+    items: state.recyclebins,
     loading: state.async.loading,
   };
 };
 
 const actions = {
-  recyclebinsFetch,
+  recyclebinsIndex,
+  openModal,
+  closeModal,
 };
 
 class Index extends Component {
-  componentDidMount = () => {
-    this.props.recyclebinsFetch(this.props.auth.token);
+  state = {
+    tl: 'recycle bin',
+    cp: 1,
+    itn: 10,
+    st: '',
+    mB: false,
   };
+
+  componentDidMount = () => {
+    const { auth, recyclebinsIndex } = this.props;
+    const { itn } = this.state;
+    recyclebinsIndex(auth.token, itn, 1, '');
+  };
+
+  handleItemNumber = (number) => {
+    const { auth, recyclebinsIndex } = this.props;
+    const { st } = this.state;
+    this.setState((prevState) => ({
+      cp: 1,
+      itn: number,
+    }));
+    recyclebinsIndex(auth.token, number, 1, st);
+  };
+
+  handlePage = (number) => {
+    const { auth, recyclebinsIndex } = this.props;
+    const { cp, itn, st } = this.state;
+    this.setState({
+      cp: cp + number,
+    });
+    recyclebinsIndex(auth.token, itn, cp + number, st);
+  };
+
+  handleSimpleSearch = (st) => {
+    const { auth, recyclebinsIndex } = this.props;
+    const { itn } = this.state;
+    this.setState((prevState) => ({
+      cp: 1,
+      itn: itn,
+      st: st,
+    }));
+    recyclebinsIndex(auth.token, itn, 1, st);
+  };
+
+  handleMoreButton = () => {
+    const { mB } = this.state;
+    this.setState({
+      mB: !mB,
+    });
+  };
+
+  itnRed = () => {
+    const { itn } = this.state;
+    this.setState({
+      itn: itn - 1,
+    });
+  };
+
+  onRestore = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('RecyclebinRestore', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
+  onDelete = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('RecyclebinDelete', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
+    });
+  };
+
   render() {
-    const { recyclebins, auth, aS, loading } = this.props;
+    const { aS, detail, items, loading, openModal } = this.props;
+    const tt = detail && detail.total ? detail.total : 0;
+    const { tl, cp, itn, st, mB } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
           <div className='columns is-variable'>
-            <div className='column'>
+            <div className='column is-fullwidth'>
               <div className='box'>
-                <nav className='breadcrumb' aria-label='breadcrumbs'>
-                  <ul className='margin-10-25'>
-                    <li className='is-active'>
-                      <Link to='/recyclebin'>Recycle Bin</Link>
-                    </li>
-                    <li className='is-active'>
-                      <Link to='/recyclebin'>Index</Link>
-                    </li>
-                  </ul>
-                </nav>
-                <div className='columns'>
-                  <div className='column is-fullwidth'>
-                    <div className='box'>
-                      <div className='level'>
-                        <div className='level-left'>
-                          <div className='level-item'>
-                            <div className='field has-addons'>
-                              <p className='control'>
-                                <input
-                                  className='input is-small is-rounded'
-                                  type='text'
-                                  placeholder='Search user'
-                                />
-                              </p>
-                              <p className='control'>
-                                <button className='button is-small is-link is-rounded is-outlined'>
-                                  <i className='fas fa-search' />
-                                </button>
-                              </p>
-                            </div>
-                          </div>
-                          <div className='level-item'>
-                            <div className='field has-addons'>
-                              <div className='control'>
-                                <div className='button is-small is-rounded is-primary is-outlined'>
-                                  <span className='icon is-small'>
-                                    <i className='fas fa-chevron-left' />
-                                  </span>
-                                </div>
-                              </div>
-                              <div className='control'>
-                                <div className='button is-small is-disabled'>
-                                  <span>50-100 of 2000 Item</span>
-                                </div>
-                              </div>
-                              <div className='control'>
-                                <div className='button is-small is-rounded is-primary is-outlined'>
-                                  <span className='icon is-small'>
-                                    <i className='fas fa-chevron-right' />
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                <div className='level'>
+                  <div className='level-left'>
+                    <div className='level-item'>
+                      <nav
+                        className='breadcrumb is-size-7 is-capitalized'
+                        aria-label='breadcrumbs'
+                      >
+                        <ul>
+                          <li className='is-active'>
+                            <Link to='/recyclebin'>{tl}</Link>
+                          </li>
+                          <li className='is-active'>
+                            <Link to='/recyclebin'>Index</Link>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
 
-                        <div className='level-right'>
-                          <div className='level-item'>
-                            <div className='select is-small is-rounded'>
-                              <select>
-                                <option>Semua Item</option>
-                              </select>
+                  <div className='level-right'>
+                    <div className='level-item'>
+                      {st && st.length > 0 && (
+                        <Link
+                          to='/recyclebin'
+                          className='button is-small is-primary is-rounded is-outlined'
+                          style={{ marginRight: 10 }}
+                        >
+                          <i className='fas fa-redo icon' />
+                        </Link>
+                      )}
+                      <SimpleSearch
+                        tl={tl}
+                        loading={loading}
+                        onFormSubmit={this.handleSimpleSearch}
+                      />
+                      <div>
+                        <div
+                          className={
+                            mB === true
+                              ? 'dropdown is-right is-active'
+                              : 'dropdown'
+                          }
+                        >
+                          <div className='dropdown-trigger ml-2'>
+                            <button
+                              className='button is-small is-rounded is-outlined'
+                              aria-haspopup='true'
+                              aria-controls='dropdown-menu'
+                              onClick={this.handleMoreButton}
+                            >
+                              <i
+                                className={
+                                  mB === true
+                                    ? 'fas fa-times icon'
+                                    : 'fas fa-ellipsis-h icon'
+                                }
+                              />
+                            </button>
+                          </div>
+                          <div
+                            className='dropdown-menu'
+                            id='dropdown-menu'
+                            role='menu'
+                          >
+                            <div className='dropdown-content'>
+                              <div
+                                onClick={() => {
+                                  openModal('AdvanceSearch');
+                                  this.setState({ mB: !mB });
+                                }}
+                                className='dropdown-item hand-pointer'
+                              >
+                                <i className='fas fa-search-plus icon'></i>
+                                Pencarian+
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className='table-container'>
-                        <table className='table is-fullwidth is-hoverable'>
-                          <thead>
-                            <tr>
-                              <th className='has-text-centered'>No</th>
-                              <th className='has-text-centered'>Item ID</th>
-                              <th className='has-text-centered'>Kategori</th>
-                              <th>Data</th>
-                              <th>Aksi</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {loading === true ? (
-                              <tr>
-                                <td>
-                                  <LoadingButton />
-                                </td>
-                              </tr>
-                            ) : (
-                              <RecyclebinList
-                                recyclebins={recyclebins}
-                                auth={auth}
-                                aS={aS}
-                              />
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                      <div className='select is-small is-rounded'>
-                        <select>
-                          <option>10</option>
-                          <option>20</option>
-                          <option>50</option>
-                        </select>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div className='table-container'>
+                  <table className='table is-fullwidth is-hoverable is-bordered'>
+                    <thead>
+                      <tr>
+                        <th className='has-text-centered'>No</th>
+                        <th className='has-text-centered'>Kode</th>
+                        <th className='has-text-centered'>Item</th>
+                        <th className='has-text-centered'>Kategori</th>
+                        <th className='has-text-centered'>Dihapus pada</th>
+                        <th className='has-text-centered'>Dihapus oleh</th>
+                        <th className='has-text-centered'>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loading === true ? (
+                        <tr>
+                          <td>
+                            <LoadingButton />
+                          </td>
+                        </tr>
+                      ) : (
+                        <Lists
+                          items={items}
+                          cp={cp}
+                          itn={itn}
+                          tl={tl}
+                          aS={aS}
+                          onRestore={this.onRestore}
+                          onDelete={this.onDelete}
+                        />
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <PageNumber
+                  cp={cp}
+                  itn={tt < 10 ? tt : itn}
+                  handleNumber={this.handleItemNumber}
+                  tt={tt}
+                  getPage={this.handlePage}
+                  tl={tl}
+                />
               </div>
             </div>
           </div>

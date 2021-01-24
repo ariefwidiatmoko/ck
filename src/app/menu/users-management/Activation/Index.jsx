@@ -8,7 +8,7 @@ import { openModal } from '../../modals/redux/modalActions';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toastr } from 'react-redux-toastr';
 import { parseISO } from 'date-fns';
-import { usersFetch } from '../Users/redux/reduxApi';
+import { usersIndex } from '../Users/redux/reduxApi';
 
 const mapState = (state) => ({
   auth: state.auth,
@@ -18,12 +18,12 @@ const mapState = (state) => ({
 
 const actions = {
   openModal,
-  usersFetch,
+  usersIndex,
 };
 
 class Index extends Component {
   componentDidMount = () => {
-    this.props.usersFetch(this.props.auth.token);
+    this.props.usersIndex(this.props.auth.token);
   };
   render() {
     const { users, openModal, loading } = this.props;
