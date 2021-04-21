@@ -5,6 +5,12 @@ import SessionEndModal from './SessionEndModal';
 import MemberDelete from '../membership/members/Delete';
 import MemberRestore from '../membership/members/Restore';
 import MemberHardDel from '../membership/members/HardDel';
+import StaffSet from '../membership/staffs/Set';
+import StaffUnset from '../membership/staffs/Unset';
+import SupervisorSet from '../membership/supervisors/Set';
+import SupervisorUnset from '../membership/supervisors/Unset';
+import ManagerSet from '../membership/managers/Set';
+import ManagerUnset from '../membership/managers/Unset';
 import AccountForm from '../accountings/accounts/Form';
 import AccountDelete from '../accountings/accounts/Delete';
 import AccountRestore from '../accountings/accounts/Restore';
@@ -39,6 +45,12 @@ const modalLookup = {
   MemberDelete,
   MemberRestore,
   MemberHardDel,
+  StaffSet,
+  StaffUnset,
+  SupervisorSet,
+  SupervisorUnset,
+  ManagerSet,
+  ManagerUnset,
   AccountForm,
   AccountDelete,
   AccountRestore,

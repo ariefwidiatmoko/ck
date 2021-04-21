@@ -1,4 +1,4 @@
-import { STAFFS_GET, STAFF_UPDATE } from './reduxConstant';
+import { STAFFS_GET, STAFF_SET, STAFF_UPDATE, STAFF_UNSET } from './reduxConstant';
 
 export const staffsGet = (staffs) => {
   return {
@@ -14,6 +14,24 @@ export const staffUpdate = (staff) => {
     type: STAFF_UPDATE,
     payload: {
       staff,
+    },
+  };
+};
+
+export const staffSet = (staff) => {
+  return {
+    type: STAFF_SET,
+    payload: {
+      staff,
+    },
+  };
+};
+
+export const staffUnset = (staffId) => {
+  return {
+    type: STAFF_UNSET,
+    payload: {
+      staffId,
     },
   };
 };

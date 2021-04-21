@@ -112,6 +112,7 @@ class Form extends Component {
   render() {
     const { history } = this.props;
     const { initialValues, memberId, toggle } = this.state;
+    const tl = window.location.pathname.split('/')[2];
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -126,14 +127,14 @@ class Form extends Component {
                         aria-label='breadcrumbs'
                       >
                         <ul>
-                          <li className='is-active'>
-                            <Link to='/keanggotaan/anggota'>Anggota</Link>
+                          <li className='is-active is-capitalized'>
+                            <Link to='/keanggotaan/{tl}'>{tl === 'badan-pengawas' ? 'badan pengawas' : tl}</Link>
                           </li>
                           <li className='is-active'>
                             <Link
                               to={
                                 memberId
-                                  ? `/keanggotaan/anggota/edit/${memberId}`
+                                  ? `/keanggotaan/${tl}/edit/${memberId}`
                                   : `/keanggotaan/anggota/tambah`
                               }
                             >

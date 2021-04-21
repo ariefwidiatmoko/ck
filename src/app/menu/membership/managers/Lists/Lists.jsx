@@ -13,9 +13,10 @@ class Lists extends Component {
       aS,
       onUnset,
     } = this.props;
+    console.log(items);
     return (
       <Fragment>
-        {items &&
+        {/* {items &&
           items.length !== 0 &&
           items.map((item, index) => (
             <Item
@@ -29,7 +30,7 @@ class Lists extends Component {
               aS={aS}
               onUnset={onUnset}
             />
-          ))}
+          ))} */}
         {items && items.length === 0 && (
           <tr>
             <td colSpan='5 is-capitalized'>Tidak Ada {tl}</td>

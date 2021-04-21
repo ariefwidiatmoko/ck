@@ -55,7 +55,13 @@ export default function Info(props) {
         <div className='column'>
           <h3 className='has-text-weight-bold'>Jenis Kelamin</h3>
           <div className='view'>
-            <p className='is-capitalized'>{member.gender || '-'}</p>
+            <p className='is-capitalized'>
+              {member.gender
+                ? member.gender === 'male'
+                  ? 'Laki-Laki'
+                  : 'Perempuan'
+                : '-'}
+            </p>
           </div>
         </div>
       </div>
@@ -115,6 +121,5 @@ export default function Info(props) {
       </div>
       <br />
     </>
-  )
+  );
 }
-

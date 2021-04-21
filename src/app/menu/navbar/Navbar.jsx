@@ -20,13 +20,13 @@ export class Navbar extends Component {
     isTogglerActive: false,
     isNavTogglerActive: false,
   };
-  handleToggler = async () => {
-    await this.setState({
+  handleToggler = () => {
+    this.setState({
       isTogglerActive: !this.state.isTogglerActive,
     });
   };
-  handleNavToggler = async () => {
-    await this.setState({
+  handleNavToggler = () => {
+    this.setState({
       isNavTogglerActive: !this.state.isNavTogglerActive,
     });
   };

@@ -1,4 +1,4 @@
-import { staffsGet, staffUnset, staffSet, staffUpdate } from './reduxAction';
+import { managersGet, managerUnset, managerSet, managerUpdate } from './reduxAction';
 import { memberDelete } from '../../members/redux/reduxAction';
 import { detailsItem } from '../../../pages/details/redux/detailsAction';
 import { toastr } from 'react-redux-toastr';
@@ -10,17 +10,17 @@ import { ASYNC_ACTION_START } from '../../../../async/asyncConstant';
 import { SITE_ADDRESS } from '../../../../common/util/siteConfig';
 import { checkRes, checkErr } from '../../../../common/helpers/checkRes';
 
-// url: /keanggotaan/pengawas
-export const staffsIndex = (token, itn, cp, st) => {
+// url: /keanggotaan/ketua
+export const managersIndex = (token, itn, cp, st) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffsIndex' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managersIndex' });
     try {
       const formData = new FormData();
       const number = itn ? itn : 10;
       formData.append('number', number);
       formData.append('page', cp);
       formData.append('search', st);
-      const fetchData = await fetch(SITE_ADDRESS + 'api/staffs', {
+      const fetchData = await fetch(SITE_ADDRESS + 'api/managers', {
         method: 'POST',
         body: formData,
         headers: {
@@ -32,8 +32,8 @@ export const staffsIndex = (token, itn, cp, st) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      dispatch(detailsItem({ id: 'pengurus', total: response.total }));
-      dispatch(staffsGet(response.staffs));
+      dispatch(detailsItem({ id: 'ketua', total: response.total }));
+      dispatch(managersGet(response.managers));
       dispatch(asyncActionFinish());
     } catch (error) {
       checkErr(error);
@@ -41,13 +41,13 @@ export const staffsIndex = (token, itn, cp, st) => {
     }
   };
 };
-// url: '/keanggotaan/pengurus/detail/:staffId'
-export const staffView = (staffId, auth) => {
+// url: '/keanggotaan/ketua/detail/:managerId'
+export const managerView = (managerId, auth) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffView' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerView' });
     try {
       const fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/' + staffId,
+        SITE_ADDRESS + 'api/managers/' + managerId,
         {
           headers: {
             Authorization: 'Bearer ' + auth.token,
@@ -59,8 +59,8 @@ export const staffView = (staffId, auth) => {
       if (resultCheck) {
         throw resultCheck;
       };
-      const staff = response.staff;
-      dispatch(staffSet(staff));
+      const manager = response.manager;
+      dispatch(managerSet(manager));
       dispatch(asyncActionFinish());
     } catch (error) {
       if (error.message === 'jwt expired') {
@@ -74,16 +74,16 @@ export const staffView = (staffId, auth) => {
   };
 };
 
-export const staffPhotoUpload = (file, filename, auth, staffId) => {
+export const managerPhotoUpload = (file, filename, auth, managerId) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffPhotoUpload' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerPhotoUpload' });
     const token = auth.token;
     const formData = new FormData();
     formData.append('image', file);
     formData.append('filename', filename);
     try {
       let fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/photo-upload/' + staffId,
+        SITE_ADDRESS + 'api/managers/photo-upload/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -97,8 +97,8 @@ export const staffPhotoUpload = (file, filename, auth, staffId) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      let staff = response.staff;
-      dispatch(staffUpdate(staff));
+      let manager = response.manager;
+      dispatch(managerUpdate(manager));
       toastr.success('Sukses', 'Profil foto tersimpan');
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -108,14 +108,14 @@ export const staffPhotoUpload = (file, filename, auth, staffId) => {
   };
 };
 
-export const staffMainPhotoSet = (staffId, photo, auth) => {
+export const managerMainPhotoSet = (managerId, photo, auth) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffMainPhotoSet' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerMainPhotoSet' });
     const formData = new FormData();
     formData.append('mainPhoto', photo);
     try {
       let fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/edit/' + staffId,
+        SITE_ADDRESS + 'api/managers/edit/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -129,8 +129,8 @@ export const staffMainPhotoSet = (staffId, photo, auth) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      let staff = response.staff;
-      dispatch(staffUpdate(staff));
+      let manager = response.manager;
+      dispatch(managerUpdate(manager));
       toastr.success('Sukses', 'Update foto profil');
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -140,15 +140,15 @@ export const staffMainPhotoSet = (staffId, photo, auth) => {
   };
 };
 
-export const staffPhotoDelete = (photo, auth, staffId) => {
+export const managerPhotoDelete = (photo, auth, managerId) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffPhotoDelete' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerPhotoDelete' });
     const token = auth.token;
     const formData = new FormData();
     formData.append('photo', photo);
     try {
       let fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/photo-delete/' + staffId,
+        SITE_ADDRESS + 'api/managers/photo-delete/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -162,8 +162,8 @@ export const staffPhotoDelete = (photo, auth, staffId) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      let staff = response.staff;
-      dispatch(staffUpdate(staff));
+      let manager = response.manager;
+      dispatch(managerUpdate(manager));
       toastr.success('Sukses', 'Hapus foto');
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -172,10 +172,10 @@ export const staffPhotoDelete = (photo, auth, staffId) => {
     }
   };
 };
-// url: "/keanggotaan/pengurus/edit/:staffId"
-export const staffEdit = (values, auth, staffId) => {
+// url: "/keanggotaan/ketua/edit/:managerId"
+export const managerEdit = (values, auth, managerId) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffEdit' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerEdit' });
     const formData = new FormData();
     const arr = Object.entries(values);
     for (const [key, value] of arr) {
@@ -200,7 +200,7 @@ export const staffEdit = (values, auth, staffId) => {
     formData.append('updatedBy', auth.userId);
     try {
       const fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/edit/' + staffId,
+        SITE_ADDRESS + 'api/managers/edit/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -214,8 +214,8 @@ export const staffEdit = (values, auth, staffId) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      const staff = response.staff;
-      dispatch(staffUpdate(staff));
+      const manager = response.manager;
+      dispatch(managerUpdate(manager));
       toastr.success('Sukses', `Update Anggota.`);
       dispatch(asyncActionFinish());
     } catch (error) {
@@ -224,16 +224,16 @@ export const staffEdit = (values, auth, staffId) => {
     }
   };
 };
-// url: "/keanggotaan/pengurus/add"
-export const staffAdd = (auth, staffId, setType, total) => {
+// url: "/keanggotaan/ketua/add"
+export const managerAdd = (auth, managerId, setType, total) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffAdd' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerAdd' });
     const formData = new FormData();
     formData.append('setType', setType);
     formData.append('updatedBy', auth.userId);
     try {
       const fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/set/' + staffId,
+        SITE_ADDRESS + 'api/managers/set/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -247,11 +247,11 @@ export const staffAdd = (auth, staffId, setType, total) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      const staff = response.staff;
-      dispatch(detailsItem({ id: 'pengurus', total: total + 1 }));
-      dispatch(staffSet(staff));
-      dispatch(memberDelete(staff.id));
-      toastr.success('Sukses', `Update Pengurus.`);
+      const manager = response.manager;
+      dispatch(detailsItem({ id: 'ketua', total: total + 1 }));
+      dispatch(managerSet(manager));
+      dispatch(memberDelete(manager.id));
+      toastr.success('Sukses', `Update Ketua.`);
       dispatch(asyncActionFinish());
     } catch (error) {
       checkErr(error);
@@ -259,16 +259,16 @@ export const staffAdd = (auth, staffId, setType, total) => {
     }
   };
 };
-// url: "/keanggotaan/pengurus/remove"
-export const staffRemove = (auth, staffId, total) => {
+// url: "/keanggotaan/ketua/remove"
+export const managerRemove = (auth, managerId, total) => {
   return async (dispatch) => {
-    dispatch({ type: ASYNC_ACTION_START, payload: 'staffRemove' });
+    dispatch({ type: ASYNC_ACTION_START, payload: 'managerRemove' });
     const formData = new FormData();
     formData.append('setType', 'Anggota');
     formData.append('updatedBy', auth.userId);
     try {
       const fetchData = await fetch(
-        SITE_ADDRESS + 'api/staffs/set/' + staffId,
+        SITE_ADDRESS + 'api/managers/set/' + managerId,
         {
           method: 'POST',
           body: formData,
@@ -282,9 +282,9 @@ export const staffRemove = (auth, staffId, total) => {
       if (resultCheck) {
         throw resultCheck;
       }
-      const staff = response.staff;
-      dispatch(detailsItem({ id: 'pengurus', total: total - 1 }));
-      dispatch(staffUnset(staff.id));
+      const manager = response.manager;
+      dispatch(detailsItem({ id: 'ketua', total: total - 1 }));
+      dispatch(managerUnset(manager.id));
       toastr.success('Sukses', `Update menjadi anggota.`);
       dispatch(asyncActionFinish());
     } catch (error) {

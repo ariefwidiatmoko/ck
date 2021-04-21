@@ -17,7 +17,7 @@ class SimpleSearch extends Component {
   };
 
   handleSearchSubmit = (e) => {
-    this.props.onFormSubmit(this.state.value);
+    this.props.onFormSubmit('simpleSearch', this.state.value);
     e.preventDefault();
   };
 

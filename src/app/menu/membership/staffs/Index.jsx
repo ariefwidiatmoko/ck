@@ -15,7 +15,7 @@ const mapState = (state) => {
   if (auth && auth.authorities.details) {
     aS = auth.authorities.details.subm.filter((i) => i.id === 'pengurus')[0];
   }
-  const details = state.details
+  const details = state.details;
   let detail = {};
   if (details) {
     detail = details.filter((i) => i.id === 'pengurus')[0];
@@ -45,39 +45,36 @@ class Index extends Component {
   };
 
   componentDidMount = () => {
-    const { auth } = this.props;
+    const { auth, staffsIndex } = this.props;
     const { itn } = this.state;
-    this.props.staffsIndex(auth.token, itn, 1, '');
+    staffsIndex(auth.token, itn, 1, '');
   };
 
-  handleItemNumber = (number) => {
-    const { auth } = this.props;
-    const { st } = this.state;
-    this.setState((prevState) => ({
-      cp: 1,
-      itn: number,
-    }));
-    this.props.staffsIndex(auth.token, number, 1, st);
-  };
-
-  handlePage = (number) => {
-    const { auth } = this.props;
+  handlePage = (action, value) => {
+    const { auth, staffsIndex } = this.props;
     const { cp, itn, st } = this.state;
-    this.setState({
-      cp: cp + number,
-    });
-    this.props.staffsIndex(auth.token, itn, cp + number, st);
-  };
-
-  handleSimpleSearch = (st) => {
-    const { auth } = this.props;
-    const { itn } = this.state;
-    this.setState((prevState) => ({
-      cp: 1,
-      itn: itn,
-      st: st,
-    }));
-    this.props.staffsIndex(auth.token, itn, 1, st);
+    const objAction = {
+      itemNumber: {
+        cp: 1,
+        itn: value,
+        st: st,
+      },
+      page: {
+        cp: cp + value,
+        itn: itn,
+        st: st,
+      },
+      simpleSearch: {
+        cp: 1,
+        itn: itn,
+        st: value,
+      },
+    };
+    this.setState(objAction[action]);
+    const valItn = objAction[action].itn;
+    const valCp = objAction[action].cp;
+    const valSt = objAction[action].st;
+    staffsIndex(auth.token, valItn, valCp, valSt);
   };
 
   handleMoreButton = () => {
@@ -87,13 +84,31 @@ class Index extends Component {
     });
   };
 
-  onDelete = (id, code, name) => {
-    const { auth } = this.props;
-    this.props.openModal('MemberDelete', {
-      id: id,
-      code: code,
-      name: name,
-      auth: auth,
+  itnRed = () => {
+    const { itn } = this.state;
+    this.setState({
+      itn: itn - 1,
+    });
+  };
+
+  onSet = () => {
+    const { openModal, detail } = this.props;
+    openModal('StaffSet', {
+      data: {
+        total: detail.total,
+      },
+    });
+  };
+
+  onUnset = (item) => {
+    const { auth, detail, openModal } = this.props;
+    openModal('StaffUnset', {
+      data: {
+        item: item,
+        auth: auth,
+        total: detail.total,
+        itnRed: this.itnRed,
+      },
     });
   };
 
@@ -130,19 +145,19 @@ class Index extends Component {
                     <div className='level-item'>
                       {aS.c === true && (
                         <Fragment>
-                          <Link
-                            to='/keanggotaan/anggota/tambah'
+                          <button
+                            onClick={this.onSet}
                             className='button is-small is-primary is-rounded is-outlined'
                             style={{ marginRight: 10 }}
                           >
                             <i className='fas fa-plus icon' />
-                          </Link>
+                          </button>
                         </Fragment>
                       )}
                       <SimpleSearch
                         tl={tl}
                         loading={loading}
-                        onFormSubmit={this.handleSimpleSearch}
+                        onFormSubmit={this.handlePage}
                       />
                       <div>
                         <div
@@ -232,7 +247,7 @@ class Index extends Component {
                           itn={itn}
                           tl={tl}
                           aS={aS}
-                          onDelete={this.onDelete}
+                          onUnset={this.onUnset}
                         />
                       )}
                     </tbody>
@@ -241,7 +256,7 @@ class Index extends Component {
                 <PageNumber
                   cp={cp}
                   itn={itn}
-                  handleNumber={this.handleItemNumber}
+                  handleNumber={this.handlePage}
                   tt={tt}
                   getPage={this.handlePage}
                   tl={tl}

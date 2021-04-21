@@ -1,53 +1,53 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { memberView } from './redux/reduxApi';
-import Tab from './Tab';
-import Info from './Info';
-import Photos from './photos/Photos';
-import Account from './Account';
+import { staffView } from './redux/reduxApi';
+import Tab from '../members/Tab';
+import Info from '../members/Info';
+import Photos from '../members/photos/Photos';
+import Account from '../members/Account';
 import background from '../../../../images/default-background.jpg';
 import profileDefault from '../../../../images/user-default.png';
 import { SITE_ADDRESS } from '../../../common/util/siteConfig';
 import { Profilecard } from '../../../common/components/Profilecard';
 
 const mapState = (state, ownProps) => {
-  const memberId = ownProps.match.params.id;
+  const staffId = ownProps.match.params.id;
 
   let aS = {};
   const auth = state.auth;
   if (auth && auth.authorities.details) {
-    aS = auth.authorities.details.subm.filter((i) => i.id === 'anggota')[0];
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'pengurus')[0];
   }
 
-  let member = {};
-  if (state.members && state.members.length > 0) {
-    member = state.members.filter((member) => member.code === memberId)[0];
+  let staff = {};
+  if (state.staffs && state.staffs.length > 0) {
+    staff = state.staffs.filter((staff) => staff.code === staffId)[0];
   }
   return {
     auth: state.auth,
     aS: aS,
-    memberId: memberId,
-    member: member,
+    staffId: staffId,
+    staff: staff,
   };
 };
 
 const actions = {
-  memberView,
+  staffView,
 };
 
 class View extends Component {
   _isMounted = false;
   state = {
-    tl: 'anggota',
-    memberId: this.props.match.params.id,
-    member: this.props.member,
+    tl: 'pengurus',
+    staffId: this.props.match.params.id,
+    staff: this.props.staff,
     activeTab: 'basic',
   };
 
   componentDidMount = () => {
-    const { memberId, auth, memberView } = this.props;
-    memberView(memberId, auth);
+    const { staffId, auth, staffView } = this.props;
+    staffView(staffId, auth);
   };
 
   OnChangeActiveTab = (activeTab) => {
@@ -57,8 +57,8 @@ class View extends Component {
   };
 
   render() {
-    const { aS, auth, member, history } = this.props;
-    const { memberId, tl } = this.state;
+    const { aS, auth, staff, history } = this.props;
+    const { staffId, tl } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -74,20 +74,20 @@ class View extends Component {
                       >
                         <ul className='margin-10-25'>
                           <li className='is-capitalized'>
-                            <Link to='/keanggotaan/anggota'>{tl}</Link>
+                            <Link to='/keanggotaan/pengurus'>{tl}</Link>
                           </li>
                           <li className='is-active'>
                             <Link
-                              to={`/keanggotaan/anggota/detail/${memberId}`}
+                              to={`/keanggotaan/pengurus/detail/${staffId}`}
                             >
                               Detail
                             </Link>
                           </li>
                           <li className='is-active'>
                             <Link
-                              to={`/keanggotaan/anggota/detail/${memberId}`}
+                              to={`/keanggotaan/pengurus/detail/${staffId}`}
                             >
-                              {member.code}
+                              {staff.code}
                             </Link>
                           </li>
                         </ul>
@@ -100,18 +100,10 @@ class View extends Component {
                       <div className='buttons'>
                         {aS.u === true && (
                           <Link
-                            to={'/keanggotaan/anggota/edit/' + memberId}
+                            to={'/keanggotaan/pengurus/edit/' + staffId}
                             className='button is-small is-primary is-rounded is-outlined'
                           >
                             <i className='fas fa-pen icon' />
-                          </Link>
-                        )}
-                        {aS.c === true && (
-                          <Link
-                            to='/keanggotaan/anggota/tambah'
-                            className='button is-small is-primary is-rounded is-outlined'
-                          >
-                            <i className='fas fa-plus icon' />
                           </Link>
                         )}
                         <button
@@ -130,10 +122,10 @@ class View extends Component {
                       background={background}
                       profileDefault={profileDefault}
                       auth={{
-                        name: member ? member.name : '',
-                        code: member ? member.code : '',
+                        name: staff ? staff.name : '',
+                        code: staff ? staff.code : '',
                       }}
-                      profile={member ? member : ''}
+                      profile={staff ? staff : ''}
                       link={SITE_ADDRESS}
                     />
                   </div>
@@ -142,16 +134,16 @@ class View extends Component {
                       <Tab
                         onChangeActiveTab={this.OnChangeActiveTab}
                         activeTab={this.state.activeTab}
-                        memberId={memberId}
+                        memberId={staffId}
                       />
                       {this.state.activeTab === 'basic' && (
-                        <Info member={member} />
+                        <Info member={staff} />
                       )}
                       {this.state.activeTab === 'photo' && (
-                        <Photos profile={member} auth={auth} />
+                        <Photos profile={staff} auth={auth} tl={tl} />
                       )}
                       {this.state.activeTab === 'account' && (
-                        <Account member={member} />
+                        <Account member={staff} />
                       )}
                     </div>
                   </div>

@@ -6,10 +6,14 @@ import Login from '../menu/login/Login';
 import Dashboard from '../menu/dashboard/Dashboard';
 import ProfileView from '../menu/users-management/profile/View';
 import MembersIndex from '../menu/membership/members/Index';
-import StaffsIndex from '../menu/membership/staffs/Index';
 import MemberForm from '../menu/membership/members/Form';
 import MemberView from '../menu/membership/members/View';
 import MembersImport from '../menu/membership/members/Import';
+import StaffsIndex from '../menu/membership/staffs/Index';
+import StaffView from '../menu/membership/staffs/View';
+import SupervisorsIndex from '../menu/membership/supervisors/Index';
+import SupervisorView from '../menu/membership/supervisors/View';
+import ManagersIndex from '../menu/membership/managers/Index';
 import SavingsIndex from '../menu/finances/savings/Index';
 import LoansIndex from '../menu/finances/loans/Index';
 import InstallmentsIndex from '../menu/finances/installments/Index';
@@ -73,6 +77,36 @@ class App extends Component {
               exact
               path='/keanggotaan/pengurus'
               component={isAuthenticated(StaffsIndex)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/pengurus/detail/:id'
+              component={isAuthenticated(StaffView)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/pengurus/edit/:id'
+              component={isAuthenticated(MemberForm)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/badan-pengawas'
+              component={isAuthenticated(SupervisorsIndex)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/badan-pengawas/detail/:id'
+              component={isAuthenticated(SupervisorView)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/badan-pengawas/edit/:id'
+              component={isAuthenticated(MemberForm)}
+            />
+            <Route
+              exact
+              path='/keanggotaan/ketua'
+              component={isAuthenticated(ManagersIndex)}
             />
             <Route
               exact

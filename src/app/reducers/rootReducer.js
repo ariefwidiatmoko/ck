@@ -10,6 +10,9 @@ import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import membersReducer from '../menu/membership/members/redux/reduxReducer';
 import membersExImReducer from '../menu/membership/members/redux/reduxExImReducer';
+import staffsReducer from '../menu/membership/staffs/redux/reduxReducer';
+import supervisorsReducer from '../menu/membership/supervisors/redux/reduxReducer';
+import managersReducer from '../menu/membership/managers/redux/reduxReducer';
 import savingsReducer from '../menu/finances/savings/redux/reduxReducer';
 import loansReducer from '../menu/finances/loans/redux/reduxReducer';
 import installmentsReducer from '../menu/finances/installments/redux/reduxReducer';
@@ -36,6 +39,9 @@ const appReducer = combineReducers({
   profile: profileReducer,
   members: membersReducer,
   membersExIm: membersExImReducer,
+  staffs: staffsReducer,
+  supervisors: supervisorsReducer,
+  managers: managersReducer,
   savings: savingsReducer,
   loans: loansReducer,
   installments: installmentsReducer,

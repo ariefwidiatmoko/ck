@@ -7,22 +7,51 @@ import {
   memberMainPhotoSet,
   memberPhotoDelete,
 } from '../redux/reduxApi';
+import {
+  staffPhotoUpload,
+  staffMainPhotoSet,
+  staffPhotoDelete,
+} from '../../staffs/redux/reduxApi';
+import {
+  supervisorPhotoUpload,
+  supervisorMainPhotoSet,
+  supervisorPhotoDelete,
+} from '../../supervisors/redux/reduxApi';
 import { toastr } from 'react-redux-toastr';
 import Galleries from './Galleries';
+
+const mapState = (state) => {
+  return {
+    loading: state.async.loading,
+  };
+};
 
 const actions = {
   memberPhotoUpload,
   memberMainPhotoSet,
   memberPhotoDelete,
+  staffPhotoUpload,
+  staffMainPhotoSet,
+  staffPhotoDelete,
+  supervisorPhotoUpload,
+  supervisorMainPhotoSet,
+  supervisorPhotoDelete,
 };
 
-const TabPhoto = ({
+const Photos = ({
   auth,
   profile,
+  tl,
   loading,
   memberPhotoUpload,
   memberMainPhotoSet,
   memberPhotoDelete,
+  staffPhotoUpload,
+  staffMainPhotoSet,
+  staffPhotoDelete,
+  supervisorPhotoUpload,
+  supervisorMainPhotoSet,
+  supervisorPhotoDelete,
 }) => {
   const [files, setFiles] = useState([]);
   const [cropResult, setCropResult] = useState('');
@@ -38,7 +67,18 @@ const TabPhoto = ({
   const handleUploadImage = async () => {
     const authData = auth;
     try {
-      await memberPhotoUpload(image, files[0].name, authData, profile.userId);
+      if (tl === 'pengurus') {
+        await staffPhotoUpload(image, files[0].name, authData, profile.userId);
+      } else if (tl === 'pengawas') {
+        await supervisorPhotoUpload(
+          image,
+          files[0].name,
+          authData,
+          profile.userId
+        );
+      } else {
+        await memberPhotoUpload(image, files[0].name, authData, profile.userId);
+      }
       setAddPic(!addPic);
       handleCancelCrop();
     } catch (error) {
@@ -55,7 +95,13 @@ const TabPhoto = ({
 
   const handleMainPhotoSet = async (photo) => {
     try {
-      await memberMainPhotoSet(profile.code, photo, auth);
+      if (tl === 'pengurus') {
+        await staffMainPhotoSet(profile.code, photo, auth);
+      } else if (tl === 'pengawas') {
+        await supervisorMainPhotoSet(profile.code, photo, auth);
+      } else {
+        await memberMainPhotoSet(profile.code, photo, auth);
+      }
     } catch (error) {
       toastr.error('Oops', error.message);
     }
@@ -63,7 +109,13 @@ const TabPhoto = ({
 
   const handleDeletePhoto = async (photo) => {
     try {
-      await memberPhotoDelete(photo, auth, profile.userId);
+      if (tl === 'pengurus') {
+        await staffPhotoDelete(photo, auth, profile.userId);
+      } else if (tl === 'pengawas') {
+        await supervisorPhotoDelete(photo, auth, profile.userId);
+      } else {
+        await memberPhotoDelete(photo, auth, profile.userId);
+      }
     } catch (error) {
       toastr.error('Oops', error.message);
     }
@@ -151,9 +203,7 @@ const TabPhoto = ({
   return (
     <Fragment>
       {profile.photos === null && addPicMenu}
-      {profile.photos &&
-        profile.photos.split(',').length < 3 &&
-        addPicMenu}
+      {profile.photos && profile.photos.split(',').length < 3 && addPicMenu}
       <Galleries
         mainPhoto={profile.mainPhoto}
         photos={profile.photos}
@@ -165,4 +215,4 @@ const TabPhoto = ({
   );
 };
 
-export default connect(null, actions)(TabPhoto);
+export default connect(mapState, actions)(Photos);

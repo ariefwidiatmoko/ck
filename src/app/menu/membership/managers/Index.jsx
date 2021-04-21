@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
-import { membersIndex } from './redux/reduxApi';
+import { managersIndex } from './redux/reduxApi';
 import { openModal, closeModal } from '../../modals/redux/modalActions';
 import LoadingButton from '../../../main/LoadingButton';
 import Lists from './Lists/Lists';
@@ -13,45 +13,46 @@ const mapState = (state) => {
   let aS = {};
   const auth = state.auth;
   if (auth && auth.authorities.details) {
-    aS = auth.authorities.details.subm.filter((i) => i.id === 'anggota')[0];
+    aS = auth.authorities.details.subm.filter((i) => i.id === 'ketua')[0];
   }
   const details = state.details;
   let detail = {};
   if (details) {
-    detail = details.filter((i) => i.id === 'anggota')[0];
+    detail = details.filter((i) => i.id === 'ketua')[0];
   }
   return {
     auth: auth,
     aS: aS,
     detail: detail,
-    items: state.members,
+    items: state.managers,
     loading: state.async.loading,
   };
 };
 
 const actions = {
-  membersIndex,
+  managersIndex,
   openModal,
   closeModal,
 };
 
 class Index extends Component {
   state = {
-    tl: 'anggota', // title
-    cp: 1, // current page
-    itn: 10, // item number
-    st: '', // isearch text
-    mB: false, // more button
+    tl: 'ketua',
+    cp: 1,
+    itn: 10,
+    st: '',
+    mB: false,
   };
 
   componentDidMount = () => {
-    const { auth, membersIndex } = this.props;
+    const { auth, managersIndex } = this.props;
     const { itn } = this.state;
-    membersIndex(auth.token, itn, 1, '');
+    managersIndex(auth.token, itn, 1, '');
+    
   };
 
   handlePage = (action, value) => {
-    const { auth, membersIndex } = this.props;
+    const { auth, managersIndex } = this.props;
     const { cp, itn, st } = this.state;
     const objAction = {
       itemNumber: {
@@ -74,23 +75,11 @@ class Index extends Component {
     const valItn = objAction[action].itn;
     const valCp = objAction[action].cp;
     const valSt = objAction[action].st;
-    membersIndex(auth.token, valItn, valCp, valSt);
+    managersIndex(auth.token, valItn, valCp, valSt);
   };
 
   handleMoreButton = () => {
     const { mB } = this.state;
-    this.setState({
-      mB: !mB,
-    });
-  };
-
-  onClickRecyclebin = () => {
-    const { auth, membersIndex } = this.props;
-    const { itn, mB } = this.state;
-    this.setState({
-      st: 'deleted',
-    });
-    membersIndex(auth.token, itn, 1, 'deleted');
     this.setState({
       mB: !mB,
     });
@@ -103,33 +92,18 @@ class Index extends Component {
     });
   };
 
-  onDelete = (item) => {
-    const { auth, detail, openModal } = this.props;
-    openModal('MemberDelete', {
+  onSet = () => {
+    const { openModal, detail } = this.props;
+    openModal('ManagerSet', {
       data: {
-        item: item,
-        auth: auth,
-        total: detail.total,
-        itnRed: this.itnRed,
-      },
-    });
+        total: detail.total
+      }
+    })
   };
 
-  onRestore = (item) => {
+  onUnset = (item) => {
     const { auth, detail, openModal } = this.props;
-    openModal('MemberRestore', {
-      data: {
-        item: item,
-        auth: auth,
-        total: detail.total,
-        itnRed: this.itnRed,
-      },
-    });
-  };
-
-  onHDelete = (item) => {
-    const { auth, detail, openModal } = this.props;
-    openModal('MemberHardDel', {
+    openModal('ManagerUnset', {
       data: {
         item: item,
         auth: auth,
@@ -142,7 +116,7 @@ class Index extends Component {
   render() {
     const { aS, detail, items, loading, openModal } = this.props;
     const tt = detail && detail.total ? detail.total : 0;
-    const { tl, cp, itn, st, mB } = this.state;
+    const { tl, cp, itn, mB } = this.state;
     return (
       <div className='column is-10-desktop is-offset-2-desktop is-9-tablet is-offset-3-tablet is-12-mobile'>
         <div className='p-1'>
@@ -158,12 +132,10 @@ class Index extends Component {
                       >
                         <ul>
                           <li className='is-active'>
-                            <Link to='/keanggotaan/anggota'>{tl}</Link>
+                            <Link to='/keanggotaan/ketua'>{tl}</Link>
                           </li>
                           <li className='is-active'>
-                            <Link to='/keanggotaan/anggota'>
-                              {st !== 'deleted' ? 'Index' : 'Recycle Bin'}
-                            </Link>
+                            <Link to='/keanggotaan/ketua'>Index</Link>
                           </li>
                         </ul>
                       </nav>
@@ -172,24 +144,15 @@ class Index extends Component {
 
                   <div className='level-right'>
                     <div className='level-item'>
-                      {st && st.length > 0 && (
-                        <Link
-                          to='/keanggotaan/anggota'
-                          className='button is-small is-primary is-rounded is-outlined'
-                          style={{ marginRight: 10 }}
-                        >
-                          <i className='fas fa-redo icon' />
-                        </Link>
-                      )}
                       {aS.c === true && (
                         <Fragment>
-                          <Link
-                            to='/keanggotaan/anggota/tambah'
+                          <button
+                            onClick={this.onSet}
                             className='button is-small is-primary is-rounded is-outlined'
                             style={{ marginRight: 10 }}
                           >
                             <i className='fas fa-plus icon' />
-                          </Link>
+                          </button>
                         </Fragment>
                       )}
                       <SimpleSearch
@@ -237,20 +200,6 @@ class Index extends Component {
                                 <i className='fas fa-search-plus icon'></i>
                                 Pencarian+
                               </div>
-                              <Link
-                                to='/keanggotaan/anggota/import'
-                                className='dropdown-item'
-                              >
-                                <i className='fas fa-file-import icon'></i>
-                                Impor
-                              </Link>
-                              <div
-                                onClick={this.onClickRecyclebin}
-                                className='dropdown-item hand-pointer'
-                              >
-                                <i className='fas fa-trash icon'></i>
-                                Recycle Bin
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -285,9 +234,7 @@ class Index extends Component {
                           itn={itn}
                           tl={tl}
                           aS={aS}
-                          onDelete={this.onDelete}
-                          onRestore={this.onRestore}
-                          onHDelete={this.onHDelete}
+                          onUnset={this.onUnset}
                         />
                       )}
                     </tbody>
@@ -295,7 +242,7 @@ class Index extends Component {
                 </div>
                 <PageNumber
                   cp={cp}
-                  itn={tt < 10 ? tt : itn}
+                  itn={itn}
                   handleNumber={this.handlePage}
                   tt={tt}
                   getPage={this.handlePage}

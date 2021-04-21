@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
-import { staffEdit } from '../redux/reduxApi';
 import { connect } from 'react-redux';
-
-const actions = {
-  staffEdit,
-};
 
 class Item extends Component {
   render() {
@@ -39,7 +34,7 @@ class Item extends Component {
           <div>
             {aS.v === true && (
               <Link
-                to={`/keanggotaan/pengurus/detail/${item.code}`}
+                to={`/keanggotaan/badan-pengawas/detail/${item.code}`}
                 className='button is-small is-rounded is-primary is-outlined'
                 style={{ marginRight: 4, marginBottom: 4 }}
               >
@@ -49,7 +44,7 @@ class Item extends Component {
             {aS.u === true && (
               <>
                 <Link
-                  to={`/keanggotaan/pengurus/edit/${item.code}`}
+                  to={`/keanggotaan/badan-pengawas/edit/${item.code}`}
                   className='button is-small is-rounded is-primary is-outlined'
                   style={{ marginRight: 4, marginBottom: 4 }}
                 >
@@ -70,4 +65,4 @@ class Item extends Component {
   }
 }
 
-export default connect(null, actions)(Item);
+export default connect(Item);

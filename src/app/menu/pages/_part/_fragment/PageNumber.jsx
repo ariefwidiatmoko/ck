@@ -8,10 +8,10 @@ export default class PageNumber extends Component {
     this.setState({
       value: event.target.value,
     });
-    this.props.handleNumber(event.target.value);
+    this.props.handleNumber('itemNumber', event.target.value);
   };
   handlePage = (number) => {
-    this.props.getPage(number);
+    this.props.getPage('page', number);
   };
   render() {
     const { cp, itn, tt, tl } = this.props;
